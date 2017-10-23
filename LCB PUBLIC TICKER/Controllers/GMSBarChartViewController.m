@@ -141,7 +141,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
    
     [self updateGraph:nil];
    [self prepareDatas:nil];
-    //[self.barChartView reloadData];
+    [self.barChartView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated

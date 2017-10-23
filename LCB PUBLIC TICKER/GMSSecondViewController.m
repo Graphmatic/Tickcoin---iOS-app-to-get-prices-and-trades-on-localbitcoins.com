@@ -30,7 +30,7 @@
 
 @implementation GMSSecondViewController
 
-@synthesize timerMessages, editMaxDev, settingSquare, secondViewDatas, sliderVal, sliderValName, secondViewMessage, messageBox, headerView, headerTitleLeft, firstViewC, iAdForIphone5;
+@synthesize timerMessages, editMaxDev, settingSquare, secondViewDatas, sliderVal, sliderValName, secondViewMessage, messageBox, headerView, headerTitleLeft, firstViewC;
 
 - (void)viewDidLoad
 {
@@ -441,22 +441,6 @@
     NSDate *recdATE = [NSDate date];
     [[NSUserDefaults standardUserDefaults]setObject:recdATE forKey:@"lastRecordDateOrderBook"];
 }
-#pragma mark - iAdBanner Delegates
 
--(void)bannerView:(ADBannerView *)banner
-didFailToReceiveAdWithError:(NSError *)error{
-    NSLog(@"Error in Loading Banner!");
-}
-
--(void)bannerViewDidLoadAd:(ADBannerView *)banner{
-    NSLog(@"iAd banner Loaded Successfully!");
-}
--(void)bannerViewWillLoadAd:(ADBannerView *)banner{
-    NSLog(@"iAd Banner will load!");
-}
--(void)bannerViewActionDidFinish:(ADBannerView *)banner{
-    NSLog(@"iAd Banner did finish");
-    
-}
 
 @end

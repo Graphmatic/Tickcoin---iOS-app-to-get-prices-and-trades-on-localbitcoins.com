@@ -10,11 +10,11 @@
 #import "GMSMessageBoxProcessor.h"
 #import "GMSSecondViewTableData.h"
 #import "GMSFirstViewController.h"
-#import <iAd/iAd.h>
+
 extern BOOL test;
 extern NSMutableString *currentCurrency;
 extern BOOL firstLaunchBids;
-@interface GMSSecondViewController : UIViewController<UITableViewDelegate,UITableViewDataSource, ADBannerViewDelegate>
+@interface GMSSecondViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 {
 
 }
@@ -36,6 +36,6 @@ extern BOOL firstLaunchBids;
 @property (strong, atomic) GMSSecondViewTableData *secondViewDatas;
 @property (retain, nonatomic) IBOutlet UILabel *headerTitleLeft;
 @property (weak, nonatomic)GMSFirstViewController *firstViewC;
-@property (strong, nonatomic) IBOutlet ADBannerView *iAdForIphone5;
+
 
 @end

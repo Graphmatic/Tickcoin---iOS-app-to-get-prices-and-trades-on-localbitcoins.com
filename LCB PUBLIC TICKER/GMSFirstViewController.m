@@ -147,19 +147,19 @@
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
      {
-       
+         
          [self.refreshTicker endRefreshing];
          dispatch_queue_t parser = dispatch_queue_create("parsecvs", DISPATCH_QUEUE_SERIAL);
          dispatch_async(parser, ^{
-         [self.firstViewDatas update:responseObject];
+             [self.firstViewDatas update:responseObject];
          });
-
+         
          NSDate *recdATE = [[NSDate alloc]init];
          NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
          [dateFormatter setDateStyle:NSDateFormatterLongStyle];
          [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
          lastRecordDate = [[dateFormatter stringFromDate:recdATE]mutableCopy];
-      //   [[NSUserDefaults standardUserDefaults]setObject:lastRecordDate forKey:@"lastRecordDate"];
+         //   [[NSUserDefaults standardUserDefaults]setObject:lastRecordDate forKey:@"lastRecordDate"];
          if(self.timerMessages)[self.timerMessages invalidate];
          self.timerMessages = nil;
          self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];

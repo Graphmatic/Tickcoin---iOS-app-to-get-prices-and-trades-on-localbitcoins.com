@@ -88,7 +88,7 @@
 		F07641031929E7A700DA6616 /* GMSBarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07640FE1929E7A700DA6616 /* GMSBarChartView.m */; };
 		F07641041929E7A700DA6616 /* GMSChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07641001929E7A700DA6616 /* GMSChartView.m */; };
 		F07AF6CA18FD85140091D05F /* GMSSecondViewTableData.m in Sources */ = {isa = PBXBuildFile; fileRef = F07AF6C918FD85140091D05F /* GMSSecondViewTableData.m */; };
-		F083FAE31974372E0072F02B /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F083FAE21974372E0072F02B /* iAd.framework */; };
+		F083FAE31974372E0072F02B /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F083FAE21974372E0072F02B /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F08760C719002D1D003BB5C0 /* LCB-headerImgBids.png in Resources */ = {isa = PBXBuildFile; fileRef = F08760C519002D1D003BB5C0 /* LCB-headerImgBids.png */; };
 		F08760C819002D1D003BB5C0 /* LCB-headerImg2@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = F08760C619002D1D003BB5C0 /* LCB-headerImg2@x2.png */; };
 		F09981A0192F388800BB72EC /* gsp.png in Resources */ = {isa = PBXBuildFile; fileRef = F099819F192F388800BB72EC /* gsp.png */; };

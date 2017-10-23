@@ -37,7 +37,7 @@
         currenciesList = [[NSMutableArray alloc] init];
         if(firstLaunch)
         {
-            //load default local json
+            //load default local json (filled with keys and null values)
             NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tickerAllCurDefault" ofType:@"json"]]];
             AFHTTPRequestOperation * operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
             operation.responseSerializer = [AFJSONResponseSerializer serializer];
