@@ -91,7 +91,6 @@
 		F083FAE31974372E0072F02B /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F083FAE21974372E0072F02B /* iAd.framework */; };
 		F08760C719002D1D003BB5C0 /* LCB-headerImgBids.png in Resources */ = {isa = PBXBuildFile; fileRef = F08760C519002D1D003BB5C0 /* LCB-headerImgBids.png */; };
 		F08760C819002D1D003BB5C0 /* LCB-headerImg2@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = F08760C619002D1D003BB5C0 /* LCB-headerImg2@x2.png */; };
-		F099819E192F209900BB72EC /* GMSFifthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F099819D192F209900BB72EC /* GMSFifthViewController.m */; };
 		F09981A0192F388800BB72EC /* gsp.png in Resources */ = {isa = PBXBuildFile; fileRef = F099819F192F388800BB72EC /* gsp.png */; };
 		F0B5651718E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */; };
 		F0B5651818E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */; };
@@ -131,6 +130,7 @@
 /* Begin PBXFileReference section */
 		1B3142821A3E3DB900127788 /* lcbTicker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = lcbTicker.xcdatamodel; sourceTree = "<group>"; };
 		1B490B0B1A34685000CD1AD0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		28BAB03E1F9DFAB3008F9358 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F00A61A218EB694400C35A47 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F00A61A418EB6B8500C35A47 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		F00B12DD190B882A00ABF692 /* glass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = glass.png; path = "LCB PUBLIC TICKER/Images.xcassets/glass.imageset/glass.png"; sourceTree = "<group>"; };
@@ -264,8 +264,6 @@
 		F083FAE21974372E0072F02B /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		F08760C519002D1D003BB5C0 /* LCB-headerImgBids.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LCB-headerImgBids.png"; path = "photoshop/LCB-headerImgBids.png"; sourceTree = "<group>"; };
 		F08760C619002D1D003BB5C0 /* LCB-headerImg2@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LCB-headerImg2@x2.png"; path = "photoshop/LCB-headerImg2@x2.png"; sourceTree = "<group>"; };
-		F099819C192F209800BB72EC /* GMSFifthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSFifthViewController.h; sourceTree = "<group>"; };
-		F099819D192F209900BB72EC /* GMSFifthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSFifthViewController.m; sourceTree = "<group>"; };
 		F099819F192F388800BB72EC /* gsp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gsp.png; path = photoshop/gsp.png; sourceTree = "<group>"; };
 		F0B5651518E9C15A00709F6D /* GMSMessageBoxProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSMessageBoxProcessor.h; sourceTree = "<group>"; };
 		F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSMessageBoxProcessor.m; sourceTree = "<group>"; };
@@ -404,11 +402,10 @@
 		F055651518E6DD9300481688 = {
 			isa = PBXGroup;
 			children = (
+				28BAB03E1F9DFAB3008F9358 /* README.md */,
 				F06E96E0192FBE17003A5786 /* GMSStripHtmlFromString.h */,
 				F06E96E1192FBE17003A5786 /* GMSStripHtmlFromString.m */,
 				F0C01E4C191BEC8200A45B9B /* StoryboardForIpad.storyboard */,
-				F099819C192F209800BB72EC /* GMSFifthViewController.h */,
-				F099819D192F209900BB72EC /* GMSFifthViewController.m */,
 				F012459318E7208F002FAADA /* UIKit+AFNetworking */,
 				F012457618E72085002FAADA /* AFNetworking */,
 				F055652718E6DD9300481688 /* LCB PUBLIC TICKER */,
@@ -831,7 +828,6 @@
 				F07641031929E7A700DA6616 /* GMSBarChartView.m in Sources */,
 				F01245A618E7208F002FAADA /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				F012458B18E72085002FAADA /* AFHTTPRequestOperationManager.m in Sources */,
-				F099819E192F209900BB72EC /* GMSFifthViewController.m in Sources */,
 				F063CAC51922A42D00722F02 /* GMSchartViewData.m in Sources */,
 				F01245AB18E7208F002FAADA /* UIRefreshControl+AFNetworking.m in Sources */,
 				F012458E18E72085002FAADA /* AFSecurityPolicy.m in Sources */,
@@ -1014,12 +1010,7 @@
 				GCC_PREFIX_HEADER = "LCB PUBLIC TICKER/tickCoin-Prefix.pch";
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/LCB",
-					PUBLIC,
-					TICKER/Chartboost,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "GraphMatic-Studio.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1037,12 +1028,7 @@
 				GCC_PREFIX_HEADER = "LCB PUBLIC TICKER/tickCoin-Prefix.pch";
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/LCB",
-					PUBLIC,
-					TICKER/Chartboost,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "GraphMatic-Studio.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
