@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="Krk-Ns-z3X">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--First View Controller - First-->
+        <scene sceneID="bcp-bl-Sb8">
+            <objects>
+                <viewController title="First" id="Krk-Ns-z3X" customClass="GMSFirstViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WE8-PL-TqJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="Bv4-rn-laj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="top" id="4wi-Ek-SIK">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <pickerView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="center" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Rk-7n-EoZ" userLabel="PickerFiat">
+                                <rect key="frame" x="0.0" y="69" width="341" height="216"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" red="0.52934118669999997" green="0.52934118669999997" blue="0.52934118669999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="contentStretch" x="0.0" y="0.0" width="1" height="0.0"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Krk-Ns-z3X" id="5zS-Im-b12"/>
+                                    <outlet property="delegate" destination="Krk-Ns-z3X" id="igO-gF-yI8"/>
+                                </connections>
+                            </pickerView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" adjustsLetterSpacingToFitWidth="YES" highlighted="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="341" translatesAutoresizingMaskIntoConstraints="NO" id="IJA-xd-5PH" userLabel="messageBox label">
+                                <rect key="frame" x="0.0" y="289" width="341" height="90"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <color key="backgroundColor" red="0.96883862350000005" green="0.96883862350000005" blue="0.96883862350000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="GillSans-LightItalic" family="Gill Sans" pointSize="19"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </label>
+                            <view opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="290-aG-56n" userLabel="View screen social">
+                                <rect key="frame" x="0.0" y="289" width="341" height="90"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" highlighted="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11Y-ei-4wB" userLabel="Button - TWITTER">
+                                        <rect key="frame" x="265" y="15" width="60" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" red="0.392156899" green="0.59215688710000003" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <state key="normal" image="tw-icon.png">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tweetSelectedRow:" destination="Krk-Ns-z3X" eventType="touchUpInside" id="GgY-kj-PCD"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" highlighted="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bpw-jb-NqJ" userLabel="Button - EMAIL">
+                                        <rect key="frame" x="16" y="15" width="60" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" red="0.392156899" green="0.59215688710000003" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <state key="normal" image="mail-icon.png">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="emailSelectedRow:" destination="Krk-Ns-z3X" eventType="touchUpInside" id="6gN-4J-dzF"/>
+                                        </connections>
+                                    </button>
+                                    <button contentMode="scaleToFill" fixedFrame="YES" highlighted="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iax-fi-nKe" userLabel="Button - FACEBOOK">
+                                        <rect key="frame" x="84" y="13" width="60" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" red="0.392156899" green="0.59215688710000003" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <state key="normal" image="fb-icon.png">
+                                            <color key="titleColor" red="0.392156899" green="0.59215688710000003" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="fbSelectedRow:" destination="Krk-Ns-z3X" eventType="touchUpInside" id="i50-av-mIp"/>
+                                        </connections>
+                                    </button>
+                                    <button contentMode="scaleToFill" fixedFrame="YES" highlighted="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fdd-od-5se" userLabel="Button - MESSAGE">
+                                        <rect key="frame" x="197" y="13" width="60" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" red="0.392156899" green="0.59215688710000003" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <state key="normal" image="mess-icon.png">
+                                            <color key="titleColor" red="0.392156899" green="0.59215688710000003" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="messageSelectedRow:" destination="Krk-Ns-z3X" eventType="touchUpInside" id="vJc-Qw-wvb"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.96883862350000005" green="0.96883862350000005" blue="0.96883862350000005" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <tableView autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="55" sectionHeaderHeight="6" sectionFooterHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="LKU-sV-sB7">
+                                <rect key="frame" x="0.0" y="382" width="341" height="366"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                                <color key="sectionIndexColor" red="0.82734102310000002" green="0.82734102310000002" blue="0.82734102310000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.89999997615814209" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PULL ⬇︎ TO REFRESH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dJI-g5-AEZ">
+                                    <rect key="frame" x="0.0" y="61" width="341" height="35"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <rect key="contentStretch" x="0.15000000000000002" y="0.10000000000000001" width="1" height="1"/>
+                                    <fontDescription key="fontDescription" name="DevanagariSangamMN" family="Devanagari Sangam MN" pointSize="12"/>
+                                    <color key="textColor" white="0.47243573589999999" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item" textLabel="qmn-9W-wyo" detailTextLabel="22e-T2-9gh" rowHeight="55" style="IBUITableViewCellStyleValue1" id="VnR-td-zG1">
+                                        <rect key="frame" x="0.0" y="6" width="341" height="55"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" tableViewCell="VnR-td-zG1" id="ExM-TR-cUa">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qmn-9W-wyo">
+                                                    <rect key="frame" x="15" y="13" width="39" height="28"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="22e-T2-9gh">
+                                                    <rect key="frame" x="273" y="13" width="53" height="28"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                                    <color key="textColor" red="0.92879478640000002" green="0.92928031219999996" blue="0.95902186950000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Krk-Ns-z3X" id="Arf-xt-Qmq"/>
+                                    <outlet property="delegate" destination="Krk-Ns-z3X" id="w0O-Hd-FoF"/>
+                                </connections>
+                            </tableView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ttb-gr-1jm" customClass="GMSTopBrandImage">
+                                <rect key="frame" x="0.0" y="20" width="341" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="calibratedRGB"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <tabBarItem key="tabBarItem" title="rates" image="first" id="Zue-8f-O8P"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <connections>
+                        <outlet property="emailIt" destination="bpw-jb-NqJ" id="9Ov-OP-aWN"/>
+                        <outlet property="faceBook" destination="iax-fi-nKe" id="JFS-72-6PH"/>
+                        <outlet property="messageBoxLabel" destination="IJA-xd-5PH" id="9Ia-kQ-Of8"/>
+                        <outlet property="messageIt" destination="fdd-od-5se" id="eEd-eQ-NgO"/>
+                        <outlet property="picker" destination="0Rk-7n-EoZ" id="Hlm-uC-S9H"/>
+                        <outlet property="screenSocial" destination="290-aG-56n" id="Bts-04-G6g"/>
+                        <outlet property="tableView" destination="LKU-sV-sB7" id="5Yy-Ze-XJe"/>
+                        <outlet property="tweetIt" destination="11Y-ei-4wB" id="uzg-f9-d6Y"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VnV-XH-QpY" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="404" y="-5"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="fb-icon.png" width="50" height="50"/>
+        <image name="first" width="30" height="30"/>
+        <image name="mail-icon.png" width="50" height="50"/>
+        <image name="mess-icon.png" width="50" height="50"/>
+        <image name="tw-icon.png" width="50" height="50"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+</document>

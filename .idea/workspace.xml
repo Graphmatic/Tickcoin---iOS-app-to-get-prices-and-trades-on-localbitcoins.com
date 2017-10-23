@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+    <option name="CUSTOM_SCOPE_NAME" value="Current File" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="930fba06-daf4-42ec-a097-65ee9cf7d048" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgAsks.imageset/LCB-headerImgAsks-1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgAsks.imageset/LCB-headerImgAsks.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgAsksIpad.imageset/LCB-headerImgAsksIpad.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgAsksIpad.imageset/LCB-headerImgAsksIpad@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgBids.imageset/LCB-headerImg2@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgBidsIpad.imageset/LCB-headerImgBidsIpad.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgBidsIpad.imageset/LCB-headerImgBidsIpad@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgIpad.imageset/LCB-headerImgIpad.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgIpad.imageset/LCB-headerImgIpad@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_Ticker_tabbar.imageset/LCB_Ticker_tabbar.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_Ticker_tabbar.imageset/LCB_Ticker_tabbar@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_Ticker_tabbar.imageset/LCB_Ticker_tabbar@x3.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImg.imageset/LCB_headerImg.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImg.imageset/LCB_headerImg@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImgAsksIpadBig.imageset/LCB_headerImgAsksIpadBig.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImgAsksIpadBig.imageset/LCB_headerImgAsksIpadBig@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImgBidsIpadBig.imageset/LCB_headerImgBidsIpadBig.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImgBidsIpadBig.imageset/LCB_headerImgBidsIpadBig@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImgIpadBig@x2.imageset/LCB_headerImgIpadBig.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImgIpadBig@x2.imageset/LCB_headerImgIpadBig@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/cell_background.imageset/cell_background.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/cell_background_sel.imageset/cell_background_sel.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/change.imageset/change.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/change.imageset/change@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/change.imageset/change@x3.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/charts.imageset/charts.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/charts.imageset/charts@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/fb-icon.imageset/fb-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/fourth@x2.imageset/fourth.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/fourth@x2.imageset/fourth@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/ggl-icon.imageset/ggl-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/glass.imageset/glass-1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/glass.imageset/glass.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/gsp.imageset/gsp-1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/gsp.imageset/gsp.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/header_background.imageset/header_background.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/header_background.imageset/header_background@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/mail-icon.imageset/mail-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/mess-icon.imageset/mess-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/refresh_thin.imageset/refresh_thin.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/tw-icon.imageset/tw-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/photoshop/LCB headerImg-iPad.psd" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/photoshop/LCB headerImg-iPad2psd" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/photoshop/fb-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/photoshop/fourth.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/photoshop/fourth@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/photoshop/ggl-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/photoshop/glass.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/photoshop/news-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/refresh_thin.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/header_ticker.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/header_ticker@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icon-arrow.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icon-arrow@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icon-bar-chart.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icon-bar-chart@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icon-jawbone-logo.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icon-jawbone-logo@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icon-line-chart.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icon-line-chart@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB headerImg-iPad.psd" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB headerImg-iPad2psd" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB headerImg.psd" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImg-iPad.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImg2@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImgAsks.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImgAsksIpad.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImgAsksIpad@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImgBids.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImgBidsIpad.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImgBidsIpad@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImgIpad.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB-headerImgIpad@2x.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_Refresh_button_Ipad.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_headerImg.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_headerImg@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_headerImgAsksIpadBig.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_headerImgAsksIpadBig@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_headerImgBidsIpadBig.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_headerImgBidsIpadBig@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_headerImgIpadBig.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_headerImgIpadBig@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_messageBox.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_messageBox.psd" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/LCB_messageBox@x2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/Sans titre-1.psd" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/fb-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/ggl-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/glass.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/gsp.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/logo_gs.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/mail-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/mess-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/photoshop/tw-icon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFHTTPRequestOperation.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFHTTPRequestOperation.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFHTTPRequestOperationManager.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFHTTPRequestOperationManager.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFHTTPSessionManager.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFHTTPSessionManager.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFNetworkReachabilityManager.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFNetworkReachabilityManager.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFNetworking.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFSecurityPolicy.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFSecurityPolicy.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFURLConnectionOperation.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFURLConnectionOperation.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFURLRequestSerialization.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFURLRequestSerialization.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFURLResponseSerialization.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFURLResponseSerialization.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFURLSessionManager.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AFNetworking/AFURLSessionManager.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSFifthViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSFifthViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSFourthViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSFourthViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSSecondViewTableData.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSSecondViewTableData.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSStripHtmlFromString.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSStripHtmlFromString.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSViewControllerIpad.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSViewControllerIpad.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSfirstViewTableData.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GMSfirstViewTableData.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Base.lproj/Localizable.strings" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Cells/GMSChartTableCell.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Cells/GMSChartTableCell.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Classes/GMSBarChartView.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Classes/GMSBarChartView.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Classes/GMSChartView.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Classes/GMSChartView.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Classes/GMSLineChartView.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Classes/GMSLineChartView.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Constants/GMSColorConstants.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Constants/GMSConstants.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Constants/GMSFontConstants.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Constants/GMSStringConstants.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Constants/GMSUIConstants.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/ContainerViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/ContainerViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/Base/GMSBaseChartViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/Base/GMSBaseChartViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/Base/GMSBaseNavigationController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/Base/GMSBaseNavigationController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/Base/GMSBaseTableViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/Base/GMSBaseTableViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/Base/GMSBaseViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/Base/GMSBaseViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/GMSBarChartViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/GMSBarChartViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/GMSChartListViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/GMSChartListViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/GMSLineChartViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Controllers/GMSLineChartViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/EmptySegue.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/EmptySegue.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Footers/GMSBarChartFooterView.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Footers/GMSBarChartFooterView.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Footers/GMSLineChartFooterView.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Footers/GMSLineChartFooterView.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSConstant.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFooterViewControllerIpad.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFooterViewControllerIpad.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSMessageBoxProcessor.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSMessageBoxProcessor.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSThirdViewController.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSThirdViewController.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSTopBrandImage.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSTopBrandImage.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSUtilitiesFunction.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSUtilitiesFunction.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSchartViewData.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSchartViewData.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSlabelFromJson.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSlabelFromJson.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSmessageBox.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSmessageBox.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSutilitiesFunc.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSutilitiesFunc.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Headers/GMSChartHeaderView.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Headers/GMSChartHeaderView.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgAsks.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgAsksIpad.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgBids.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgBidsIpad.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB-headerImgIpad.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_Ticker_tabbar.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImg.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImgAsksIpadBig.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImgBidsIpadBig.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LCB_headerImgIpadBig@x2.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/cell_background.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/cell_background_sel.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/change.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/charts.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/fb-icon.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/fourth@x2.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/ggl-icon.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/glass.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/gsp.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/header_background.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/mail-icon.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/mess-icon.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/refresh_thin.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/tw-icon.imageset/Contents.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Misc/GMSChartInformationView.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Misc/GMSChartInformationView.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Misc/GMSChartTooltipTipView.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Misc/GMSChartTooltipTipView.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Misc/GMSChartTooltipView.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Misc/GMSChartTooltipView.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Tickers.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Tickers.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/en.lproj/Localizable.strings" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/en.lproj/Main.strings" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/fr.lproj/InfoPlist.strings" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/fr.lproj/Localizable.strings" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/fr.lproj/Main.strings" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/lcbTicker.xcdatamodel/contents" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Storyboard-iPad.storyboard" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/StoryboardForIpad.storyboard" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/AFNetworkActivityIndicatorManager.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/AFNetworkActivityIndicatorManager.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIActivityIndicatorView+AFNetworking.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIActivityIndicatorView+AFNetworking.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIAlertView+AFNetworking.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIAlertView+AFNetworking.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIButton+AFNetworking.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIButton+AFNetworking.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIImageView+AFNetworking.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIImageView+AFNetworking.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIKit+AFNetworking.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIProgressView+AFNetworking.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIProgressView+AFNetworking.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIRefreshControl+AFNetworking.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIRefreshControl+AFNetworking.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIWebView+AFNetworking.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UIKit+AFNetworking/UIWebView+AFNetworking.m" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ios7-refresh-empty.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tickerAllCurDefault.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/first.imageset/first.png" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/first.imageset/first.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/first.imageset/first@2x.png" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/first.imageset/first@2x.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/second.imageset/second.png" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/second.imageset/second.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/second.imageset/second@2x.png" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/second.imageset/second@2x.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER.xcodeproj/project.pbxproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER.xcodeproj/project.xcworkspace/contents.xcworkspacedata" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER.xcodeproj/project.xcworkspace/contents.xcworkspacedata" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER.xcodeproj/xcuserdata/frup.xcuserdatad/xcschemes/LCB PUBLIC TICKER.xcscheme" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER.xcodeproj/xcuserdata/frup.xcuserdatad/xcschemes/LCB PUBLIC TICKER.xcscheme" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER.xcodeproj/xcuserdata/frup.xcuserdatad/xcschemes/xcschememanagement.plist" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER.xcodeproj/xcuserdata/frup.xcuserdatad/xcschemes/xcschememanagement.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/Base.lproj/Main.storyboard" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Base.lproj/Main.storyboard" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSAppDelegate.h" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSAppDelegate.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSAppDelegate.m" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSAppDelegate.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFirstViewController.h" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFirstViewController.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFirstViewController.m" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFirstViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSSecondViewController.h" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSSecondViewController.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSSecondViewController.m" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/GMSSecondViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/AppIcon.appiconset/Contents.json" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/AppIcon.appiconset/Contents.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LaunchImage.launchimage/Contents.json" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/LaunchImage.launchimage/Contents.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/first.imageset/Contents.json" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/first.imageset/Contents.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/second.imageset/Contents.json" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/Images.xcassets/second.imageset/Contents.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/LCB PUBLIC TICKER-Info.plist" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/LCB PUBLIC TICKER-Info.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/LCB PUBLIC TICKER-Prefix.pch" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/LCB PUBLIC TICKER-Prefix.pch" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/en.lproj/InfoPlist.strings" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/en.lproj/InfoPlist.strings" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKER/main.m" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKER/main.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKERTests/LCB PUBLIC TICKERTests-Info.plist" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKERTests/LCB PUBLIC TICKERTests-Info.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKERTests/LCB_PUBLIC_TICKERTests.m" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKERTests/LCB_PUBLIC_TICKERTests.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LCB PUBLIC TICKERTests/en.lproj/InfoPlist.strings" afterPath="$PROJECT_DIR$/LCB PUBLIC TICKERTests/en.lproj/InfoPlist.strings" />
+    </list>
+    <ignored path="LCB PUBLIC TICKER.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_80135ea36f49c6fecb1eed6b0603df94d460e65d" />
+  <component name="FavoritesManager">
+    <favorites_list name="LCB PUBLIC TICKER" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="GMSfirstViewTableData.m" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/GMSfirstViewTableData.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="142" column="40" selection-start-line="142" selection-start-column="40" selection-end-line="142" selection-end-column="40" />
+              <folding>
+                <element signature="e#143#176#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GMSFirstViewController.m" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFirstViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1825" />
+    <option name="y" value="229" />
+    <option name="width" value="1362" />
+    <option name="height" value="741" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="1" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LCB PUBLIC TICKER" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LCB PUBLIC TICKER" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LCB PUBLIC TICKER" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Cidr.FilesView" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="recentsLimit" value="5" />
+  </component>
+  <component name="RunManager" selected="Application.LCB PUBLIC TICKER">
+    <configuration default="false" name="LCB PUBLIC TICKER" type="AppleRunConfiguration" factoryName="Application" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="LCB PUBLIC TICKER" TARGET_NAME="LCB PUBLIC TICKER" CONFIG_NAME="Debug" SCHEME_NAME="LCB PUBLIC TICKER" RUN_TARGET_PROJECT_NAME="LCB PUBLIC TICKER" RUN_TARGET_NAME="LCB PUBLIC TICKER" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="true" type="AppleRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="LCB PUBLIC TICKER" TARGET_NAME="LCB PUBLIC TICKER" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="LCB PUBLIC TICKER" RUN_TARGET_NAME="LCB PUBLIC TICKER" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="true" type="OCGoogleTestRunConfigurationType" factoryName="Google Test" PASS_PARENT_ENVS_2="true" PROJECT_NAME="LCB PUBLIC TICKER" TARGET_NAME="LCB PUBLIC TICKER" CONFIG_NAME="Debug" TEST_MODE="SUITE_TEST">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="OCUnitRunConfiguration" factoryName="XCTest/Kiwi" PASS_PARENT_ENVS_2="true" PROJECT_NAME="LCB PUBLIC TICKER" TARGET_NAME="LCB PUBLIC TICKERTests" CONFIG_NAME="Debug" TEST_MODE="SUITE_TEST">
+      <envs />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Application.LCB PUBLIC TICKER" />
+    </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Application.LCB PUBLIC TICKER" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration" myUseAcceleration="nothing" SSL_PROTOCOLS="sslv3">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="930fba06-daf4-42ec-a097-65ee9cf7d048" name="Default" comment="" />
+      <created>1396958968950</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1396958968950</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1825" y="229" width="1362" height="741" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15712188" sideWeight="0.6706056" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32886904" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293944" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.05169867" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293944" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/GMSfirstViewTableData.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#143#176#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFirstViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GMSfirstViewTableData.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="234" column="4" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#143#176#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFirstViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="97" column="86" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GMSfirstViewTableData.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="12" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GMSfirstViewTableData.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="16" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LCB PUBLIC TICKER/GMSFirstViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GMSfirstViewTableData.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="142" column="40" selection-start-line="142" selection-start-column="40" selection-end-line="142" selection-end-column="40" />
+          <folding>
+            <element signature="e#143#176#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

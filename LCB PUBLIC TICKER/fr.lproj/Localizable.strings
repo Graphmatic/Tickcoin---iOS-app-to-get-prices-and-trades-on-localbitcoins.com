@@ -1,0 +1,56 @@
+/* 
+  Localizable.strings
+  LCB PUBLIC TICKER
+
+  Created by frup on 30/03/2014.
+  Copyright (c) 2014 frup. All rights reserved.
+*/
+"_PICKER_FIRST_LAUNCH" = "chargement...";
+"_WELCOME_WAIT_FOR_DATAS" = "bienvenue! initialisation...";
+"_LAST" = "dernier prix";
+"_VOLUME" = "volume";
+"_AVG_1H" = "moyenne 1H";
+"_AVG_3H" = "moyenne 3H";
+"_AVG_12H" = "moyenne 12H";
+"_AVG_24H" = "moyenne 24H";
+"_ASK_BID_TITLE_LEFT" = "PRIX ( %@ )";
+"_ASK_BID_TITLE_RIGHT" = "VOLUME ( Btc )";
+"_NO_DATAS" = "aucune donnée";
+"_OOPS" = "Oops!";
+"_LAST_ORDER_TITLE" = "Prix ( %@ )                                    volume";
+"_DAILY_PRICE_IN" = "%@ - %@";
+"_WAIT_FOR_DATAS" = "chargement des données...";
+"_INVALID_DATAS" = "erreur";
+"_NO_CONNECT_OUTDATED" = "mode hors-ligne! dernière synchro: %@";
+"_DAILY_PRICE_VARIATION" = "variation depuis dernier refresh:";
+"_DAILY_PRICE_VARIATION_DOWN" = "en baisse de %@";
+"_DAILY_PRICE_VARIATION_NON"  = "prix inchangé";
+"_DAILY_PRICE_VARIATION_UP"   = "en hausse de %@";
+"_SELL_ADD_FOR_CUR_x" = "OFFRE - %@";
+"_BUY_ADD_FOR_CUR_x" = "DEMANDE - %@";
+"_DEVIATION_TRESHOLD_FILTER" = "filtre: +/- %d%% du prix sur 24H";
+"_EDIT_FILTER_NULL" = "aucun ordre, augmentez la valeur du filtre svp";
+"_EDIT_SETTING" = "Swipe droit pour éditer ce seuil";
+"_SLIDER_DEVIATION_NAME" = "écart max. / prix sur 24H";
+"_SLIDER_DEVIATION_NAME_IPAD" = "écart max. moyenne 24H: %@";
+"_DEVIATION_TRESHOLD_FILTER_DISABLED" = "display filter: désactivé";
+"_DOUBLE_TAP_ASCENDING" = "double tap: ordre croissant";
+"_DOUBLE_TAP_DESCENDING" = "double tap: ordre décroissant";
+"_TWEET_DAILY_TICKER" = "%@ - %@ du Bitcoin sur Localbitcoins.com: %@";
+"_DONE" = "données à jour!";
+"_EMAIL_DAILY_TICKER" = "Localbitcoins.com: COURS DU BITCOIN";
+"_MAIL_SENDING_CANCELLED" = "Email: envoi annulé";
+"_MAIL_SAVED" = "Email sauvegardé";
+"_MAIL_SENT" = "Email envoyé";
+"_MAIL_SEND_FAIL" = "Email: l'envoi a échoué";
+"_MAIL_NOT_SENT_DEFAULT" = "L'Email n'a pas été envoyé";
+"_SMS_SENDING_CANCELLED" = "SMS: envoi annulé";
+"_SMS_SENT" = "SMS envoyé";
+"_SMS_SEND_FAIL" = "SMS: l'envoi a échoué";
+"_TWEET_SENDING_CANCELLED" = "Tweet: envoi annulé";
+"_TWEET_SENT" = "Tweet envoyé";
+//controleur 5
+"_AFFILIATE" = "votre ID affilié:";
+"_DEFAULT_CURRENCY" = "devise par défaut:";
+"_LOADING_NEWS" = "chargement des news...:";
+"_GRAPHMATIC_MAIL" = "réalisé par Graphmatic Studio - graphmatic.studio@gmail.com";

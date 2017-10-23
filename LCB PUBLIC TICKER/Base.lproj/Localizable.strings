@@ -1,0 +1,64 @@
+/* 
+  Localizable.strings
+  LCB PUBLIC TICKER
+
+  Created by frup on 30/03/2014.
+  Copyright (c) 2014 frup. All rights reserved.
+*/
+"_PICKER_FIRST_LAUNCH" = "please wait...";
+"_WELCOME_WAIT_FOR_DATAS" = "initializing...";
+"_LAST" = "last price";
+"_VOLUME" = "volume";
+"_AVG_1H" = "average 1H";
+"_AVG_3H" = "average 3H";
+"_AVG_12H" = "average 12H";
+"_AVG_24H" = "average 24H";
+"_ASK_BID_TITLE_LEFT" = "PRICE ( %@ )";
+"_ASK_BID_TITLE_RIGHT" = "VOLUME ( Btc )";
+"_NO_DATAS" = "no data";
+"_OOPS" = "Oops!";
+"_SWIPE_DOWN_TO_REFRESH" = "swipe down to refresh";
+"_LAST_ORDER_TITLE" = "Price ( %@ )                                     volume";
+"_DAILY_PRICE_IN" = "%@  -  %@";
+"_WAIT_FOR_DATAS" = "please wait - update...";
+"_INVALID_DATAS" = "invalid data";
+"_NO_CONNECT_OUTDATED" = "Outdated datas! last sync: %@";
+"_DAILY_PRICE_VARIATION" = "variation since last refresh:";
+"_DAILY_PRICE_VARIATION_DOWN" = "price decreased by %@";
+"_DAILY_PRICE_VARIATION_NON"  = "same price";
+"_DAILY_PRICE_VARIATION_UP"   = "price increased by %@";
+"_SELL_ADD_FOR_CUR_x" = "BIDS - %@";
+"_BUY_ADD_FOR_CUR_x" = "ASKS - %@";
+"_DEVIATION_TRESHOLD_FILTER" = "display filter: +/- %d%% of 24H average";
+"_EDIT_FILTER_NULL" = "no order in this range, please edit display filter";
+"_EDIT_SETTING" = "right-swipe to edit filter";
+"_SLIDER_DEVIATION_NAME" = "max diff from 24H average:";
+"_SLIDER_DEVIATION_NAME_IPAD" = "max diff from 24H average: %@";
+"_DEVIATION_TRESHOLD_FILTER_DISABLED" = "display filter: disabled";
+"_DOUBLE_TAP_ASCENDING" = "double tap list to sort ascending";
+"_DOUBLE_TAP_DESCENDING" = "double tap list to sort descending";
+"_TWEET_DAILY_TICKER" = "%@ - Localbitcoins.com: BTC %@: %@";
+"_DONE" = "updated!";
+"_THIS_APP_NEED_INTERNET" = "an internet connection is required";
+"_EMAIL_DAILY_TICKER" = "Localbitcoins.com: BITCOIN DAILY PRICE";
+"_MAIL_SENDING_CANCELLED" = "Mail sending canceled";
+"_MAIL_SAVED" = "Mail saved";
+"_MAIL_SENT" = "Mail sent";
+"_MAIL_SEND_FAIL" = "Mail sending failed";
+"_MAIL_NOT_SENT_DEFAULT" = "Mail not sent";
+"_SMS_SENDING_CANCELLED" = "SMS sending canceled";
+"_SMS_SENT" = "SMS sent";
+"_SMS_SEND_FAIL" = "SMS sending failed";
+"_SMS_NOT_SENT_DEFAULT" = "SMS not sent";
+"_TWEET_SENDING_CANCELLED" = "Tweet sending canceled";
+"_TWEET_SENT" = "Tweet sent";
+//chart view
+"_PRICE_VOLUMES_CURRENCY - last 24H" = "Price & Volumes - last 24H - %@";
+"_Yesterday" = "Yesterday";
+"_Now" = "Now";
+"_NO_CHART_AVAILABLE" = "No chart available for %@";
+//fifth controller
+"_AFFILIATE" = "your affiliate tag:";
+"_DEFAULT_CURRENCY" = "default currency:";
+"_LOADING_NEWS" = "loading last news...:";
+"_GRAPHMATIC_MAIL" = "graphmatic.studio@gmail.com";

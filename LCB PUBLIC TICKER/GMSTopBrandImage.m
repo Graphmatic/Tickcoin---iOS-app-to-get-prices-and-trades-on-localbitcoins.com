@@ -1,0 +1,83 @@
+//
+//  GMSTopBrandImage.m
+//  LCB PUBLIC TICKER
+//
+//  Created by frup on 29/03/2014.
+//  Copyright (c) 2014 frup. All rights reserved.
+//
+
+#import "GMSTopBrandImage.h"
+
+@implementation GMSTopBrandImage
+
+
+@synthesize topBrand;
+
++ (id)topImage:(NSInteger)viewIndex {
+    GMSTopBrandImage *topImage = nil;
+    topImage = [[self alloc] initForView:(NSInteger)viewIndex];
+    
+    return topImage;
+}
+- (id)initForView:(NSInteger)viewIndex
+{
+
+       NSLog(@"int header: %ld", (long)viewIndex);
+    if (self = [super init])
+        {
+         self.topBrand = [[UIImage alloc]init];
+            if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+            {
+                NSLog(@"ipad");
+                switch (viewIndex)
+                 {
+                    case 0:
+                        self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig.png"];
+                         [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
+                         self = [super initWithImage:self.topBrand];
+                        break;
+                    case 1:
+                         self.topBrand = [UIImage imageNamed:@"LCB_headerImgBidsIpadBig.png"];
+                         [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
+                         self = [super initWithImage:self.topBrand];
+                         break;
+                     case 2:
+                         self.topBrand = [UIImage imageNamed:@"LCB_headerImgAsksIpadBig.png"];
+                         [self setFrame:CGRectMake(0.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
+                         self = [super initWithImage:self.topBrand];
+                         break;
+                     default:
+                         self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig.png"];
+                         [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
+                         self = [super initWithImage:self.topBrand];
+                         break;
+                 }
+              
+            }
+            else
+            {
+            switch (viewIndex) {
+                case 0:
+                   self.topBrand = [UIImage imageNamed:@"LCB_headerImg.png"];
+                    break;
+                case 1:
+                    self.topBrand = [UIImage imageNamed:@"LCB-headerImgBids.png"];
+                    break;
+                case 2:
+                    self.topBrand = [UIImage imageNamed:@"LCB-headerImgAsks.png"];
+                    break;
+
+                default:
+                    self.topBrand = [UIImage imageNamed:@"LCB_headerImg.png"];
+                    break;
+            }
+           
+         [self setFrame:CGRectMake(0.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
+         self = [super initWithImage:self.topBrand];
+            }
+        }
+    return self;
+   
+}
+
+@end
