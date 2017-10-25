@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B3142831A3E3DB900127788 /* lcbTicker.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 1B3142821A3E3DB900127788 /* lcbTicker.xcdatamodel */; };
+		2855A3BD1F9F6E6100BA3398 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F055653318E6DD9300481688 /* Main.storyboard */; };
 		F00A61A318EB694400C35A47 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A218EB694400C35A47 /* Twitter.framework */; };
 		F00A61A518EB6B8500C35A47 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A418EB6B8500C35A47 /* Social.framework */; };
 		F00B12DE190B882A00ABF692 /* glass.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B12DD190B882A00ABF692 /* glass.png */; };
@@ -705,6 +706,10 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "___GRAPHMATIC-STUDIO-2014___";
 				TargetAttributes = {
+					F055651D18E6DD9300481688 = {
+						DevelopmentTeam = 7PUE5R38UV;
+						ProvisioningStyle = Automatic;
+					};
 					F055654118E6DD9300481688 = {
 						TestTargetID = F055651D18E6DD9300481688;
 					};
@@ -778,6 +783,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2855A3BD1F9F6E6100BA3398 /* Main.storyboard in Resources */,
 				F0C70E4C18E88CF000992AA2 /* Localizable.strings in Resources */,
 				F055654E18E6DD9300481688 /* InfoPlist.strings in Resources */,
 			);
@@ -1006,13 +1012,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Florian LACROIX (5M85U87S3R)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7PUE5R38UV;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LCB PUBLIC TICKER/tickCoin-Prefix.pch";
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "GraphMatic-Studio.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1024,13 +1034,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Florian LACROIX (5M85U87S3R)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7PUE5R38UV;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LCB PUBLIC TICKER/tickCoin-Prefix.pch";
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "GraphMatic-Studio.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

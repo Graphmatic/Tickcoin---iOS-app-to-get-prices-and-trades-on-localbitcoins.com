@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 frup. All rights reserved.
 //
 
-#import "GMSmessageBox.h"
+#import "GMSMessageBox.h"
 
 @implementation GMSMessageBox
 

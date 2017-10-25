@@ -36,6 +36,7 @@ extern BOOL test;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
 @property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
 @property (weak, nonatomic) IBOutlet UILabel *messageBoxLabel;
+//@property (weak, nonatomic) IBOutlet UIStackView *socialStack;
 @property (weak, nonatomic) IBOutlet UIButton *tweetIt;
 @property (weak, nonatomic) IBOutlet UIButton *faceBook;
 @property (weak, nonatomic) IBOutlet UIButton *emailIt;

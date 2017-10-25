@@ -16,7 +16,7 @@
 }
 @end
 @implementation GMSFirstViewController
-@synthesize previousDatas ,firstViewDatas, messageBox,messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, title, picker, prevSelRow, bgMaskOrange, bgMaskOrangeTop, bgMaskOrangeBotPicker, tabViewOrigin;
+@synthesize previousDatas ,firstViewDatas, messageBox, messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, title, picker, prevSelRow, bgMaskOrange, bgMaskOrangeTop, bgMaskOrangeBotPicker, tabViewOrigin;
 
 - (NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectContext *context = nil;
@@ -38,47 +38,93 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"changeCurrenciesList" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
     //4 inch ?
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
-    {
-        if ([[UIScreen mainScreen] scale] == 2.0)
-        {
-            if([UIScreen mainScreen].bounds.size.height == 568)
-            {
-                // iPhone retina-4 inch
-                //add messageBox
-                self.messageBox = [GMSMessageBox messageBox:160.0];
-                [self.picker setFrame:CGRectMake(0, 24, 320, 162)];
-                [self.messageBoxLabel setFrame:CGRectMake(0, 163, 320, 56)];
-                [self.screenSocial setFrame:CGRectMake(0, 163, 320, 56)];
-                [self.bgMaskOrange setFrame:CGRectMake(0, 162, 320, 56)];
-                [self.bgMaskOrangeBotPicker setFrame:CGRectMake(0, 162, 320, 56)];
-                [self.tableView setFrame:CGRectMake(0, 214, 320, 356)];
-                
-            }
-            else
-            {
-                // iPhone retina-3.5 inch
-                //add messageBox
-                self.messageBox = [GMSMessageBox messageBox:120.0];
-            }
-        }
-        else {
-            // not retina display
-        }
+//    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+//    {
+//        if ([[UIScreen mainScreen] scale] == 2.0)
+//        {
+//            if([UIScreen mainScreen].bounds.size.height == 568)
+//            {
+//                // iPhone retina-4 inch
+//                //add messageBox
+
+//                [self.bgMaskOrange setFrame:CGRectMake(0, 162, 320, 56)];
+//                [self.bgMaskOrangeBotPicker setFrame:CGRectMake(0, 162, 320, 56)];
+//                [self.tableView setFrame:CGRectMake(0, 214, 320, 356)];
+//
+//            }
+//            else
+//            {
+//                // iPhone retina-3.5 inch
+//                //add messageBox
+//                self.messageBox = [GMSMessageBox messageBox:120.0];
+//            }
+//        }
+//        else {
+//            // not retina display
+//        }
+//    }
+//        self.messageBox = [GMSMessageBox messageBox:160.0];
+//    [self.messageBoxLabel setFrame:CGRectMake(0, 163, 320, 56)];
+//    [self.screenSocial setFrame:CGRectMake(0, 163, 320, 56)];
+
+//    [self.tableView setFrame:CGRectMake(0, 214, 320, 356)];
+
+    
+    
+    
+    // backup parent view size
+    CGFloat viewWidth = self.view.bounds.size.width;
+    CGFloat viewHeight = self.view.bounds.size.height;
+    
+
+    
+    //add header
+    self.headerImg = [GMSTopBrandImage topImage:0];
+    [self.view addSubview:self.headerImg];
+    
+    // if not an iPad
+    if ( UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad ) {
+        NSLog(@"NOT AN IpAD");
+        // position of Currencies picker
+        CGFloat pickerOrigY = self.headerImg.topBrand.size.height + 2;
+        [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 120)];
+        [self.view addSubview:self.picker];
+
+        // position of message box
+        CGFloat messageBoxOrigY = pickerOrigY + self.picker.frame.size.height + 2;
+        self.messageBox = [GMSMessageBox messageBox:messageBoxOrigY];
+        [self.view addSubview:self.messageBox];
+        
+        //load message for messageBox
+        self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
+        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 64)]
+        ;
+        [self.messageBox addSubview:self.messageBoxLabel];
+        self.messageBoxLabel.text = self.messageBoxMessage.messageBoxString;
+        
+        // add social buttons
+        [self.screenSocial setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 64)];
+        [self.screenSocial addSubview:self.messageIt];
+        [self.screenSocial addSubview:self.tweetIt];
+        [self.screenSocial addSubview:self.faceBook];
+        [self.screenSocial addSubview:self.emailIt];
+        
+      
+        [self.view addSubview:self.screenSocial];
+
+        // postion tableView
+        CGFloat tableViewOrigY = messageBoxOrigY + 64 + 2;
+        NSLog(@"%f", tableViewOrigY);
+        [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY) )];
+        [self.view addSubview:self.tableView];
     }
 
-    [self.view setBackgroundColor:GMSColorOrange];
-    [self.bgMaskOrange setBackgroundColor:GMSColorOrange];
-    [self.bgMaskOrangeTop setBackgroundColor:GMSColorOrange];
-     [self.bgMaskOrangeBotPicker setBackgroundColor:GMSColorOrange];
     if(firstLaunch)
     {
         self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:nil];
         NSUInteger pickerDefIndex = 0;
         [self.picker reloadAllComponents];
         [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
-        
-        [self.tableView reloadData];
     }
     else
     {
@@ -86,17 +132,11 @@
         NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
         [self.picker reloadAllComponents];
         [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
-        [self.tableView reloadData];
     }
     
-    [self.view addSubview:self.messageBox];
-    //load message for messageBox
-    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
-    [self.messageBox addSubview:self.messageBoxLabel];
-    self.messageBoxLabel.text = self.messageBoxMessage.messageBoxString;
-    [self.screenSocial addSubview:self.tweetIt];
-    [self.screenSocial addSubview:self.faceBook];
-    [self.screenSocial addSubview:self.emailIt];
+    [self.tableView reloadData];
+    
+   
   
     //init refreshing touch item
     self.refreshTicker = [[UIRefreshControl alloc] init];
@@ -106,13 +146,12 @@
     self.tableView.backgroundColor = GMSColorBlue;
     //hide social buttons
     self.screenSocial.hidden = YES;
-    //add header
-    self.headerImg = [GMSTopBrandImage topImage:0];
-    [self.view addSubview:self.headerImg];
+    
     if (!test)
     {
         [self updateTicker];
     }
+    
 }
 - (void)didReceiveMemoryWarning
 {
@@ -200,6 +239,7 @@
 {
     return self.firstViewDatas.currenciesList.count;
 }
+
 - (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     NSMutableParagraphStyle *centeredStyle = [[NSMutableParagraphStyle alloc] init];
@@ -224,38 +264,11 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *tableHeaderBG=[[UIView alloc]initWithFrame:CGRectMake(0,0,320,6)];
+    UIView *tableHeaderBG=[[UIView alloc]initWithFrame:CGRectMake(0,0,320,1)];
     tableHeaderBG.backgroundColor =  [UIColor clearColor];
     return tableHeaderBG;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-//    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
-//    {
-//        if ([[UIScreen mainScreen] scale] == 2.0)
-//        {
-//            if([UIScreen mainScreen].bounds.size.height == 568)
-//            {
-//    return 68;
-//            }
-//        }
-//    }
-//    return 55;
-    if ( IS_IPHONE_4_OR_LESS )
-    {
-        return 52;
-    }
-    if ( IS_IPAD )
-    {
-        return 43.4;
-    }
-    else
-    {
-        return 70;
-    }
 
-    
-}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return  [self.firstViewDatas.cellTitles count];
