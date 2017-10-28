@@ -15,4 +15,5 @@
 + (id)topImage:(NSInteger)viewIndex;
 
 @property (atomic, strong) UIImage *topBrand;
+
 @end

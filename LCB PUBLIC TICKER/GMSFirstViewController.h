@@ -10,6 +10,8 @@
 #import "GMSMessageBoxProcessor.h"
 #import "GMSfirstViewTableData.h"
 #import <MessageUI/MessageUI.h>
+//#import "GMSSocialStack.h"
+#import "GMSMessageBox.h"
 
 extern NSString *const urlStart;
 extern NSMutableString *lastRecordDate;
@@ -23,20 +25,20 @@ extern BOOL test;
 }
 
 
-@property (weak, nonatomic) IBOutlet UIView *bgMaskOrange;
-@property (weak, nonatomic) IBOutlet UIView *bgMaskOrangeTop;
-@property (weak, nonatomic) IBOutlet UIView *bgMaskOrangeBotPicker;
 
-@property (strong, nonatomic) IBOutlet UIView *screenSocial;
+//@property (weak, nonatomic) IBOutlet GMSMessageBox *messageBox;
+
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) UIRefreshControl *refreshTicker;
-@property (strong, nonatomic) GMSMessageBox *messageBox;
+
 @property (strong, atomic) GMSTopBrandImage *headerImg;
 @property (nonatomic, weak) NSTimer *timerMessages;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
 @property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
 @property (weak, nonatomic) IBOutlet UILabel *messageBoxLabel;
-//@property (weak, nonatomic) IBOutlet UIStackView *socialStack;
+
+@property (weak, nonatomic) IBOutlet UIView *socialStack;
+
 @property (weak, nonatomic) IBOutlet UIButton *tweetIt;
 @property (weak, nonatomic) IBOutlet UIButton *faceBook;
 @property (weak, nonatomic) IBOutlet UIButton *emailIt;

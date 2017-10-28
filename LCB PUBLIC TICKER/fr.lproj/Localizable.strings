@@ -49,6 +49,12 @@
 "_SMS_SEND_FAIL" = "SMS: l'envoi a échoué";
 "_TWEET_SENDING_CANCELLED" = "Tweet: envoi annulé";
 "_TWEET_SENT" = "Tweet envoyé";
+"_NOTHING_TO_SHARE" = "Aucune donnée!";
+"_TWITTER_NOT_CONF" = "Twitter n'est pas configuré";
+"_FACEBOOK_NOT_CONF" = "Facebook n'est pas configuré";
+"_MAIL_NOT_CONF" = "Mail n'est pas configuré";
+"_MESSAGE_NOT_CONF" = "SMS non disponibles";
+"_ERROR" = "Erreur";
 //controleur 5
 "_AFFILIATE" = "votre ID affilié:";
 "_DEFAULT_CURRENCY" = "devise par défaut:";

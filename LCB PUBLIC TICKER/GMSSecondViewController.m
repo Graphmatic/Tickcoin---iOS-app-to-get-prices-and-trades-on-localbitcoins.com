@@ -67,7 +67,7 @@
     messagesCount = 0;
     graphs = NO;
     //add messageBox
-    self.messageBox = [GMSMessageBox messageBox:46.0];
+    self.messageBox = [GMSMessageBox init:46.0];
     [self.view addSubview:self.messageBox];
     //load message for messageBox
     self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];

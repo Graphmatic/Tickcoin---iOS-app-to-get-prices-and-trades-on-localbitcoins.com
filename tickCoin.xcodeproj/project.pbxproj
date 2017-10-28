@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B3142831A3E3DB900127788 /* lcbTicker.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 1B3142821A3E3DB900127788 /* lcbTicker.xcdatamodel */; };
 		2855A3BD1F9F6E6100BA3398 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F055653318E6DD9300481688 /* Main.storyboard */; };
+		288C0EB81FA1E6D8009E8F0D /* GMSSocialStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 288C0EB71FA1E6D8009E8F0D /* GMSSocialStack.m */; };
 		F00A61A318EB694400C35A47 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A218EB694400C35A47 /* Twitter.framework */; };
 		F00A61A518EB6B8500C35A47 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A418EB6B8500C35A47 /* Social.framework */; };
 		F00B12DE190B882A00ABF692 /* glass.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B12DD190B882A00ABF692 /* glass.png */; };
@@ -131,6 +132,8 @@
 /* Begin PBXFileReference section */
 		1B3142821A3E3DB900127788 /* lcbTicker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = lcbTicker.xcdatamodel; sourceTree = "<group>"; };
 		1B490B0B1A34685000CD1AD0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		288C0EB61FA1E696009E8F0D /* GMSSocialStack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GMSSocialStack.h; sourceTree = "<group>"; };
+		288C0EB71FA1E6D8009E8F0D /* GMSSocialStack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMSSocialStack.m; sourceTree = "<group>"; };
 		28BAB03E1F9DFAB3008F9358 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F00A61A218EB694400C35A47 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F00A61A418EB6B8500C35A47 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -616,6 +619,8 @@
 				F065FE8A18E7B226005B0376 /* GMSlabelFromJson.m */,
 				F055653618E6DD9300481688 /* GMSFirstViewController.h */,
 				F055653718E6DD9300481688 /* GMSFirstViewController.m */,
+				288C0EB61FA1E696009E8F0D /* GMSSocialStack.h */,
+				288C0EB71FA1E6D8009E8F0D /* GMSSocialStack.m */,
 			);
 			name = "first view";
 			sourceTree = "<group>";
@@ -828,6 +833,7 @@
 				F065FE8B18E7B226005B0376 /* GMSlabelFromJson.m in Sources */,
 				1B3142831A3E3DB900127788 /* lcbTicker.xcdatamodel in Sources */,
 				F07640F21929E6B400DA6616 /* GMSBaseViewController.m in Sources */,
+				288C0EB81FA1E6D8009E8F0D /* GMSSocialStack.m in Sources */,
 				F01245A718E7208F002FAADA /* UIAlertView+AFNetworking.m in Sources */,
 				F01245AC18E7208F002FAADA /* UIWebView+AFNetworking.m in Sources */,
 				F0BC384918F95BA20071F8F4 /* Tickers.m in Sources */,
@@ -1020,7 +1026,7 @@
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "GraphMatic-Studio.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rio.--PRODUCT-NAME-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1042,7 +1048,7 @@
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "GraphMatic-Studio.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rio.--PRODUCT-NAME-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

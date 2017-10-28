@@ -7,6 +7,9 @@
 //
 #import "GMSFirstViewController.h"
 #import <MessageUI/MessageUI.h>
+#import "GMSUtilitiesFunction.h"
+
+
 @interface GMSFirstViewController ()
 {
     
@@ -16,7 +19,7 @@
 }
 @end
 @implementation GMSFirstViewController
-@synthesize previousDatas ,firstViewDatas, messageBox, messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, title, picker, prevSelRow, bgMaskOrange, bgMaskOrangeTop, bgMaskOrangeBotPicker, tabViewOrigin;
+@synthesize previousDatas ,firstViewDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack;
 
 - (NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectContext *context = nil;
@@ -37,88 +40,77 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"changeNow" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"changeCurrenciesList" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
-    //4 inch ?
-//    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
-//    {
-//        if ([[UIScreen mainScreen] scale] == 2.0)
-//        {
-//            if([UIScreen mainScreen].bounds.size.height == 568)
-//            {
-//                // iPhone retina-4 inch
-//                //add messageBox
 
-//                [self.bgMaskOrange setFrame:CGRectMake(0, 162, 320, 56)];
-//                [self.bgMaskOrangeBotPicker setFrame:CGRectMake(0, 162, 320, 56)];
-//                [self.tableView setFrame:CGRectMake(0, 214, 320, 356)];
-//
-//            }
-//            else
-//            {
-//                // iPhone retina-3.5 inch
-//                //add messageBox
-//                self.messageBox = [GMSMessageBox messageBox:120.0];
-//            }
-//        }
-//        else {
-//            // not retina display
-//        }
-//    }
-//        self.messageBox = [GMSMessageBox messageBox:160.0];
-//    [self.messageBoxLabel setFrame:CGRectMake(0, 163, 320, 56)];
-//    [self.screenSocial setFrame:CGRectMake(0, 163, 320, 56)];
 
-//    [self.tableView setFrame:CGRectMake(0, 214, 320, 356)];
-
-    
-    
-    
     // backup parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
-    
-
     
     //add header
     self.headerImg = [GMSTopBrandImage topImage:0];
     [self.view addSubview:self.headerImg];
     
+    // Some position helpers
+    CGFloat pickerOrigY = self.headerImg.topBrand.size.height + 2;
+    CGFloat messageBoxOrigY = pickerOrigY + self.picker.frame.size.height + 2;
+    
+    // Dynamic messages
+    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
+    
     // if not an iPad
-    if ( UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad ) {
-        NSLog(@"NOT AN IpAD");
+    if ( !IS_IPAD ) {
+        
         // position of Currencies picker
-        CGFloat pickerOrigY = self.headerImg.topBrand.size.height + 2;
         [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 120)];
         [self.view addSubview:self.picker];
-
+        messageBoxOrigY = pickerOrigY + self.picker.frame.size.height + 2;
+        
         // position of message box
-        CGFloat messageBoxOrigY = pickerOrigY + self.picker.frame.size.height + 2;
-        self.messageBox = [GMSMessageBox messageBox:messageBoxOrigY];
-        [self.view addSubview:self.messageBox];
-        
-        //load message for messageBox
-        self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
-        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 64)]
-        ;
-        [self.messageBox addSubview:self.messageBoxLabel];
-        self.messageBoxLabel.text = self.messageBoxMessage.messageBoxString;
-        
-        // add social buttons
-        [self.screenSocial setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 64)];
-        [self.screenSocial addSubview:self.messageIt];
-        [self.screenSocial addSubview:self.tweetIt];
-        [self.screenSocial addSubview:self.faceBook];
-        [self.screenSocial addSubview:self.emailIt];
-        
-      
-        [self.view addSubview:self.screenSocial];
+        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 50)];
 
         // postion tableView
-        CGFloat tableViewOrigY = messageBoxOrigY + 64 + 2;
-        NSLog(@"%f", tableViewOrigY);
+        CGFloat tableViewOrigY = messageBoxOrigY + 50 + 2;
+        
         [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY) )];
         [self.view addSubview:self.tableView];
     }
-
+    
+    else {
+        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, self.headerImg.frame.size.width, 60)];
+    }
+    
+    self.messageBoxLabel.text = self.messageBoxMessage.messageBoxString;
+    
+    
+    // add social buttons
+    [self.socialStack setFrame:self.messageBoxLabel.frame];
+    //resize buttons
+    if ( !IS_IPAD ) {
+        self.tweetIt.imageEdgeInsets = UIEdgeInsetsMake(45, 45, 45, 45);
+        self.messageIt.imageEdgeInsets = UIEdgeInsetsMake(45, 45, 45, 45);
+        self.faceBook.imageEdgeInsets = UIEdgeInsetsMake(45, 45, 45, 45);
+        self.emailIt.imageEdgeInsets = UIEdgeInsetsMake(45, 45, 45, 45);
+    }
+    else {
+        self.tweetIt.imageEdgeInsets = UIEdgeInsetsMake(50, 50, 50, 50);
+        self.messageIt.imageEdgeInsets = UIEdgeInsetsMake(50, 50, 50, 50);
+        self.faceBook.imageEdgeInsets = UIEdgeInsetsMake(50, 50, 50, 50);
+        self.emailIt.imageEdgeInsets = UIEdgeInsetsMake(50, 50, 50, 50);
+    }
+    // add them to parent view
+    [self.socialStack addSubview:self.tweetIt];
+    [self.socialStack addSubview:self.messageIt];
+    [self.socialStack addSubview:self.faceBook];
+    [self.socialStack addSubview:self.emailIt];
+    
+    // constraint to spread buttons accros its superview
+    [GMSUtilitiesFunction evenlySpaceTheseButtonsInThisView:@[self.tweetIt, self.messageIt, self.faceBook, self.emailIt] :self.socialStack];
+    
+    
+    [self.view addSubview:self.socialStack];
+    
+    self.socialStack.hidden = YES;
+    
     if(firstLaunch)
     {
         self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:nil];
@@ -136,16 +128,15 @@
     
     [self.tableView reloadData];
     
-   
-  
+    
+    
     //init refreshing touch item
     self.refreshTicker = [[UIRefreshControl alloc] init];
-    self.refreshTicker.tintColor = GMSColorBlue;
+    self.refreshTicker.tintColor = GMSColorCoolBlue;
     [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshTicker];
-    self.tableView.backgroundColor = GMSColorBlue;
-    //hide social buttons
-    self.screenSocial.hidden = YES;
+    self.tableView.backgroundColor = GMSColorCoolBlue;
+
     
     if (!test)
     {
@@ -167,20 +158,21 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"changeNow" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"changeCurrenciesList" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
-
+    
 }
+
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    //datas handler//
 //---------------------------------------------------------------------------------------------------------------------------//
 //parse JSON datas from LCB
 - (void)updateTicker
 {
-
+    
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     connected = YES;
     self.messageBoxLabel.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
-   
+    
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:urlStart]];
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -218,7 +210,7 @@
 - (void)prepareDatas:(NSNotification *)notification
 {
     [self.tableView reloadData];
-
+    
 }
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    //currency Picker//
@@ -227,9 +219,9 @@
 {
     
     NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
-     [self.picker reloadAllComponents];
+    [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
-   
+    
 }
 - (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -255,7 +247,7 @@
     currentCurrency = [self.firstViewDatas.currenciesList objectAtIndex:row];
     self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN" , "%@  -  %@"), lastRecordDate, currentCurrency];
     [self.firstViewDatas currencyChange:[self.firstViewDatas.currenciesList objectAtIndex:row]];
-
+    
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------//
@@ -282,7 +274,7 @@
     static NSString *CellIdentifier = @"Item";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_background_sel.png"]];
-    cell.backgroundColor = GMSColorBlue;
+    cell.backgroundColor = GMSColorCoolBlue;
     
     //populate cell
     cell.textLabel.text = key;
@@ -296,14 +288,14 @@
         {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ Btc", cellVal];
         }
-         else
+        else
         {
             cell.detailTextLabel.text = [GMSUtilitiesFunction currencyFormatThat:cellVal];
-         }
-    }    
+        }
+    }
     return cell;
 }
-//row selected : show tweetIt button
+//row selected : show share buttons
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.prevSelRow isEqual:indexPath]) {
@@ -313,26 +305,25 @@
     }
     else
     {
-    UITableViewCell *prevCell = [self.tableView cellForRowAtIndexPath:self.prevSelRow];
-    prevCell.textLabel.textColor = [UIColor whiteColor];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.textColor = GMSColorOrange;
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
-    self.messageBoxLabel.text = Nil;
-
-    [self.view addSubview:self.screenSocial];
-  self.screenSocial.hidden = NO;
-    self.prevSelRow = indexPath;
+        UITableViewCell *prevCell = [self.tableView cellForRowAtIndexPath:self.prevSelRow];
+        prevCell.textLabel.textColor = [UIColor whiteColor];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        cell.textLabel.textColor = GMSColorOrange;
+        if(self.timerMessages)[self.timerMessages invalidate];
+        self.timerMessages = nil;
+        self.messageBoxLabel.text = Nil;
+        self.socialStack.hidden = NO;
+        self.prevSelRow = indexPath;
     }
 }
 
 - (void)deselectRow:(NSIndexPath *)indexPath
 {
-   [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.textLabel.textColor = [UIColor whiteColor];
-    self.screenSocial.hidden = YES;
+
+     self.socialStack.hidden = YES;
     [self messageBoxChange:nil];
     self.prevSelRow = nil;
 }
@@ -341,20 +332,20 @@
 //---------------------------------------------------------------------------------------------------------------------------//
 - (void) messageBoxChange:(NSNotification *)notification
 {
-   self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), lastRecordDate, currentCurrency];
-
-        //start message box carroussel
-        if(self.timerMessages)[self.timerMessages invalidate];
-        self.timerMessages = nil;
-        self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-  
+    self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), lastRecordDate, currentCurrency];
+    
+    //start message box carroussel
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+    
 }
 -(void)timerStartNoConnect:(NSTimer *)theTimer
 {
     alt = !alt;
     NSError *err = [theTimer userInfo];
     
-  //  [self.messageBoxLabel setFont:[UIFont systemFontOfSize:35]];
+    //  [self.messageBoxLabel setFont:[UIFont systemFontOfSize:35]];
     self.messageBoxLabel.text = [self.messageBoxMessage noConnAlert:err alt:alt];
 }
 -(void)timerStartMulti:(NSTimer*)theTimer
@@ -371,36 +362,50 @@
     UITableViewCell *celltoFb = [self.tableView cellForRowAtIndexPath:indexP];
     if(![celltoFb.detailTextLabel.text isEqualToString:NSLocalizedString(@"_NO_DATAS", @"no data")])
     {
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-    {
-
-    NSIndexPath *indexP = [self.tableView indexPathForSelectedRow];
-    UITableViewCell *celltoFb = [self.tableView cellForRowAtIndexPath:indexP];
-        NSDate *date = [[NSDate alloc]init];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        NSString *twDate = [dateFormatter stringFromDate:date];
-        SLComposeViewController *fbSheet = [SLComposeViewController
-                                               composeViewControllerForServiceType:SLServiceTypeFacebook];
-        
-        NSString *fbText = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - Localbitcoins.com: BTC %@: %@"),twDate, celltoFb.textLabel.text, celltoFb.detailTextLabel.text];
-        [fbSheet setInitialText:fbText];
-        
-        [self presentViewController:fbSheet animated:YES completion:nil];
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+        {
+            
+            NSIndexPath *indexP = [self.tableView indexPathForSelectedRow];
+            UITableViewCell *celltoFb = [self.tableView cellForRowAtIndexPath:indexP];
+            NSDate *date = [[NSDate alloc]init];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            NSString *twDate = [dateFormatter stringFromDate:date];
+            SLComposeViewController *fbSheet = [SLComposeViewController
+                                                composeViewControllerForServiceType:SLServiceTypeFacebook];
+            
+            NSString *fbText = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - Localbitcoins.com: BTC %@: %@"),twDate, celltoFb.textLabel.text, celltoFb.detailTextLabel.text];
+            [fbSheet setInitialText:fbText];
+            
+            [self presentViewController:fbSheet animated:YES completion:nil];
+        }
+        else
+        {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
+                                                                           message:NSLocalizedString(@"_FACEBOOK_NOT_CONF", @"Facebook is not configured")
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            [self deselectRow:indexP];
+        }
     }
     else
     {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"please setup Facebook" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
+                                                                       message:NSLocalizedString(@"_NOTHING_TO_SHARE", @"Nothing to share")
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        [self deselectRow:indexP];
     }
-    }
-    else
-    {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"nothing to tweet here!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    }
-
+    
 }
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // twitter //
@@ -411,51 +416,65 @@
     UITableViewCell *celltoTweet = [self.tableView cellForRowAtIndexPath:indexP];
     if(![celltoTweet.detailTextLabel.text isEqualToString:NSLocalizedString(@"_NO_DATAS", @"no data")])
     {
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-    {
-        
-
-        NSDate *date = [[NSDate alloc]init];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        NSString *twDate = [dateFormatter stringFromDate:date];
-        SLComposeViewController *tweetSheet = [SLComposeViewController
-                                               composeViewControllerForServiceType:SLServiceTypeTwitter];
-     
-        NSString *tweetText = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - Localbitcoins.com: BTC %@: %@"),twDate, celltoTweet.textLabel.text, celltoTweet.detailTextLabel.text];
-        [tweetSheet setInitialText:tweetText];
-        tweetSheet.completionHandler = ^(SLComposeViewControllerResult result)
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
         {
-            [self deselectRow:[self.tableView indexPathForSelectedRow]];
-            switch(result) {
-                    //  This means the user cancelled without sending the Tweet
-                case SLComposeViewControllerResultCancelled:
-                     self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENDING_CANCELLED", @"Tweet sending canceled")];
-                    break;
-                    //  This means the user hit 'Send'
-                case SLComposeViewControllerResultDone:
-                    self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENT", @"Tweet sent")];
-
-                    break;
-            }
-           
-        };
-        [self presentViewController:tweetSheet animated:YES completion:nil];
-  
+            
+            
+            NSDate *date = [[NSDate alloc]init];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            NSString *twDate = [dateFormatter stringFromDate:date];
+            SLComposeViewController *tweetSheet = [SLComposeViewController
+                                                   composeViewControllerForServiceType:SLServiceTypeTwitter];
+            
+            NSString *tweetText = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - Localbitcoins.com: BTC %@: %@"),twDate, celltoTweet.textLabel.text, celltoTweet.detailTextLabel.text];
+            [tweetSheet setInitialText:tweetText];
+            tweetSheet.completionHandler = ^(SLComposeViewControllerResult result)
+            {
+                [self deselectRow:[self.tableView indexPathForSelectedRow]];
+                switch(result) {
+                        //  This means the user cancelled without sending the Tweet
+                    case SLComposeViewControllerResultCancelled:
+                        self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENDING_CANCELLED", @"Tweet canceled")];
+                        break;
+                        //  This means the user hit 'Send'
+                    case SLComposeViewControllerResultDone:
+                        self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENT", @"Tweet sent")];
+                        
+                        break;
+                }
+                
+            };
+            [self presentViewController:tweetSheet animated:YES completion:nil];
+            
+        }
+        else
+        {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
+                                                                           message:NSLocalizedString(@"_TWITTER_NOT_CONF", @"Twitter is not configured")
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            [self deselectRow:indexP];
+        }
     }
     else
     {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"please setup Twitter" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
+                                                                       message:NSLocalizedString(@"_NOTHING_TO_SHARE", @"Nothing to share")
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        [self deselectRow:indexP];
     }
-    }
-    else
-    {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"nothing to tweet here!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    }
-
+    
 }
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // email //
@@ -466,62 +485,76 @@
     UITableViewCell *celltoTweet = [self.tableView cellForRowAtIndexPath:indexP];
     if(![celltoTweet.detailTextLabel.text isEqualToString:NSLocalizedString(@"_NO_DATAS", @"no data")])
     {
-    if ([MFMailComposeViewController canSendMail])
-    {
-
-    NSDate *date = [[NSDate alloc]init];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    NSString *twDate = [dateFormatter stringFromDate:date];
-    NSString *affiliateId = [[NSUserDefaults standardUserDefaults] objectForKey:@"affiliateTag"];
-    NSString *titleForEmail = [NSString stringWithFormat:NSLocalizedString(@"_EMAIL_DAILY_TICKER", @"Localbitcoins.com: BTC DAILY PRICE")];
-    NSString *body = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - <a href='https://www.localbitcoins.com/%@>Localbitcoins.com</a>: BTC %@: %@\n"),affiliateId, twDate, celltoTweet.textLabel.text, celltoTweet.detailTextLabel.text];
-  
-    
-    MFMailComposeViewController *newMailView = [[MFMailComposeViewController alloc] init];
-    newMailView.mailComposeDelegate = self;
-    [newMailView setSubject:titleForEmail];
-    [newMailView setMessageBody:body isHTML:NO];
-    [self presentViewController:newMailView animated:YES completion:nil];
-   }
-    else
-        // The device can not send email.
-    {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Device not configured to send mail." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
+        if ([MFMailComposeViewController canSendMail])
+        {
+            
+            NSDate *date = [[NSDate alloc]init];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            NSString *twDate = [dateFormatter stringFromDate:date];
+            NSString *affiliateId = [[NSUserDefaults standardUserDefaults] objectForKey:@"affiliateTag"];
+            NSString *titleForEmail = [NSString stringWithFormat:NSLocalizedString(@"_EMAIL_DAILY_TICKER", @"Localbitcoins.com: BTC DAILY PRICE")];
+            NSString *body = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - <a href='https://www.localbitcoins.com/%@>Localbitcoins.com</a>: BTC %@: %@\n"),affiliateId, twDate, celltoTweet.textLabel.text, celltoTweet.detailTextLabel.text];
+            
+            
+            MFMailComposeViewController *newMailView = [[MFMailComposeViewController alloc] init];
+            newMailView.mailComposeDelegate = self;
+            [newMailView setSubject:titleForEmail];
+            [newMailView setMessageBody:body isHTML:NO];
+            [self presentViewController:newMailView animated:YES completion:nil];
+        }
+        else
+            // The device can not send email.
+        {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
+                                                                           message:NSLocalizedString(@"_MAIL_NOT_CONF", @"Device not configured to send email.")
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            [self deselectRow:indexP];
+        }
     }
-}
-else
-{
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"nothing to tweet here!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
-}
-
+    else
+    {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
+                                                                       message:NSLocalizedString(@"_NOTHING_TO_SHARE", @"Nothing to share")
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        [self deselectRow:indexP];
+    }
+    
 }
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
-    	[self dismissViewControllerAnimated:YES completion:NULL];
-	// Notifies users about errors associated with the interface
-	switch (result)
-	{
-		case MFMailComposeResultCancelled:
-			self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENDING_CANCELLED", @"Mail sending canceled")];
-			break;
-		case MFMailComposeResultSaved:
-			self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SAVED", @"Mail saved")];
-			break;
-		case MFMailComposeResultSent:
-			self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENT", @"Mail sent")];
-			break;
-		case MFMailComposeResultFailed:
-			self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SEND_FAIL", @"Mail sending failed")];
-			break;
-		default:
-			self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_NOT_SENT_DEFAULT", @"Mail not sent")];
-			break;
-	}
+    [self dismissViewControllerAnimated:YES completion:NULL];
+    // Notifies users about errors associated with the interface
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENDING_CANCELLED", @"Mail sending canceled")];
+            break;
+        case MFMailComposeResultSaved:
+            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SAVED", @"Mail saved")];
+            break;
+        case MFMailComposeResultSent:
+            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENT", @"Mail sent")];
+            break;
+        case MFMailComposeResultFailed:
+            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SEND_FAIL", @"Mail sending failed")];
+            break;
+        default:
+            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_NOT_SENT_DEFAULT", @"Mail not sent")];
+            break;
+    }
 }
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // sms message //
@@ -529,48 +562,69 @@ else
 - (IBAction)messageSelectedRow:(id)sender
 {
     NSIndexPath *indexP = [self.tableView indexPathForSelectedRow];
-    if ([MFMessageComposeViewController canSendText])
+    UITableViewCell *celltoTweet = [self.tableView cellForRowAtIndexPath:indexP];
+    if(![celltoTweet.detailTextLabel.text isEqualToString:NSLocalizedString(@"_NO_DATAS", @"no data")])
     {
-         UITableViewCell *celltoTweet = [self.tableView cellForRowAtIndexPath:indexP];
-        NSDate *date = [[NSDate alloc]init];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        NSString *twDate = [dateFormatter stringFromDate:date];
-        NSString *body = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - Localbitcoins.com: BTC %@: %@"),twDate, celltoTweet.textLabel.text, celltoTweet.detailTextLabel.text];
-       MFMessageComposeViewController *newMessageView = [[MFMessageComposeViewController alloc] init];
-        newMessageView.messageComposeDelegate = self;
-        newMessageView.body = body;
-        [self presentViewController:newMessageView animated:YES completion:nil];
+        if ([MFMessageComposeViewController canSendText])
+        {
+            UITableViewCell *celltoTweet = [self.tableView cellForRowAtIndexPath:indexP];
+            NSDate *date = [[NSDate alloc]init];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            NSString *twDate = [dateFormatter stringFromDate:date];
+            NSString *body = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - Localbitcoins.com: BTC %@: %@"),twDate, celltoTweet.textLabel.text, celltoTweet.detailTextLabel.text];
+            MFMessageComposeViewController *newMessageView = [[MFMessageComposeViewController alloc] init];
+            newMessageView.messageComposeDelegate = self;
+            newMessageView.body = body;
+            [self presentViewController:newMessageView animated:YES completion:nil];
+        }
+        else
+            // The device can not send sms.
+        {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
+                                                                           message:NSLocalizedString(@"_MESSAGE_NOT_CONF", @"Device not configured to send SMS.")
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            [self deselectRow:indexP];
+        }
     }
-    else
-        // The device can not send sms.
-    {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Device not configured to send SMS." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
+    else {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
+                                                                       message:NSLocalizedString(@"_NOTHING_TO_SHARE", @"Nothing to share")
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
         [self deselectRow:indexP];
     }
 }
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller
                  didFinishWithResult:(MessageComposeResult)result
 {
-	[self dismissViewControllerAnimated:YES completion:NULL];
+    [self dismissViewControllerAnimated:YES completion:NULL];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
     switch (result)
-	{
-		case MessageComposeResultCancelled:
-			self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENDING_CANCELLED", @"SMS sending canceled")];
-			break;
-		case MessageComposeResultSent:
-			self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENT", @"SMS sent")];
-			break;
-		case MessageComposeResultFailed:
-			self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SEND_FAIL", @"SMS sending failed")];
-			break;
-		default:
-			self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_NOT_SENT_DEFAULT", @"SMS not sent")];
-			break;
-	}
+    {
+        case MessageComposeResultCancelled:
+            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENDING_CANCELLED", @"SMS sending canceled")];
+            break;
+        case MessageComposeResultSent:
+            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENT", @"SMS sent")];
+            break;
+        case MessageComposeResultFailed:
+            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SEND_FAIL", @"SMS sending failed")];
+            break;
+        default:
+            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_NOT_SENT_DEFAULT", @"SMS not sent")];
+            break;
+    }
 }
 - (void) viewDidUnload
 {
@@ -581,7 +635,7 @@ else
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
-   
+    
     NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:NO];
@@ -593,6 +647,7 @@ else
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
     [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
- }
+}
 
 @end
+

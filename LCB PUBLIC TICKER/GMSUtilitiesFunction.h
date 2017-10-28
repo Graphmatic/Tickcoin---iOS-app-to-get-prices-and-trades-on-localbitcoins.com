@@ -21,6 +21,7 @@ extern NSDate *graphRequestStart;
 + (NSString*)orderBookUrl;
 + (NSString*)graphUrl;
 + (NSString*)verifyAndForceCastToString:(id)theVar;
-+(NSDate *)roundDateToHour:(NSDate *)date;
++ (NSDate *)roundDateToHour:(NSDate *)date;
 + (NSString*)roundTwoDecimal:(NSString *)theNumb;
++ (void) evenlySpaceTheseButtonsInThisView : (NSArray *) buttonArray : (UIView *) thisView;
 @end

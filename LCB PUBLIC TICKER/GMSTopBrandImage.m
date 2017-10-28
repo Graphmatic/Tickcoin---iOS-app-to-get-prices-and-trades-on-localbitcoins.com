@@ -26,13 +26,13 @@
     if (self = [super init])
         {
          self.topBrand = [[UIImage alloc]init];
-            if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+            if ( IS_IPAD )
             {
                 NSLog(@"ipad");
                 switch (viewIndex)
                  {
                     case 0:
-                        self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig.png"];
+                        self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig@x2"];
                          [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
                         
                         break;
