@@ -184,4 +184,16 @@
     }
 }
 
+// Show error/message popup
++ (void) popAlert : (NSString *)title : (NSString *)message : (UIViewController *) currentView {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(title, title)
+                                                                   message:NSLocalizedString(message, message)
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:defaultAction];
+    [currentView presentViewController:alert animated:YES completion:nil];
+}
+
 @end

@@ -24,4 +24,5 @@ extern NSDate *graphRequestStart;
 + (NSDate *)roundDateToHour:(NSDate *)date;
 + (NSString*)roundTwoDecimal:(NSString *)theNumb;
 + (void) evenlySpaceTheseButtonsInThisView : (NSArray *) buttonArray : (UIView *) thisView;
++ (void) popAlert : (NSString *)title : (NSString *)message : (UIViewController *) currentView;
 @end

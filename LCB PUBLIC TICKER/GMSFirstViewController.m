@@ -382,27 +382,13 @@
         }
         else
         {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
-                                                                           message:NSLocalizedString(@"_FACEBOOK_NOT_CONF", @"Facebook is not configured")
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
-            
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            [GMSUtilitiesFunction popAlert:@"_ERROR" :@"_FACEBOOK_NOT_CONF" :self];
             [self deselectRow:indexP];
         }
     }
     else
     {
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
-                                                                       message:NSLocalizedString(@"_NOTHING_TO_SHARE", @"Nothing to share")
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {}];
-        
-        [alert addAction:defaultAction];
-        [self presentViewController:alert animated:YES completion:nil];
+        [GMSUtilitiesFunction popAlert:@"_ERROR" :@"_NOTHING_TO_SHARE" :self];
         [self deselectRow:indexP];
     }
     
@@ -451,27 +437,13 @@
         }
         else
         {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
-                                                                           message:NSLocalizedString(@"_TWITTER_NOT_CONF", @"Twitter is not configured")
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
-            
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            [GMSUtilitiesFunction popAlert:@"_ERROR" :@"_TWITTER_NOT_CONF" :self];
             [self deselectRow:indexP];
         }
     }
     else
     {
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
-                                                                       message:NSLocalizedString(@"_NOTHING_TO_SHARE", @"Nothing to share")
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {}];
-        
-        [alert addAction:defaultAction];
-        [self presentViewController:alert animated:YES completion:nil];
+        [GMSUtilitiesFunction popAlert:@"_ERROR" :@"_NOTHING_TO_SHARE" :self];
         [self deselectRow:indexP];
     }
     
@@ -507,27 +479,13 @@
         else
             // The device can not send email.
         {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
-                                                                           message:NSLocalizedString(@"_MAIL_NOT_CONF", @"Device not configured to send email.")
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
-            
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            [GMSUtilitiesFunction popAlert:@"_ERROR" :@"_MAIL_NOT_CONF" :self];
             [self deselectRow:indexP];
         }
     }
     else
     {
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
-                                                                       message:NSLocalizedString(@"_NOTHING_TO_SHARE", @"Nothing to share")
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {}];
-        
-        [alert addAction:defaultAction];
-        [self presentViewController:alert animated:YES completion:nil];
+        [GMSUtilitiesFunction popAlert:@"_ERROR" :@"_NOTHING_TO_SHARE" :self];
         [self deselectRow:indexP];
     }
     
@@ -582,26 +540,12 @@
         else
             // The device can not send sms.
         {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
-                                                                           message:NSLocalizedString(@"_MESSAGE_NOT_CONF", @"Device not configured to send SMS.")
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
-
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            [GMSUtilitiesFunction popAlert:@"_ERROR" :@"_MESSAGE_NOT_CONF" :self];
             [self deselectRow:indexP];
         }
     }
     else {
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"_ERROR", @"Error")
-                                                                       message:NSLocalizedString(@"_NOTHING_TO_SHARE", @"Nothing to share")
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {}];
-        
-        [alert addAction:defaultAction];
-        [self presentViewController:alert animated:YES completion:nil];
+        [GMSUtilitiesFunction popAlert:@"_ERROR" :@"_NOTHING_TO_SHARE" :self];
         [self deselectRow:indexP];
     }
 }
