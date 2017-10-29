@@ -1,5 +1,5 @@
 //
-//  GMSSecondViewController.h
+//  GMSAsksView.h
 //  LCB PUBLIC TICKER
 //
 //  Created by frup on 29/03/2014.
@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "GMSMessageBoxProcessor.h"
 #import "GMSSecondViewTableData.h"
-#import "GMSFirstViewController.h"
+#import "GMSStartView.h"
 
-extern BOOL test;
 extern NSMutableString *currentCurrency;
-extern BOOL firstLaunchBids;
-@interface GMSSecondViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+extern BOOL firstLaunchAsks;
+extern BOOL test;
+@interface GMSAsksView : UIViewController<UITableViewDelegate,UITableViewDataSource>
 {
 
 }
@@ -27,7 +27,7 @@ extern BOOL firstLaunchBids;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
 //@property (nonatomic, retain) IBOutlet JBChartView *graphView;
-@property (weak, nonatomic) IBOutlet UILabel *secondViewMessage;
+@property (weak, nonatomic) IBOutlet UILabel *thirdViewMessage;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (retain, nonatomic) IBOutlet UILabel *sliderValName;
 @property (retain, nonatomic) IBOutlet UILabel *sliderVal;
@@ -35,7 +35,7 @@ extern BOOL firstLaunchBids;
 @property (nonatomic, retain) UISlider *editMaxDev;
 @property (strong, atomic) GMSSecondViewTableData *secondViewDatas;
 @property (retain, nonatomic) IBOutlet UILabel *headerTitleLeft;
-@property (weak, nonatomic)GMSFirstViewController *firstViewC;
+@property (weak, nonatomic)GMSStartView *firstViewC;
 
 
 @end

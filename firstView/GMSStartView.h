@@ -1,5 +1,5 @@
 //
-//  GMSFirstViewController.h
+//  GMSStartView.h
 //  LCB PUBLIC TICKER
 //
 //  Created by frup on 29/03/2014.
@@ -10,7 +10,6 @@
 #import "GMSMessageBoxProcessor.h"
 #import "GMSfirstViewTableData.h"
 #import <MessageUI/MessageUI.h>
-//#import "GMSSocialStack.h"
 #import "GMSMessageBox.h"
 
 extern NSString *const urlStart;
@@ -19,7 +18,7 @@ extern BOOL firstLaunch;
 extern NSMutableString *currentCurrency;
 extern BOOL connected;
 extern BOOL test;
-@interface GMSFirstViewController : UIViewController <UITableViewDelegate,UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, MFMailComposeViewControllerDelegate , MFMessageComposeViewControllerDelegate>
+@interface GMSStartView : UIViewController <UITableViewDelegate,UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, MFMailComposeViewControllerDelegate , MFMessageComposeViewControllerDelegate>
 {
     __weak IBOutlet UIPickerView *picker;
 }

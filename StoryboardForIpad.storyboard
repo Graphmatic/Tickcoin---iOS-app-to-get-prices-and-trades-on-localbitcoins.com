@@ -27,7 +27,7 @@
         <!--First-->
         <scene sceneID="tmz-pe-c84">
             <objects>
-                <viewController title="First" modalPresentationStyle="currentContext" id="6IR-Z3-svr" customClass="GMSFirstViewController" sceneMemberID="viewController">
+                <viewController title="First" modalPresentationStyle="currentContext" id="6IR-Z3-svr" customClass="GMSStartView" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Tc6-H9-yBL"/>
                         <viewControllerLayoutGuide type="bottom" id="RPy-7h-ahd"/>
@@ -174,7 +174,7 @@
         <!--Bids-->
         <scene sceneID="46W-dQ-PHn">
             <objects>
-                <viewController title="Bids" id="dAs-xX-l1G" customClass="GMSSecondViewController" sceneMemberID="viewController">
+                <viewController title="Bids" id="dAs-xX-l1G" customClass="GMSBidsView" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="duA-KG-pmw"/>
                         <viewControllerLayoutGuide type="bottom" id="CEw-4R-x1o"/>
@@ -316,7 +316,7 @@
         <!--Asks-->
         <scene sceneID="CpR-QW-fu8">
             <objects>
-                <viewController title="Asks" id="3TH-TU-CWb" customClass="GMSThirdViewController" sceneMemberID="viewController">
+                <viewController title="Asks" id="3TH-TU-CWb" customClass="GMSAsksView" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Vix-qO-N4o"/>
                         <viewControllerLayoutGuide type="bottom" id="kBU-RS-vQx"/>

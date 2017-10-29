@@ -1,15 +1,15 @@
 //
-//  GMSSecondViewController.m
+//  GMSAsksView.m
 //  LCB PUBLIC TICKER
 //
 //  Created by frup on 29/03/2014.
 //  Copyright (c) 2014 ___FULLUSERNAME___. All rights reserved.
 //
 
-#import "GMSThirdViewController.h"
+#import "GMSAsksView.h"
 #import "GMSSecondViewTableData.h"
 
-@interface GMSThirdViewController ()
+@interface GMSAsksView ()
 {
     NSMutableArray *ordersAsks;
     float maxDeviation;
@@ -23,7 +23,7 @@
 }
 @end
 
-@implementation GMSThirdViewController
+@implementation GMSAsksView
 
 @synthesize timerMessages, editMaxDev, settingSquare, secondViewDatas, sliderVal, sliderValName, thirdViewMessage, messageBox, headerView, headerTitleLeft, firstViewC;
 

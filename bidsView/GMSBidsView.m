@@ -1,16 +1,16 @@
 //
-//  GMSSecondViewController.m
+//  GMSBidsView.m
 //  LCB PUBLIC TICKER
 //
 //  Created by frup on 29/03/2014.
 //  Copyright (c) 2014 ___FULLUSERNAME___. All rights reserved.
 //
 
-#import "GMSSecondViewController.h"
+#import "GMSBidsView.h"
 #import "GMSSecondViewTableData.h"
-#import "GMSFirstViewController.h"
+#import "GMSStartView.h"
 
-@interface GMSSecondViewController ()
+@interface GMSBidsView ()
 {
     NSMutableArray *ordersBidsRaw;
     NSMutableArray *ordersBids;
@@ -28,7 +28,7 @@
 }
 @end
 
-@implementation GMSSecondViewController
+@implementation GMSBidsView
 
 @synthesize timerMessages, editMaxDev, settingSquare, secondViewDatas, sliderVal, sliderValName, secondViewMessage, messageBox, headerView, headerTitleLeft, firstViewC;
 

@@ -25,7 +25,7 @@
         <!--First-->
         <scene sceneID="W3I-pn-N6e">
             <objects>
-                <viewController title="First" id="CZ4-MO-1fc" customClass="GMSFirstViewController" sceneMemberID="viewController">
+                <viewController title="First" id="CZ4-MO-1fc" customClass="GMSStartView" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lsg-kY-woG"/>
                         <viewControllerLayoutGuide type="bottom" id="PUx-g7-Qoq"/>
@@ -201,7 +201,7 @@
         <!--Bids-->
         <scene sceneID="Squ-r0-tv8">
             <objects>
-                <viewController title="Bids" id="eiY-LA-xuV" customClass="GMSSecondViewController" sceneMemberID="viewController">
+                <viewController title="Bids" id="eiY-LA-xuV" customClass="GMSBidsView" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gBr-JL-lha"/>
                         <viewControllerLayoutGuide type="bottom" id="hNm-oX-AH1"/>
@@ -329,7 +329,7 @@
         <!--Asks-->
         <scene sceneID="8tz-SX-5vZ">
             <objects>
-                <viewController title="Asks" id="Ry6-S7-9Zh" customClass="GMSThirdViewController" sceneMemberID="viewController">
+                <viewController title="Asks" id="Ry6-S7-9Zh" customClass="GMSAsksView" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2x1-kX-v3U"/>
                         <viewControllerLayoutGuide type="bottom" id="XQs-4b-QrV"/>

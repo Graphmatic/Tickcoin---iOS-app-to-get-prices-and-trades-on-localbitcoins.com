@@ -1,16 +1,16 @@
 //
-//  GMSFirstViewController.m
+//  GMSStartView.m
 //  LCB PUBLIC TICKER
 //
 //  Created by frup on 29/03/2014.
 //  Copyright (c) 2014 ___FULLUSERNAME___. All rights reserved.
 //
-#import "GMSFirstViewController.h"
+#import "GMSStartView.h"
 #import <MessageUI/MessageUI.h>
 #import "GMSUtilitiesFunction.h"
 
 
-@interface GMSFirstViewController ()
+@interface GMSStartView ()
 {
     
     int messagesCount;
@@ -18,7 +18,7 @@
     
 }
 @end
-@implementation GMSFirstViewController
+@implementation GMSStartView
 @synthesize previousDatas ,firstViewDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack;
 
 - (NSManagedObjectContext *)managedObjectContext {
