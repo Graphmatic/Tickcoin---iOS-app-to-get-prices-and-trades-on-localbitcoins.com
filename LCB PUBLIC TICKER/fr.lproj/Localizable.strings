@@ -55,6 +55,13 @@
 "_MAIL_NOT_CONF" = "Mail n'est pas configuré";
 "_MESSAGE_NOT_CONF" = "SMS non disponibles";
 "_ERROR" = "Erreur";
+//chart view
+"_PRICE_CURRENCY_CHART" = "Transactions sur 24H - %@";
+"_VOLUME_CURRENCY_CHART" = "Closed trades volumes - past 24H - BTC";
+"_Yesterday" = "Hier";
+"_Now" = "Maintenant";
+"_NO_CHART_AVAILABLE" = "Aucune donnée - %@";
+"_NO_TRADE" = "Aucune\nopération";
 //controleur 5
 "_AFFILIATE" = "votre ID affilié:";
 "_DEFAULT_CURRENCY" = "devise par défaut:";

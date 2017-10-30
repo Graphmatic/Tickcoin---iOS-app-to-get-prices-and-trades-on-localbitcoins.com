@@ -1,32 +1,31 @@
 //
-//  GMSBarChartViewController.m
-//  GMSChartViewDemo
-//
-//  Created by Terry Worona on 11/5/13.
-//  Copyright (c) 2013 Jawbone. All rights reserved.
+//  GMSBarChartViewVolumeController.m
+//  Copyright (c) 2017 - Graphmatic
 //
 
-#import "GMSBarChartViewController.h"
+#import "GMSBarChartViewPriceController.h"
 // Views
 #import "GMSBarChartView.h"
 #import "GMSChartHeaderView.h"
 #import "GMSBarChartFooterView.h"
 #import "GMSchartViewData.h"
 // Numerics
-CGFloat const GMSBarChartViewControllerChartHeight = 254.0f;
-CGFloat const GMSBarChartViewControllerChartPadding = 0.0f;
-CGFloat const GMSBarChartViewControllerChartHeaderHeight = 80.0f;
-CGFloat const GMSBarChartViewControllerChartHeaderPadding = 10.0f;
-CGFloat const GMSBarChartViewControllerChartFooterHeight = 25.0f;
-CGFloat const GMSBarChartViewControllerChartFooterPadding = 5.0f;
-NSUInteger GMSBarChartViewControllerBarPadding = 1;
-NSInteger const GMSBarChartViewControllerMaxBarHeight = 2000;
-NSInteger const GMSBarChartViewControllerMinBarHeight = 0;
+CGFloat const GMSPriceChartHeight = 254.0f;
+CGFloat const GMSPriceChartPadding = 2.0f;
+CGFloat GMSPriceChartsViewPaddingTop = 0.0f;  
+
+CGFloat const GMSPriceChartHeaderHeight = 50.0f;
+CGFloat const GMSPriceChartHeaderPadding = 10.0f;
+CGFloat const GMSPriceChartFooterHeight = 25.0f;
+CGFloat const GMSPriceChartFooterPadding = 5.0f;
+NSUInteger GMSPriceBarPadding = 1;
+NSInteger const GMSPriceMaxBarHeight = 2000;
+NSInteger const GMSPriceMinBarHeight = 0;
 
 // Strings
 NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
-@interface GMSBarChartViewController () <GMSBarChartViewDelegate, GMSBarChartViewDataSource>
+@interface GMSBarChartViewPriceController () <GMSBarChartViewDelegate, GMSBarChartViewDataSource>
 {
     GMSBarChartFooterView *footerView;
     BOOL noChartForCurrX;
@@ -41,7 +40,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 @end
 
-@implementation GMSBarChartViewController
+@implementation GMSBarChartViewPriceController
 
 #pragma mark - Alloc/Init
 
@@ -85,44 +84,83 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 #pragma mark - View Lifecycle
 
+//- (void)viewDidLayoutSubviews {
+//
+//
+//    GMSPriceChartsViewPaddingTop =  2;
+//
+//    // backup parent view size
+//    CGFloat childViewWidth = self.view.bounds.size.width;
+//    CGFloat childViewHeight = self.view.bounds.size.height;
+//
+//    NSLog(@"GMSPriceChartsViewPaddingTop : %f", GMSPriceChartsViewPaddingTop);
+////    if ( !IS_IPAD )
+////    {
+////        CGRect updatedChartsViewHeaderFrame = CGRectMake(0, GMSPriceChartsViewPaddingTop, childViewWidth, GMSPriceChartHeaderHeight);
+////        self.headerView.frame = updatedChartsViewHeaderFrame;
+////        CGRect updatedChartsViewFrame = CGRectMake(0, GMSPriceChartsViewPaddingTop, childViewWidth, childViewHeight - GMSPriceChartsViewPaddingTop );
+////        self.barChartView.frame = updatedChartsViewFrame;
+////    }
+//
+//}
+
 - (void)loadView
 {
     [super loadView];
- 
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
-    {
-    CGRect frameForBarChartView = CGRectMake(GMSBarChartViewControllerChartPadding, GMSBarChartViewControllerChartPadding, 518 -(GMSBarChartViewControllerChartPadding * 2), 258);
-    self.barChartView = [[GMSBarChartView alloc] initWithFrame:frameForBarChartView];
-    self.barChartView.bounds = frameForBarChartView;
-    }
-    else
-    {
-        CGRect frameForBarChartView = CGRectMake(GMSBarChartViewControllerChartPadding, GMSBarChartViewControllerChartPadding+20, 320 -(GMSBarChartViewControllerChartPadding * 2), 430);
-        self.barChartView = [[GMSBarChartView alloc] initWithFrame:frameForBarChartView];
-        self.barChartView.bounds = frameForBarChartView;
-
-    }
-//    self.barChartView.frame = CGRectMake(GMSBarChartViewControllerChartPadding, kGMSBarChartViewControllerChartPadding, self.view.bounds.size.width - (kGMSBarChartViewControllerChartPadding * 2), kGMSBarChartViewControllerChartHeight);
-    self.barChartView.delegate = self;
-    self.barChartView.dataSource = self;
-    self.barChartView.headerPadding = GMSBarChartViewControllerChartHeaderPadding;
-    self.barChartView.backgroundColor = [UIColor whiteColor];
     
     
-    self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(GMSBarChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(GMSBarChartViewControllerChartHeaderHeight * 0.5), self.view.bounds.size.width - (GMSBarChartViewControllerChartPadding * 2), GMSBarChartViewControllerChartHeaderHeight)];
-    self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_VOLUMES_CURRENCY - last 24H" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
+    CGFloat childViewWidth = self.view.bounds.size.width;
+    CGFloat childViewHeight = self.view.bounds.size.height;
+    
+//    self.view.frame = CGRectMake(0,
+//                                 super.view.frame.size.height,
+//                                 self.view.bounds.size.width - (GMSPriceChartPadding * 2),
+//                                 childViewHeight);
+    
+    // header of first chart (price)
+    self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(0,
+                                                                           0,
+                                                                           self.view.bounds.size.width - (GMSPriceChartPadding * 2),
+                                                                           GMSPriceChartHeaderHeight)];
+    
+    self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
     self.headerView.separatorColor = GMSColorWhite;
-    self.barChartView.headerView = self.headerView;
     
-     footerView = [[GMSBarChartFooterView alloc] initWithFrame:CGRectMake(GMSBarChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(GMSBarChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (GMSBarChartViewControllerChartPadding * 2), GMSBarChartViewControllerChartFooterHeight)];
-    footerView.padding = GMSBarChartViewControllerChartFooterPadding;
+    // footer of first chart (price)
+    footerView = [[GMSBarChartFooterView alloc] initWithFrame:CGRectMake(GMSPriceChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(GMSPriceChartFooterHeight * 0.5), self.view.bounds.size.width - (GMSPriceChartPadding * 2), GMSPriceChartFooterHeight)];
+    footerView.padding = GMSPriceChartFooterPadding;
     footerView.leftLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_Yesterday",@"Yesterday")];
     footerView.leftLabel.textColor = [UIColor whiteColor];
     footerView.rightLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_Now",@"Now")];
-
     footerView.rightLabel.textColor = [UIColor whiteColor];
+    
+    // the bargraph itself
+    CGRect frameForBarChartView;
+    if ( IS_IPAD )
+    {
+        frameForBarChartView = CGRectMake(GMSPriceChartPadding,
+                                          GMSPriceChartsViewPaddingTop,
+                                          518 -(GMSPriceChartPadding * 2),
+                                          258);
+    }
+    else
+    {
+        frameForBarChartView = CGRectMake(0,
+                                          0,
+                                          childViewWidth,
+                                          childViewHeight/2 - self.headerView.frame.size.height);
+    }
+    
+    self.barChartView = [[GMSBarChartView alloc] initWithFrame:frameForBarChartView];
+    self.barChartView.bounds = frameForBarChartView;
+    
+    self.barChartView.delegate = self;
+    self.barChartView.dataSource = self;
+    self.barChartView.headerPadding = GMSPriceChartHeaderPadding;
+    self.barChartView.backgroundColor = GMSColorBlueGrey;
+    
+    // add footer and header to bargraph
+    self.barChartView.headerView = self.headerView;
     self.barChartView.footerView = footerView;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -133,14 +171,12 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
                                              selector:@selector(updateGraph:)
                                                  name:@"changeNow"
                                                object:nil];
- 
+    
     
     lockChart = NO;
     [self.view addSubview:self.barChartView];
-
-   
     [self updateGraph:nil];
-   [self prepareDatas:nil];
+    [self prepareDatas:nil];
     [self.barChartView reloadData];
 }
 
@@ -165,12 +201,12 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         return  24;
     }
     else
-    return [self.graphDatas.dateAscSorted count];
+        return [self.graphDatas.dateAscSorted count];
 }
 
 - (NSUInteger)barPaddingForBarChartView:(GMSBarChartView *)barChartView
 {
-    return GMSBarChartViewControllerBarPadding;
+    return GMSPriceBarPadding;
 }
 
 - (UIColor *)barChartView:(GMSBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index
@@ -191,10 +227,10 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         NSString *detailsText = [[NSString alloc] initWithString:currentCurrency];
         detailsText = [detailsText stringByAppendingString:@"\n"];
         NSString *priceForSelHour = [[NSString alloc] init];
-        NSString *volumeForSelHour = [[NSString alloc] init];
+        
         if ([[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2]floatValue] == 0)
         {
-           detailsText = @"NO\nTRADE";
+            detailsText = NSLocalizedString(@"_NO_TRADE" ,  @"NO TRADES");
         }
         else
         {
@@ -207,17 +243,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
                 priceForSelHour = [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1]stringValue];
             }
             priceForSelHour = [GMSUtilitiesFunction roundTwoDecimal:priceForSelHour];
-            priceForSelHour = [priceForSelHour stringByAppendingString:@"\n"];
-            if ([[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2] isKindOfClass:[NSString class]])
-            {
-                volumeForSelHour = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2];
-            }
-            else
-            {
-                volumeForSelHour = [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2]stringValue];
-            }
-            volumeForSelHour = [GMSUtilitiesFunction roundTwoDecimal:volumeForSelHour];
-            priceForSelHour = [priceForSelHour stringByAppendingString:volumeForSelHour];
             detailsText = [detailsText stringByAppendingString:priceForSelHour];
         }
         [self setTooltipVisible:YES animated:YES atTouchPoint:touchPoint];
@@ -229,10 +254,10 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 {
     if( lockChart == NO)
     {
-    [self setTooltipVisible:NO animated:YES];
+        [self setTooltipVisible:NO animated:YES];
     }
 }
-    
+
 
 #pragma mark - Buttons
 
@@ -260,7 +285,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 {
     if (noChartForCurrX == NO)
     {
-        self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_VOLUMES_CURRENCY - last 24H" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
+        self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"MM-dd HH:mm"];
         NSString* startingDate = [dateFormatter stringFromDate:graphRequestStart];
@@ -288,34 +313,14 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     }
     else
     {
-    NSDate *isNow = [[NSDate alloc]init];
-    isNow = [GMSUtilitiesFunction roundDateToHour:isNow];
-    NSComparisonResult compareDate;
-    NSTimeInterval plusOneH = (60 * 60);
-    NSDate *minDelay = [graphRequestStart dateByAddingTimeInterval:plusOneH];
-    compareDate = [isNow compare:minDelay]; // comparing two dates
-    
-    if(compareDate != NSOrderedAscending) //isNow is equal or later -->  try to send request
-    {
-        if( lockChart == NO)
-        {
-            [self graphWebRequest];
-        }
-        else
-        {
-            [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(graphWebRequest) userInfo:nil repeats:NO];
-        }
-    }
-    else
-    {
-        if ([self.graphDatas.thisDayDatasAllCurrencies objectForKey:currentCurrency] != nil)
-        {
-            [[NSNotificationCenter defaultCenter]
-             postNotificationName:@"thisDayChartChange"
-             object:nil
-             userInfo:nil];
-        }
-        else
+        NSDate *isNow = [[NSDate alloc]init];
+        isNow = [GMSUtilitiesFunction roundDateToHour:isNow];
+        NSComparisonResult compareDate;
+        NSTimeInterval plusOneH = (60 * 60);
+        NSDate *minDelay = [graphRequestStart dateByAddingTimeInterval:plusOneH];
+        compareDate = [isNow compare:minDelay]; // comparing two dates
+        
+        if(compareDate != NSOrderedAscending) //isNow is equal or later -->  try to send request
         {
             if( lockChart == NO)
             {
@@ -326,8 +331,28 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
                 [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(graphWebRequest) userInfo:nil repeats:NO];
             }
         }
-       
-    }
+        else
+        {
+            if ([self.graphDatas.thisDayDatasAllCurrencies objectForKey:currentCurrency] != nil)
+            {
+                [[NSNotificationCenter defaultCenter]
+                 postNotificationName:@"thisDayChartChange"
+                 object:nil
+                 userInfo:nil];
+            }
+            else
+            {
+                if( lockChart == NO)
+                {
+                    [self graphWebRequest];
+                }
+                else
+                {
+                    [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(graphWebRequest) userInfo:nil repeats:NO];
+                }
+            }
+            
+        }
     }
     
     
@@ -339,15 +364,16 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     AFHTTPRequestOperation *operationGraph = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operationGraph setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationGraph, id responseObject)
      {
-        [self.graphDatas chartListingCleaned:responseObject];
-        noChartForCurrX = NO;
+         [self.graphDatas chartListingCleaned:responseObject];
+         noChartForCurrX = NO;
      }
-     failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)
+                                          failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)
      {
-        [self.graphDatas dummyArrayForMissingChart];
+         [self.graphDatas dummyArrayForMissingChart];
          noChartForCurrX = YES;
-       }];
+     }];
     [operationGraph start];
-
+    
 }
 @end
+

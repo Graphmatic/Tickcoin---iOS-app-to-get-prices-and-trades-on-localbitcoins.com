@@ -20,7 +20,7 @@
 {
     [super loadView];
     self.edgesForExtendedLayout = UIRectEdgeAll;
-    self.view.backgroundColor = [UIColor brownColor];
+    self.view.backgroundColor = GMSColorBlueGreyDark;
 }
 
 #pragma mark - Orientation
@@ -29,11 +29,11 @@
 {
     if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
     {
-    return UIInterfaceOrientationMaskLandscape;
+        return UIInterfaceOrientationMaskLandscape;
     }
     else
     {
-    return UIInterfaceOrientationMaskPortrait;
+        return UIInterfaceOrientationMaskPortrait;
     }
 }
 

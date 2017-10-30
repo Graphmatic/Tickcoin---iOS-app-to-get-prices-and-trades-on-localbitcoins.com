@@ -19,7 +19,7 @@
     int cacheSizeDisk = 8*1024*1024;
     NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:cacheSizeMemory diskCapacity:cacheSizeDisk diskPath:@"nsurlcache"];
     [NSURLCache setSharedURLCache:sharedCache];
-    test = YES;
+    test = NO;
     startingApp = YES;
     // Override point for customization after application launch.
     self.window.backgroundColor = GMSColorWhite;

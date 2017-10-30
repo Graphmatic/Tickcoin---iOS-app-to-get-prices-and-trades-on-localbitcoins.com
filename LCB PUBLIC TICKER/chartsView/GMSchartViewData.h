@@ -14,7 +14,6 @@ extern BOOL connected;
 extern BOOL lockChart;
 extern NSDate *graphRequestStart;
 
-
 @property  (retain, atomic) NSMutableDictionary *thisDayDatas;
 @property (retain, atomic) NSMutableArray *dateAscSorted;
 @property (retain, nonatomic) NSMutableDictionary *thisDayDatasAllCurrencies;

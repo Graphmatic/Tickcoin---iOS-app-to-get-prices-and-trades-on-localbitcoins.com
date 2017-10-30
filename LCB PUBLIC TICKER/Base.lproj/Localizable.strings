@@ -59,10 +59,12 @@
 "_MESSAGE_NOT_CONF" = "Device can not send SMS";
 "_ERROR" = "Error";
 //chart view
-"_PRICE_VOLUMES_CURRENCY - last 24H" = "Price & Volumes - last 24H - %@";
+"_PRICE_CURRENCY_CHART" = "Closed trades prices - past 24H - %@";
+"_VOLUME_CURRENCY_CHART" = "Closed trades volumes - past 24H - BTC";
 "_Yesterday" = "Yesterday";
 "_Now" = "Now";
 "_NO_CHART_AVAILABLE" = "No chart available for %@";
+"_NO_TRADE" = "No\ntrade";
 //fifth controller
 "_AFFILIATE" = "your affiliate tag:";
 "_DEFAULT_CURRENCY" = "default currency:";

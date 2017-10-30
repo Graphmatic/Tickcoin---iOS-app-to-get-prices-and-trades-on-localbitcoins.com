@@ -128,6 +128,7 @@
     NSMutableString* startURL = [[NSMutableString alloc] initWithString:[graphURLStart stringByAppendingString:currentCurrency]];
     NSString *tmpUrl = [[NSString alloc] initWithString:[startURL stringByAppendingString:graphURLEnd]];
     NSString *fullURL = [[NSString alloc] initWithString:[tmpUrl stringByAppendingString:sinceString]];
+    NSLog(@"charts api query: %@", fullURL);
     return fullURL;
 }
 

@@ -67,7 +67,9 @@
                 case 2:
                     self.topBrand = [UIImage imageNamed:@"LCB-headerImgAsks.png"];
                     break;
-
+                case 3:
+                    self.topBrand = [UIImage imageNamed:@"header_charts"];
+                    break;
                 default:
                     self.topBrand = [UIImage imageNamed:@"LCB_headerImg.png"];
                     break;
