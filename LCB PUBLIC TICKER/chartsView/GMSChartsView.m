@@ -10,14 +10,16 @@
 #import "GMSChartsView.h"
 #import "GMSUtilitiesFunction.h"
 
-@interface GMSChartsView ()
+
+
+@interface GMSChartsView () 
 {
 
 }
 @end
 @implementation GMSChartsView
 
-@synthesize headerChartsImg, chartsPriceView, chartsVolumeView, stackWrapper;
+@synthesize headerChartsImg, chartsPriceView, chartsVolumeView;
 
 
 - (void)viewDidLoad
@@ -33,31 +35,31 @@
     
     //add header
     self.headerChartsImg = [GMSTopBrandImage topImage:3];
-    [self.view addSubview:self.headerChartsImg];
+   [self.view addSubview:self.headerChartsImg];
+    
+    if ( !IS_IPAD )
+    {
+        // origine of subviews
+        CGFloat chartViewOrigine = self.headerChartsImg.frame.size.height + 2;
+        NSLog(@"chartViewOrigine : %f", chartViewOrigine);
 
-    // origine of stackWrapper
-    CGFloat chartViewOrigine = self.headerChartsImg.frame.size.height + 2;
-    NSLog(@"chartViewOrigine : %f", chartViewOrigine);
-    [self.stackWrapper setFrame:CGRectMake(0, chartViewOrigine, viewWidth, viewHeight - chartViewOrigine -50)];
-    
-//    self.stackWrapper.axis = UILayoutConstraintAxisVertical;
-//    self.stackWrapper.distribution = UIStackViewDistributionEqualSpacing;
-////    self.stackWrapper.alignment = UIStackViewAlignmentCenter;
-//    self.stackWrapper.spacing = 2;
-    
-//    [self.chartsVolumeView setFrame:CGRectMake(0, 0, viewWidth, viewHeight - chartViewOrigine)];
-    
-    
-//    CGFloat chartViewOrigine = self.headerChartsImg.frame.size.height + 2;
-////     [self.chartsPriceView setFrame:CGRectMake(0, chartViewOrigine, viewWidth, viewHeight - chartViewOrigine)];
-//    self.chartsPriceView.frame = CGRectMake(0, chartViewOrigine, viewWidth, viewHeight - chartViewOrigine);
-//    [self.view addSubview:self.chartsPriceView];
-//     [self.view layoutIfNeeded];
-//    self.chartsVolumeView.frame = CGRectMake(0, viewHeight, viewWidth, viewHeight - chartViewOrigine);
-//    [self.view addSubview:self.chartsVolumeView];
-////    [self.view setNeedsLayout];
-    
-    
+        [self.chartsPriceView setFrame:CGRectMake(0,
+                                                  chartViewOrigine,
+                                                  viewWidth,
+                                                  (viewHeight - chartViewOrigine) / 2)];
+        [self.view addSubview:self.chartsPriceView];
+
+        [self.chartsVolumeView setFrame:CGRectMake(0,
+                                                  ((viewHeight - chartViewOrigine) / 2) + 22,
+                                                  viewWidth,
+                                                  (viewHeight - chartViewOrigine) / 2)];
+
+        [self.view addSubview:self.chartsVolumeView];
+    }
+   
 }
 
+
 @end
+
+

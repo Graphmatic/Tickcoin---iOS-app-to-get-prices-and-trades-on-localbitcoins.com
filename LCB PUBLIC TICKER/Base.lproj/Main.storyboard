@@ -187,10 +187,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     </tabBar>
                     <connections>
-                        <segue destination="CZ4-MO-1fc" kind="relationship" relationship="viewControllers" id="vlF-BD-5xB"/>
-                        <segue destination="atw-fd-X4C" kind="relationship" relationship="viewControllers" id="Zxh-bW-kXP"/>
-                        <segue destination="eiY-LA-xuV" kind="relationship" relationship="viewControllers" id="LsM-4s-x55"/>
-                        <segue destination="Ry6-S7-9Zh" kind="relationship" relationship="viewControllers" id="B8u-hd-xOA"/>
+                        <segue destination="CZ4-MO-1fc" kind="relationship" relationship="viewControllers" id="ZG7-a5-N8H"/>
+                        <segue destination="atw-fd-X4C" kind="relationship" relationship="viewControllers" id="F8L-gy-fWy"/>
+                        <segue destination="eiY-LA-xuV" kind="relationship" relationship="viewControllers" id="Tiy-DC-Bup"/>
+                        <segue destination="Ry6-S7-9Zh" kind="relationship" relationship="viewControllers" id="9Zh-Il-kGq"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FNP-y4-bzi" sceneMemberID="firstResponder"/>
@@ -419,15 +419,16 @@
         <!--ChartPrice-->
         <scene sceneID="xcj-uQ-YQn">
             <objects>
-                <viewController storyboardIdentifier="GMSBarChartViewPriceController" autoresizesArchivedViewToFullSize="NO" title="ChartPrice" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalPresentationStyle="currentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tom-y5-DVU" customClass="GMSBarChartViewPriceController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GMSBarChartViewPriceController" autoresizesArchivedViewToFullSize="NO" title="ChartPrice" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="currentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tom-y5-DVU" customClass="GMSBarChartViewPriceController" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
+                    <tabBarItem key="tabBarItem" title="Item" id="Gfv-ko-M3F"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bib-P9-eet" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-285" y="-399"/>
+            <point key="canvasLocation" x="-326" y="-631"/>
         </scene>
         <!--Charts-->
         <scene sceneID="Qqf-ZJ-Tnv">
@@ -446,32 +447,25 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.81960784310000001" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
-                            <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" distribution="fillEqually" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="thG-Q2-kVk">
-                                <rect key="frame" x="0.0" y="52" width="375" height="620"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTg-m4-vRk">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="309"/>
-                                        <connections>
-                                            <segue destination="tom-y5-DVU" kind="embed" id="Swq-T1-4Js"/>
-                                        </connections>
-                                    </containerView>
-                                    <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NPq-Lb-V7w">
-                                        <rect key="frame" x="0.0" y="311" width="375" height="309"/>
-                                        <connections>
-                                            <segue destination="Gdf-0i-hbI" kind="embed" id="nPm-c7-NBj"/>
-                                        </connections>
-                                    </containerView>
-                                </subviews>
-                            </stackView>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NPq-Lb-V7w">
+                                <rect key="frame" x="0.0" y="335" width="375" height="283"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTg-m4-vRk">
+                                <rect key="frame" x="0.0" y="60" width="375" height="274"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <segue destination="tom-y5-DVU" kind="embed" id="tBM-t6-l2I"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="OUk-8u-KLh"/>
+                    <navigationItem key="navigationItem" id="7MO-hs-iwJ"/>
                     <connections>
                         <outlet property="chartsPriceView" destination="mTg-m4-vRk" id="ylT-GT-r9Z"/>
                         <outlet property="chartsVolumeView" destination="NPq-Lb-V7w" id="nV2-nt-npm"/>
-                        <outlet property="stackWrapper" destination="thG-Q2-kVk" id="46u-Rt-jCy"/>
                     </connections>
                 </viewController>
                 <navigationItem id="6O5-EY-Q0m"/>
@@ -482,7 +476,7 @@
         <!--ChartVolume-->
         <scene sceneID="7Jx-GV-qY9">
             <objects>
-                <viewController storyboardIdentifier="GMSBarChartViewVolumeController" autoresizesArchivedViewToFullSize="NO" title="ChartVolume" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalPresentationStyle="currentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Gdf-0i-hbI" customClass="GMSBarChartViewVolumeController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GMSBarChartViewVolumeController" autoresizesArchivedViewToFullSize="NO" title="ChartVolume" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="currentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Gdf-0i-hbI" customClass="GMSBarChartViewVolumeController" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>

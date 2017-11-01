@@ -21,6 +21,7 @@
     [super loadView];
     self.edgesForExtendedLayout = UIRectEdgeAll;
     self.view.backgroundColor = GMSColorBlueGreyDark;
+    self.view.userInteractionEnabled = YES;
 }
 
 #pragma mark - Orientation

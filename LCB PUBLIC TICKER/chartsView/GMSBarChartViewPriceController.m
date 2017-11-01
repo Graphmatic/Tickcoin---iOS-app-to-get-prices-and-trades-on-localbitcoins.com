@@ -19,8 +19,8 @@ CGFloat const GMSPriceChartHeaderPadding = 10.0f;
 CGFloat const GMSPriceChartFooterHeight = 25.0f;
 CGFloat const GMSPriceChartFooterPadding = 5.0f;
 NSUInteger GMSPriceBarPadding = 1;
-NSInteger const GMSPriceMaxBarHeight = 2000;
-NSInteger const GMSPriceMinBarHeight = 0;
+NSInteger const GMSPriceMaxBarHeight = 20000;
+NSInteger const GMSPriceMinBarHeight = 2000;
 
 // Strings
 NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
@@ -108,9 +108,11 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 {
     [super loadView];
     
-    
+    [self.view layoutIfNeeded];
+    [self.view setNeedsLayout];
     CGFloat childViewWidth = self.view.bounds.size.width;
     CGFloat childViewHeight = self.view.bounds.size.height;
+    NSLog(@"plouf : %f", childViewHeight);
     
 //    self.view.frame = CGRectMake(0,
 //                                 super.view.frame.size.height,
@@ -118,6 +120,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 //                                 childViewHeight);
     
     // header of first chart (price)
+
     self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(0,
                                                                            0,
                                                                            self.view.bounds.size.width - (GMSPriceChartPadding * 2),
@@ -148,7 +151,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         frameForBarChartView = CGRectMake(0,
                                           0,
                                           childViewWidth,
-                                          childViewHeight/2 - self.headerView.frame.size.height);
+                                          (childViewHeight / 2) - GMSPriceChartFooterHeight - GMSPriceChartHeaderHeight);
     }
     
     self.barChartView = [[GMSBarChartView alloc] initWithFrame:frameForBarChartView];
@@ -157,6 +160,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     self.barChartView.delegate = self;
     self.barChartView.dataSource = self;
     self.barChartView.headerPadding = GMSPriceChartHeaderPadding;
+    
     self.barChartView.backgroundColor = GMSColorBlueGrey;
     
     // add footer and header to bargraph
@@ -174,10 +178,17 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     
     
     lockChart = NO;
+
     [self.view addSubview:self.barChartView];
     [self updateGraph:nil];
+    
+
     [self prepareDatas:nil];
     [self.barChartView reloadData];
+    
+
+
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -221,7 +232,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)barChartView:(GMSBarChartView *)barChartView didSelectBarAtIndex:(NSUInteger)index touchPoint:(CGPoint)touchPoint
 {
-    
+    NSLog(@"touch in view!!!");
     if( lockChart == NO)
     {
         NSString *detailsText = [[NSString alloc] initWithString:currentCurrency];
@@ -247,6 +258,8 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         }
         [self setTooltipVisible:YES animated:YES atTouchPoint:touchPoint];
         [self.tooltipView setText:detailsText];
+        
+
     }
 }
 
@@ -298,11 +311,15 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), currentCurrency];
     }
     
-    
     [self.barChartView reloadData];
     lockChart = NO;
     startingApp = NO;
     //  NSLog(@"output for graph= %@",self.graphDatas.thisDayDatas );  @"No Chart for\nthis currency ";
+    // adapt visual range
+    float q = ( [self.graphDatas.visualRange[0]doubleValue] / 100 ) * 10;
+    self.barChartView.minimumValue = [self.graphDatas.visualRange[0]doubleValue] - q;//+ (lowestValue/100) * 10;
+    self.barChartView.maximumValue = [self.graphDatas.visualRange[1]doubleValue] + q; // + (highestValue/100) * 10;
+    NSLog(@"in barchart:  LOW = %f   ****  HIGH = %f", self.barChartView.minimumValue, self.barChartView.maximumValue);
 }
 
 - (void)updateGraph:(NSNotification *)notification
@@ -365,6 +382,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     [operationGraph setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationGraph, id responseObject)
      {
          [self.graphDatas chartListingCleaned:responseObject];
+        
          noChartForCurrX = NO;
      }
                                           failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)

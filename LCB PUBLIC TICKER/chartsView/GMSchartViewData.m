@@ -14,7 +14,7 @@
 }
 @end
 @implementation GMSchartViewData
-@synthesize thisDayDatas, thisDayDatasAllCurrencies, dateAscSorted, cvsHandlerQ;
+@synthesize thisDayDatas, thisDayDatasAllCurrencies, dateAscSorted, cvsHandlerQ, visualRange;
 
 
 +(id)sharedGraphViewTableData:(NSMutableString*)currency
@@ -44,7 +44,7 @@
                 NSDate *datePlusOneH = [[NSDate alloc]init];
                 NSTimeInterval secondsPerHour = 60 * 60;
                 datePlusOneH  = [graphRequestStart dateByAddingTimeInterval: secondsPerHour];
-                for (int i=0; i<24; i++)
+                for (int i=0; i<23; i++)
                 {
                     NSNumber *fakeNum;
                     NSString *fakeTimeStamp =[[NSString alloc]initWithFormat:@"1111111111"];
@@ -97,16 +97,11 @@
           });
            NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:thisDayDatasAllCurrencies];
            [[NSUserDefaults standardUserDefaults] setObject:thisDayDatasToSave forKey:@"previousDayGraph"];
-
-       
-
    }];
     
-  //  [sendNotifToUI addDependency:buildTheChartData];
+
     [buildTheChartData setQueuePriority:NSOperationQueuePriorityHigh];
-   
     [cvsHandlerQ addOperation:buildTheChartData];
-  //  [cvsHandlerQ addOperation:sendNotifToUI];
 }
 
 //Reorder and merge chart datas
@@ -133,7 +128,7 @@
         NSDate *startDatePlusOneH = [[NSDate alloc]init];
         startDatePlusOneH  = [startDate dateByAddingTimeInterval: secondsPerHour];
        
-        
+        // group by date (each hour)
         for(int z = 0; z < [rawArray count]; z++)
         {
             NSDate *thisDate = [[NSDate alloc]initWithTimeIntervalSince1970:[[[rawArray objectAtIndex:z] objectAtIndex:0]floatValue]];
@@ -141,24 +136,26 @@
            
                 if ([thisDayDatasTmp objectForKey:thisDate])
                 {
-                float a = [[[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:2]floatValue];
-                float b = [[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue];
-                float c = a + b;
-                NSNumber *newAmt = [NSNumber numberWithFloat:c];
-                float d = [[[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:1]floatValue];
-                float e = [[[rawArray objectAtIndex:z]objectAtIndex:1]floatValue];
-                float f = (d + e)/2;
-                NSNumber *newPr = [NSNumber numberWithFloat:f];
-                NSArray *bump = [[NSArray alloc]initWithObjects:[[rawArray objectAtIndex:z]objectAtIndex:0], newPr, newAmt, nil];
-                [thisDayDatasTmp setObject:bump forKey:thisDate];
+                    // sum amount in BTC
+                    float a = [[[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:2]floatValue];
+                    float b = a + [[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue];
+                    NSNumber *newAmt = [NSNumber numberWithFloat:b];
+                    
+                    // price average
+                    float c = [[[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:1]floatValue];
+                    float d = (c + [[[rawArray objectAtIndex:z]objectAtIndex:1]floatValue]) / 2;
+
+                    NSNumber *newPr = [NSNumber numberWithFloat:d];
+                    NSArray *bump = [[NSArray alloc]initWithObjects:[[rawArray objectAtIndex:z]objectAtIndex:0], newPr, newAmt, nil];
+                    [thisDayDatasTmp setObject:bump forKey:thisDate];
                 }
                 else
                 {
-                [thisDayDatasTmp setObject:[rawArray objectAtIndex:z] forKey:thisDate];
+                    [thisDayDatasTmp setObject:[rawArray objectAtIndex:z] forKey:thisDate];
                 }
             
         }
-        NSLog(@"thisDayDatasTmp = %@", thisDayDatasTmp);
+//        NSLog(@"thisDayDatasTmp first grouping = %@", thisDayDatasTmp);
         //check if we get datas for each hour, if not add empty array
         if ([thisDayDatasTmp count] < 24)
         {
@@ -166,7 +163,7 @@
             NSDate *nextHour  = [[NSDate alloc] init];
             nextHour = [graphRequestStart dateByAddingTimeInterval: secondsPerHour];
             NSLog(@"starting 24 loop");
-            for (int o = 0; o < 24; o++)
+            for (int o = 0; o < 12; o++)
             {
                if(![thisDayDatasTmp objectForKey:nextHour])
                 {
@@ -185,14 +182,18 @@
             }
         }
         
-        NSLog(@"thisDayDatasTmp after loop 24 = %@", thisDayDatasTmp);
+//        NSLog(@"thisDayDatasTmp after empty check loop = %@", thisDayDatasTmp);
         
         NSArray *keys = [thisDayDatasTmp allKeys];
+        
         self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
+        // set visual range
+        
         self.thisDayDatas = [thisDayDatasTmp mutableCopy];
         [self.thisDayDatasAllCurrencies setObject:thisDayDatas forKey:currentCurrency];
-    
-  
+        self.visualRange = self.setVisualRange;
+        
+         NSLog(@"dateAscSorted ready = %@", self.dateAscSorted);
    });
 
 }
@@ -207,7 +208,7 @@
         NSDate *nextHour  = [[NSDate alloc] init];
         nextHour = [graphRequestStart dateByAddingTimeInterval: secondsPerHour];
         NSLog(@"starting 24 loop");
-        for (int o = 0; o < 24; o++)
+        for (int o = 0; o < 23; o++)
         {
             
                 NSLog(@"adding one empty keydate - %d", o);
@@ -240,4 +241,44 @@
    
     });
 }
+
+- (NSMutableArray*)setVisualRange
+{
+    // we want the bargraph to explicit price variation rather than absolute value, so...
+    // we catch the lowest and highest values for the current day
+    float lowestValue = 0;
+    float highestValue = 0;
+    int loopCnt = 0;
+    for (NSString *key in self.thisDayDatas)
+    {
+        loopCnt += 1;
+        CGFloat value = [[self.thisDayDatas[key]objectAtIndex:1] floatValue];
+        if ( loopCnt == 1 )
+        {
+            lowestValue = value;
+            highestValue = value;
+        }
+        else
+        {
+            if ( value < lowestValue)
+            {
+                lowestValue = value;
+            }
+            else {
+                if (value > highestValue )
+                {
+                    highestValue = value;
+                }
+            }
+        }
+    }
+    
+    NSMutableArray *vRange = [NSMutableArray array];
+    [vRange addObject:[NSNumber numberWithFloat:lowestValue]];
+    [vRange addObject:[NSNumber numberWithFloat:lowestValue]];
+    
+    NSLog(@"low : %f -- high : %f", lowestValue, highestValue);
+    return vRange;
+}
+
 @end

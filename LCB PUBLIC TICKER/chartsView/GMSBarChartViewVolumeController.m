@@ -12,15 +12,15 @@
 // Numerics
 CGFloat const GMSVolumeChartHeight = 254.0f;
 CGFloat const GMSVolumeChartPadding = 2.0f;
-CGFloat GMSVolumeChartsViewPaddingTop = 0.0f;  // overrided after header title positionning
+CGFloat GMSVolumeChartsViewPaddingTop = 0.0f;
 
 CGFloat const GMSVolumeChartHeaderHeight = 50.0f;
 CGFloat const GMSVolumeChartHeaderPadding = 10.0f;
 CGFloat const GMSVolumeChartFooterHeight = 25.0f;
 CGFloat const GMSVolumeChartFooterPadding = 5.0f;
 NSUInteger GMSVolumeBarPadding = 1;
-NSInteger const GMSVolumeMaxBarHeight = 2000;
-NSInteger const GMSVolumeMinBarHeight = 0;
+NSInteger const GMSVolumeMaxBarHeight = 5000;
+NSInteger const GMSVolumeMinBarHeight = 1;
 
 // Strings
 NSString * const kGMSVolumeNavButtonViewKey = @"view";
@@ -152,6 +152,8 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     [self updateGraph:nil];
     [self prepareDatas:nil];
     [self.barChartView reloadData];
+    
+    self.view.userInteractionEnabled = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -164,7 +166,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (CGFloat)barChartView:(GMSBarChartView *)barChartView heightForBarViewAtAtIndex:(NSUInteger)index
 {
-    return [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1] floatValue];
+    return [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2] floatValue];
 }
 
 #pragma mark - GMSBarChartViewDataSource
@@ -198,7 +200,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     
     if( lockChart == NO)
     {
-        NSString *detailsText = [[NSString alloc] initWithString:currentCurrency];
+        NSString *detailsText = @"BTC";
         detailsText = [detailsText stringByAppendingString:@"\n"];
         NSString *volumeForSelHour = [[NSString alloc] init];
         if ([[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2]floatValue] == 0)

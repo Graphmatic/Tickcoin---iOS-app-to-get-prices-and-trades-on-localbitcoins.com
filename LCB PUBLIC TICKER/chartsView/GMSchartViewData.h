@@ -18,9 +18,11 @@ extern NSDate *graphRequestStart;
 @property (retain, atomic) NSMutableArray *dateAscSorted;
 @property (retain, nonatomic) NSMutableDictionary *thisDayDatasAllCurrencies;
 @property NSOperationQueue *cvsHandlerQ;
+@property (retain, nonatomic) NSMutableArray *visualRange;
 
 + (id)sharedGraphViewTableData:(NSMutableString*)currency;
--(void)chartArray:(id)responseObject;
--(void)chartListingCleaned:(id)responseObject;
+- (void)chartArray:(id)responseObject;
+- (void)chartListingCleaned:(id)responseObject;
 - (void)dummyArrayForMissingChart;
+- (NSMutableArray*)setVisualRange;
 @end

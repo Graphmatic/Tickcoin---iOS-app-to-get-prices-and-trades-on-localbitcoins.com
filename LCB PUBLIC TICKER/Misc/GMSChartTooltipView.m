@@ -12,7 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 // Numerics
-CGFloat static const GMSChartTooltipViewCornerRadius = 3.0;
+CGFloat static const GMSChartTooltipViewCornerRadius = 2.0;
 CGFloat const GMSChartTooltipViewDefaultWidth = 75.0f;
 CGFloat const GMSChartTooltipViewDefaultHeight = 75.0f;
 
@@ -39,7 +39,7 @@ CGFloat const GMSChartTooltipViewDefaultHeight = 75.0f;
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.textColor = GMSColorTooltipTextColor;
         _textLabel.adjustsFontSizeToFitWidth = YES;
-        _textLabel.numberOfLines = 3;
+        _textLabel.numberOfLines = 2;
         _textLabel.textAlignment = NSTextAlignmentCenter;
         
       
