@@ -23,7 +23,6 @@
 		2855A3BD1F9F6E6100BA3398 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F055653318E6DD9300481688 /* Main.storyboard */; };
 		F00A61A318EB694400C35A47 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A218EB694400C35A47 /* Twitter.framework */; };
 		F00A61A518EB6B8500C35A47 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A418EB6B8500C35A47 /* Social.framework */; };
-		F00B12DE190B882A00ABF692 /* glass.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B12DD190B882A00ABF692 /* glass.png */; };
 		F00B2143191C05D1006D3B6F /* EmptySegue.m in Sources */ = {isa = PBXBuildFile; fileRef = F00B2142191C05D1006D3B6F /* EmptySegue.m */; };
 		F00B2146191C0705006D3B6F /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F00B2145191C0705006D3B6F /* ContainerViewController.m */; };
 		F012456F18E71D0E002FAADA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F012456E18E71D0E002FAADA /* MobileCoreServices.framework */; };
@@ -69,7 +68,6 @@
 		F055654E18E6DD9300481688 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F055654C18E6DD9300481688 /* InfoPlist.strings */; };
 		F055655018E6DD9300481688 /* LCB_PUBLIC_TICKERTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F055654F18E6DD9300481688 /* LCB_PUBLIC_TICKERTests.m */; };
 		F063CAC51922A42D00722F02 /* GMSchartViewData.m in Sources */ = {isa = PBXBuildFile; fileRef = F063CAC41922A42D00722F02 /* GMSchartViewData.m */; };
-		F0650A1A18EB06A600EDE8CE /* LCB_headerImg.png in Resources */ = {isa = PBXBuildFile; fileRef = F0650A1918EB06A600EDE8CE /* LCB_headerImg.png */; };
 		F065FE7E18E73DD0005B0376 /* GMSMessageBox.m in Sources */ = {isa = PBXBuildFile; fileRef = F065FE7C18E73DD0005B0376 /* GMSMessageBox.m */; };
 		F065FE7F18E73DD0005B0376 /* GMSMessageBox.m in Sources */ = {isa = PBXBuildFile; fileRef = F065FE7C18E73DD0005B0376 /* GMSMessageBox.m */; };
 		F065FE8B18E7B226005B0376 /* GMSlabelFromJson.m in Sources */ = {isa = PBXBuildFile; fileRef = F065FE8A18E7B226005B0376 /* GMSlabelFromJson.m */; };
@@ -155,7 +153,6 @@
 		28BAB03E1F9DFAB3008F9358 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F00A61A218EB694400C35A47 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F00A61A418EB6B8500C35A47 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		F00B12DD190B882A00ABF692 /* glass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = glass.png; path = "LCB PUBLIC TICKER/Images.xcassets/glass.imageset/glass.png"; sourceTree = "<group>"; };
 		F00B2141191C05D1006D3B6F /* EmptySegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptySegue.h; sourceTree = "<group>"; };
 		F00B2142191C05D1006D3B6F /* EmptySegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptySegue.m; sourceTree = "<group>"; };
 		F00B2144191C0705006D3B6F /* ContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerViewController.h; sourceTree = "<group>"; };
@@ -228,7 +225,6 @@
 		F055654F18E6DD9300481688 /* LCB_PUBLIC_TICKERTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LCB_PUBLIC_TICKERTests.m; sourceTree = "<group>"; };
 		F063CAC31922A42D00722F02 /* GMSchartViewData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSchartViewData.h; sourceTree = "<group>"; };
 		F063CAC41922A42D00722F02 /* GMSchartViewData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSchartViewData.m; sourceTree = "<group>"; };
-		F0650A1918EB06A600EDE8CE /* LCB_headerImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LCB_headerImg.png; path = photoshop/LCB_headerImg.png; sourceTree = "<group>"; };
 		F065FE7718E72DA5005B0376 /* GMSConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSConstant.h; sourceTree = "<group>"; };
 		F065FE7C18E73DD0005B0376 /* GMSMessageBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSMessageBox.m; sourceTree = "<group>"; };
 		F065FE7D18E73DD0005B0376 /* GMSMessageBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSMessageBox.h; sourceTree = "<group>"; };
@@ -692,8 +688,6 @@
 				F06CA122191D2A1100D09454 /* refresh_thin.png */,
 				F08760C519002D1D003BB5C0 /* LCB-headerImgBids.png */,
 				F08760C619002D1D003BB5C0 /* LCB-headerImg2@x2.png */,
-				F00B12DD190B882A00ABF692 /* glass.png */,
-				F0650A1918EB06A600EDE8CE /* LCB_headerImg.png */,
 			);
 			name = img_ressources;
 			path = ..;
@@ -788,7 +782,6 @@
 				F06CA094191CD86700D09454 /* LCB_headerImgIpadBig.png in Resources */,
 				F06E96E819300241003A5786 /* fourth.png in Resources */,
 				F02BFCC719192F8100D2520D /* LCB-headerImgAsks.png in Resources */,
-				F00B12DE190B882A00ABF692 /* glass.png in Resources */,
 				F055653D18E6DD9300481688 /* Images.xcassets in Resources */,
 				F055652C18E6DD9300481688 /* InfoPlist.strings in Resources */,
 				F0C01E4D191BEC8200A45B9B /* StoryboardForIpad.storyboard in Resources */,
@@ -810,7 +803,6 @@
 				F0F7B52C191F5A84005FA5BF /* icon-jawbone-logo.png in Resources */,
 				F0F7B529191F5A84005FA5BF /* icon-arrow@2x.png in Resources */,
 				F0F7B52B191F5A84005FA5BF /* icon-bar-chart@2x.png in Resources */,
-				F0650A1A18EB06A600EDE8CE /* LCB_headerImg.png in Resources */,
 				F06CA118191CDBBD00D09454 /* LCB_headerImgAsksIpadBig@x2.png in Resources */,
 				F0F7B52A191F5A84005FA5BF /* icon-bar-chart.png in Resources */,
 				F06CA123191D2A1100D09454 /* refresh_thin.png in Resources */,

@@ -176,25 +176,36 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
                                                  name:@"changeNow"
                                                object:nil];
     
-    
     lockChart = NO;
 
     [self.view addSubview:self.barChartView];
     [self updateGraph:nil];
     
-
     [self prepareDatas:nil];
     [self.barChartView reloadData];
     
+    // add observer so visual range is adapted as soon as graphDatas are updated
+    [self.graphDatas addObserver:self forKeyPath:@"visualRange" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
 
+}
 
-
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    
+    if ([keyPath isEqualToString:@"visualRange"]) {
+        // adapt visual range
+        float q = ( [self.graphDatas.visualRange[0]doubleValue] / 100 ) * 10;
+        self.barChartView.minimumValue = [self.graphDatas.visualRange[0]doubleValue] - q;
+        self.barChartView.maximumValue = [self.graphDatas.visualRange[1]doubleValue] + q;
+        NSLog(@"visualRange was changed.");
+        NSLog(@"in barchart:  LOW = %f   ****  HIGH = %f", [self.graphDatas.visualRange[0]doubleValue], [self.graphDatas.visualRange[1]doubleValue]);
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.barChartView setState:GMSChartViewStateExpanded];
+    
 }
 
 #pragma mark - GMSBarChartViewDelegate
@@ -312,14 +323,11 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     }
     
     [self.barChartView reloadData];
+    
     lockChart = NO;
     startingApp = NO;
     //  NSLog(@"output for graph= %@",self.graphDatas.thisDayDatas );  @"No Chart for\nthis currency ";
-    // adapt visual range
-    float q = ( [self.graphDatas.visualRange[0]doubleValue] / 100 ) * 10;
-    self.barChartView.minimumValue = [self.graphDatas.visualRange[0]doubleValue] - q;//+ (lowestValue/100) * 10;
-    self.barChartView.maximumValue = [self.graphDatas.visualRange[1]doubleValue] + q; // + (highestValue/100) * 10;
-    NSLog(@"in barchart:  LOW = %f   ****  HIGH = %f", self.barChartView.minimumValue, self.barChartView.maximumValue);
+
 }
 
 - (void)updateGraph:(NSNotification *)notification
@@ -327,6 +335,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     if (startingApp == YES)
     {
         [self graphWebRequest];
+        
     }
     else
     {
@@ -394,4 +403,5 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     
 }
 @end
+
 

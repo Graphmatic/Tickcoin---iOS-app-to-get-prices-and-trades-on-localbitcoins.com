@@ -167,6 +167,8 @@ static UIColor *kGMSBarChartViewDefaultBarColor = nil;
             [barView removeFromSuperview];
         }
         
+        
+        
         CGFloat xOffset = 0;
         NSUInteger index = 0;
         NSMutableArray *mutableBarViews = [NSMutableArray array];

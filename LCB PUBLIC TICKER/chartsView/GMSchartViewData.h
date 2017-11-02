@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GMSfirstViewTableData.h"
+
 @interface GMSchartViewData : NSObject
 extern BOOL firstLaunch;
 extern BOOL connected;
@@ -24,5 +25,5 @@ extern NSDate *graphRequestStart;
 - (void)chartArray:(id)responseObject;
 - (void)chartListingCleaned:(id)responseObject;
 - (void)dummyArrayForMissingChart;
-- (NSMutableArray*)setVisualRange;
++ (NSMutableArray*)priceMinMax:(NSMutableDictionary*)todayDatas;
 @end

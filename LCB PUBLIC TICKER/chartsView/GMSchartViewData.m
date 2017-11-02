@@ -23,10 +23,10 @@
     static dispatch_once_t onceToken = 0;
     dispatch_once(&onceToken, ^{
         sharedGMSchartViewData = [[self alloc] init:firstLaunch currency:currency];
-        
     });
     return sharedGMSchartViewData;
 }
+
 - (id)init:(BOOL)firstlaunch currency:(NSMutableString*)currency
 {
     
@@ -78,14 +78,11 @@
 }
 -(void)chartListingCleaned:(id)responseObject
 {
-  
-      //  [cvsHandlerQ cancelAllOperations];
+
     NSInvocationOperation *buildTheChartData = [[NSInvocationOperation alloc]initWithTarget:self
                                                                       selector:@selector(chartArray:)
                                                                       object:responseObject];
-  //  NSInvocationOperation *sendNotifToUI = [[NSInvocationOperation alloc]initWithTarget:self
-   //                                                                                selector:@selector(sendNotifToViewController:)
-      //                                                                               object:@"thisDayChartChange"];
+
    [buildTheChartData setCompletionBlock:^{
        dispatch_async(dispatch_get_main_queue(), ^{
            [[NSNotificationCenter defaultCenter]
@@ -184,14 +181,14 @@
         
 //        NSLog(@"thisDayDatasTmp after empty check loop = %@", thisDayDatasTmp);
         
-        NSArray *keys = [thisDayDatasTmp allKeys];
         
+        NSArray *keys = [thisDayDatasTmp allKeys];
         self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
         // set visual range
         
         self.thisDayDatas = [thisDayDatasTmp mutableCopy];
         [self.thisDayDatasAllCurrencies setObject:thisDayDatas forKey:currentCurrency];
-        self.visualRange = self.setVisualRange;
+        self.visualRange = [GMSchartViewData priceMinMax:thisDayDatasTmp];
         
          NSLog(@"dateAscSorted ready = %@", self.dateAscSorted);
    });
@@ -242,17 +239,17 @@
     });
 }
 
-- (NSMutableArray*)setVisualRange
++ (NSMutableArray*)priceMinMax: (NSMutableDictionary*)todayDatas
 {
     // we want the bargraph to explicit price variation rather than absolute value, so...
     // we catch the lowest and highest values for the current day
     float lowestValue = 0;
     float highestValue = 0;
     int loopCnt = 0;
-    for (NSString *key in self.thisDayDatas)
+    for (NSString *key in todayDatas)
     {
         loopCnt += 1;
-        CGFloat value = [[self.thisDayDatas[key]objectAtIndex:1] floatValue];
+        CGFloat value = [[todayDatas[key]objectAtIndex:1] floatValue];
         if ( loopCnt == 1 )
         {
             lowestValue = value;
