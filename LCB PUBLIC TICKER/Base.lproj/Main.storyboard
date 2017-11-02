@@ -455,7 +455,7 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTg-m4-vRk">
-                                <rect key="frame" x="0.0" y="60" width="375" height="274"/>
+                                <rect key="frame" x="0.0" y="60" width="0.0" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <segue destination="tom-y5-DVU" kind="embed" id="tBM-t6-l2I"/>

@@ -84,26 +84,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 #pragma mark - View Lifecycle
 
-//- (void)viewDidLayoutSubviews {
-//
-//
-//    GMSPriceChartsViewPaddingTop =  2;
-//
-//    // backup parent view size
-//    CGFloat childViewWidth = self.view.bounds.size.width;
-//    CGFloat childViewHeight = self.view.bounds.size.height;
-//
-//    NSLog(@"GMSPriceChartsViewPaddingTop : %f", GMSPriceChartsViewPaddingTop);
-////    if ( !IS_IPAD )
-////    {
-////        CGRect updatedChartsViewHeaderFrame = CGRectMake(0, GMSPriceChartsViewPaddingTop, childViewWidth, GMSPriceChartHeaderHeight);
-////        self.headerView.frame = updatedChartsViewHeaderFrame;
-////        CGRect updatedChartsViewFrame = CGRectMake(0, GMSPriceChartsViewPaddingTop, childViewWidth, childViewHeight - GMSPriceChartsViewPaddingTop );
-////        self.barChartView.frame = updatedChartsViewFrame;
-////    }
-//
-//}
-
 - (void)loadView
 {
     [super loadView];
@@ -112,12 +92,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     [self.view setNeedsLayout];
     CGFloat childViewWidth = self.view.bounds.size.width;
     CGFloat childViewHeight = self.view.bounds.size.height;
-    NSLog(@"plouf : %f", childViewHeight);
-    
-//    self.view.frame = CGRectMake(0,
-//                                 super.view.frame.size.height,
-//                                 self.view.bounds.size.width - (GMSPriceChartPadding * 2),
-//                                 childViewHeight);
     
     // header of first chart (price)
 
@@ -176,7 +150,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
                                                  name:@"changeNow"
                                                object:nil];
     
-    lockChart = NO;
+    lockChart = NO;  // this flag is used to check if GMSchartViewData singleton is
 
     [self.view addSubview:self.barChartView];
     [self updateGraph:nil];
@@ -191,13 +165,15 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     
-    if ([keyPath isEqualToString:@"visualRange"]) {
+    if ([keyPath isEqualToString:@"visualRangeForPrices"]) {
         // adapt visual range
-        float q = ( [self.graphDatas.visualRange[0]doubleValue] / 100 ) * 10;
-        self.barChartView.minimumValue = [self.graphDatas.visualRange[0]doubleValue] - q;
-        self.barChartView.maximumValue = [self.graphDatas.visualRange[1]doubleValue] + q;
+        float q = ( [self.graphDatas.visualRangeForPrices[0]doubleValue] / 100 ) * 10;
+        self.barChartView.minimumValue = [self.graphDatas.visualRangeForPrices[0]doubleValue] - q;
+        self.barChartView.maximumValue = [self.graphDatas.visualRangeForPrices[1]doubleValue] + q;
+        
+        // debug
         NSLog(@"visualRange was changed.");
-        NSLog(@"in barchart:  LOW = %f   ****  HIGH = %f", [self.graphDatas.visualRange[0]doubleValue], [self.graphDatas.visualRange[1]doubleValue]);
+        NSLog(@"in barchart:  LOW = %f   ****  HIGH = %f", [self.graphDatas.visualRangeForPrices[0]doubleValue], [self.graphDatas.visualRangeForPrices[1]doubleValue]);
     }
 }
 
@@ -243,7 +219,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)barChartView:(GMSBarChartView *)barChartView didSelectBarAtIndex:(NSUInteger)index touchPoint:(CGPoint)touchPoint
 {
-    NSLog(@"touch in view!!!");
     if( lockChart == NO)
     {
         NSString *detailsText = [[NSString alloc] initWithString:currentCurrency];
@@ -269,8 +244,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         }
         [self setTooltipVisible:YES animated:YES atTouchPoint:touchPoint];
         [self.tooltipView setText:detailsText];
-        
-
     }
 }
 
@@ -304,7 +277,9 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 {
     return self.barChartView;
 }
+
 #pragma mark - Data web request
+
 - (void)prepareDatas:(NSNotification *)notification
 {
     if (noChartForCurrX == NO)
@@ -326,8 +301,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     
     lockChart = NO;
     startingApp = NO;
-    //  NSLog(@"output for graph= %@",self.graphDatas.thisDayDatas );  @"No Chart for\nthis currency ";
-
 }
 
 - (void)updateGraph:(NSNotification *)notification
@@ -383,6 +356,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     
     
 }
+
 - (void) graphWebRequest
 {
     NSString *fullURL = [GMSUtilitiesFunction graphUrl];
