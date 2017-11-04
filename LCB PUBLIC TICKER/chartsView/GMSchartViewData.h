@@ -15,18 +15,19 @@ extern BOOL connected;
 extern BOOL lockChart;
 extern NSDate *graphRequestStart;
 
-@property  (retain, atomic) NSMutableDictionary *thisDayDatas;
+@property  (retain, nonatomic) NSMutableDictionary *thisDayDatas;
+@property  (retain, atomic) NSString *currency;
 @property (retain, atomic) NSMutableArray *dateAscSorted;
 @property (retain, nonatomic) NSMutableDictionary *thisDayDatasAllCurrencies;
 @property NSOperationQueue *cvsHandlerQ;
-@property (retain, nonatomic) NSMutableArray *visualRangeForPrices;
-@property (retain, nonatomic) NSMutableArray *visualRangeForVolumes;
+@property (retain, nonatomic) NSMutableDictionary *visualRangeForPricesAndVolumes;
+@property (readwrite) BOOL apiQuerySuccess;
 
-+ (GMSchartViewData*)sharedGraphViewTableData:(NSMutableString*)currency;
++ (GMSchartViewData *)sharedGraphViewTableData:(NSMutableString*)currency;
 - (void)chartArray:(id)responseObject;
 - (void)chartListingCleaned:(id)responseObject;
 - (void)dummyArrayForMissingChart;
-+ (NSMutableArray*)priceMinMax:(NSMutableDictionary*)todayDatas;
-+ (NSMutableArray*)volumeMinMax:(NSMutableDictionary*)todayDatas;
-+ (NSMutableArray*)datasDeltasLoop: (NSMutableDictionary*)todayDatas :(NSString*)target;
+- (void)apiQuery;
+
++ (NSMutableDictionary*)datasDeltasLoop: (NSMutableDictionary*)todayDatas;
 @end

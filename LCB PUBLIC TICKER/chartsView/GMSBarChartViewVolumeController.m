@@ -149,11 +149,15 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     
     lockChart = NO;
     [self.view addSubview:self.barChartView];
-    [self updateGraph:nil];
-    [self prepareDatas:nil];
-    [self.barChartView reloadData];
+    // instead of '[self updateGraph:nil];'  let adds observer to update graph if API query have been triggered in GMSBarChartViewVolumeController.m
+    [self addObserver:self forKeyPath:@"graphDatas" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+//
+//    [self prepareDatas:nil];
+//    [self.barChartView reloadData];
     
-    self.view.userInteractionEnabled = YES;
+    // add observer so visual range is adapted as soon as graphDatas are updated
+    [self.graphDatas addObserver:self forKeyPath:@"visualRangeForPricesAndVolumes" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -265,7 +269,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 {
     return self.barChartView;
 }
-#pragma mark - Data web request
+
 - (void)prepareDatas:(NSNotification *)notification
 {
     if (noChartForCurrX == NO)
@@ -283,11 +287,9 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
         self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), currentCurrency];
     }
     
-    
     [self.barChartView reloadData];
     lockChart = NO;
     startingApp = NO;
-    //  NSLog(@"output for graph= %@",self.graphDatas.thisDayDatas );  @"No Chart for\nthis currency ";
 }
 
 - (void)updateGraph:(NSNotification *)notification
@@ -336,14 +338,38 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
                     [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(graphWebRequest) userInfo:nil repeats:NO];
                 }
             }
-            
         }
     }
-    
-    
 }
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"graphDatas"])
+    {
+//        [self updateGraph:nil];
+        [self prepareDatas:nil];
+        [self.barChartView reloadData];
+        
+        // debug
+        NSLog(@"Volumes Charts: datas binding triggered.");
+    }
+    
+    if ([keyPath isEqualToString:@"visualRangeForPrices"]) {
+        // adapt visual range
+        float q = ( [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"volumesDelta"][0]doubleValue] / 100 ) * 10;
+        self.barChartView.minimumValue = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"volumesDelta"][0]doubleValue] - q;
+        self.barChartView.maximumValue = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"volumesDelta"][1]doubleValue] + q;
+        
+        // debug
+        NSLog(@"visualRange was changed.");
+        NSLog(@"in Volumes barchart:  LOW = %f   ****  HIGH = %f", [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"volumesDelta"][0]doubleValue], [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"volumesDelta"][0]doubleValue]);
+    }
+}
+
 - (void) graphWebRequest
 {
+    // API query already done in GMSBarChartViewVolumeController, so it's only needed to bind datas from the existing instance of GMSchartViewData
+//    self.graphDatas = GMSchartV
     NSString *fullURL = [GMSUtilitiesFunction graphUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
     AFHTTPRequestOperation *operationGraph = [[AFHTTPRequestOperation alloc] initWithRequest:request];

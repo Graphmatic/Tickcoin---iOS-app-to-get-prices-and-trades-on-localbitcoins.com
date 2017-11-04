@@ -125,7 +125,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         frameForBarChartView = CGRectMake(0,
                                           0,
                                           childViewWidth,
-                                          (childViewHeight / 2) - GMSPriceChartFooterHeight - GMSPriceChartHeaderHeight);
+                                          (childViewHeight / 2) - GMSPriceChartHeaderHeight);
     }
     
     self.barChartView = [[GMSBarChartView alloc] initWithFrame:frameForBarChartView];
@@ -159,22 +159,8 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     [self.barChartView reloadData];
     
     // add observer so visual range is adapted as soon as graphDatas are updated
-    [self.graphDatas addObserver:self forKeyPath:@"visualRange" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    [self.graphDatas.visualRangeForPricesAndVolumes addObserver:self forKeyPath:@"pricesDelta" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
 
-}
-
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-    
-    if ([keyPath isEqualToString:@"visualRangeForPrices"]) {
-        // adapt visual range
-        float q = ( [self.graphDatas.visualRangeForPrices[0]doubleValue] / 100 ) * 10;
-        self.barChartView.minimumValue = [self.graphDatas.visualRangeForPrices[0]doubleValue] - q;
-        self.barChartView.maximumValue = [self.graphDatas.visualRangeForPrices[1]doubleValue] + q;
-        
-        // debug
-        NSLog(@"visualRange was changed.");
-        NSLog(@"in barchart:  LOW = %f   ****  HIGH = %f", [self.graphDatas.visualRangeForPrices[0]doubleValue], [self.graphDatas.visualRangeForPrices[1]doubleValue]);
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -350,11 +336,24 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
                     [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(graphWebRequest) userInfo:nil repeats:NO];
                 }
             }
-            
         }
     }
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     
-    
+    if ([keyPath isEqualToString:@"visualRangeForPrices"]) {
+        // adapt visual range
+        CGFloat q = ( [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] / 100 ) * 10; // limit upper range
+        CGFloat lowFloor = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] - q;
+        if ( lowFloor < 0 ) { lowFloor = 0; }
+        self.barChartView.minimumValue = 6000;
+        self.barChartView.maximumValue = 20000;
+        
+        // debug
+        NSLog(@"visualRange was changed.");
+        NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue], [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue]);
+    }
 }
 
 - (void) graphWebRequest
@@ -365,7 +364,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     [operationGraph setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationGraph, id responseObject)
      {
          [self.graphDatas chartListingCleaned:responseObject];
-        
          noChartForCurrX = NO;
      }
                                           failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)
@@ -374,7 +372,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
          noChartForCurrX = YES;
      }];
     [operationGraph start];
-    
 }
 @end
 

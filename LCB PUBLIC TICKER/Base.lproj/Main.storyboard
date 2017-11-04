@@ -450,9 +450,6 @@
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NPq-Lb-V7w">
                                 <rect key="frame" x="0.0" y="335" width="375" height="283"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <segue destination="Gdf-0i-hbI" kind="embed" id="KyR-06-dPW"/>
-                                </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTg-m4-vRk">
                                 <rect key="frame" x="0.0" y="60" width="0.0" height="0.0"/>
