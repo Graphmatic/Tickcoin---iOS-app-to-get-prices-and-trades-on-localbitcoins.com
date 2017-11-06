@@ -50,7 +50,7 @@
         [self.tableView setBackgroundColor:[UIColor blackColor]];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateTickerThirdView:)
-                                                     name:@"changeNow"
+                                                     name:@"currencySwitching"
                                                    object:nil];
         self.sliderVal.hidden =YES;
         settingOn = YES;

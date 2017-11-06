@@ -99,15 +99,23 @@
     self.cellValues = [self cellValFromTicker:self.ticker currency:currentCurrency];
     self.cellTitles = [self titlesFromCellVal:self.cellValues];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self sendNotifToViewController:@"changeCurrenciesList"];
-        [self sendNotifToViewController:@"changeNow"];
+        [self sendNotifToViewController:@"currencyListUpdate"];
+        [self sendNotifToViewController:@"currencySwitching"];
     });
 }
+
 -(void)currencyChange:(NSMutableString*)currency
 {
-        self.cellValues = [self cellValFromTicker:self.ticker currency:currency];
-        self.cellTitles = [self titlesFromCellVal:self.cellValues];
-        [self sendNotifToViewController:@"changeNow"];
+    // debug
+    NSLog(@"@Currency switching: change to %@", currency);
+    
+    self.cellValues = [self cellValFromTicker:self.ticker currency:currency];
+    self.cellTitles = [self titlesFromCellVal:self.cellValues];
+    
+    // save to DB
+    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
+    // send Notif' to propagate change
+    [self currencyChangeNotify:@"currencySwitching" newCurrency:currency];
 }
 
 -(void)update:(NSMutableDictionary*)theNewTicker
@@ -118,8 +126,8 @@
     self.cellTitles = [self titlesFromCellVal:self.cellValues];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-    [self sendNotifToViewController:@"changeCurrenciesList"];
-    [self sendNotifToViewController:@"changeNow"];
+        [self sendNotifToViewController:@"currencyListUpdate"];
+        [self currencyChangeNotify:@"currencySwitching" newCurrency:currentCurrency];
     });
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self saveTicker];
@@ -132,10 +140,11 @@
 //update values and titles of daily price ticker for selected currency and return a cleaned dict
 -(NSMutableDictionary*)cellValFromTicker:(NSMutableDictionary*)theTicker currency:(NSMutableString*)currency
 {
-//    NSLog(@"downloadedfullticker = %@", downloadedFullTicker);
     NSMutableDictionary *newTickerCellVal = [[NSMutableDictionary alloc]init];
+    
     NSDictionary *tickerForSelectedCurrency;
     tickerForSelectedCurrency = [theTicker objectForKey:currency];
+    
     NSArray *suppKeys = [[NSArray alloc]initWithArray:[self supposedKeys]];
     for(NSUInteger k = 0; k < [suppKeys count]; k++)
     {
@@ -163,6 +172,7 @@
     }
      return newTickerCellVal;
 }
+
 // return ticker key resp. to value present in newTickerCellVal
 -(NSMutableArray*)titlesFromCellVal:(NSMutableDictionary *)tickerCellValDict
 {
@@ -193,7 +203,7 @@
     return supposedKeys;
 }
 
-
+// generic
 - (void)sendNotifToViewController:(NSString*)theNotif
 {
     NSDictionary *userInfo = [[NSDictionary alloc]init];
@@ -202,6 +212,17 @@
      object:nil
      userInfo:userInfo];
 }
+
+// specific to currency change
+-(void)currencyChangeNotify:(NSString*)theNotif newCurrency:(NSMutableString*)currency
+{
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:currency forKey:@"newCurrency"];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:theNotif
+     object:nil
+     userInfo:userInfo];
+}
+
 - (void)saveTicker
 {
     // dict to nsdata package

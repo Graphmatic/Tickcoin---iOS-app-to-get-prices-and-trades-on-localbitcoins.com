@@ -143,7 +143,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateGraph:)
-                                                 name:@"changeNow"
+                                                 name:@"currencySwitching"
                                                object:nil];
     
     

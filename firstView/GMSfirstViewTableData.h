@@ -13,11 +13,12 @@ extern NSMutableString *lastRecordDate;
 @interface GMSfirstViewTableData : NSObject
 
 + (id)sharedFirstViewTableData:(NSMutableString*)currency;
--(void)currencyChange:(NSMutableString*)currency;
--(void)update:(NSMutableDictionary*)theNewTicker;
--(NSMutableDictionary*)cellValFromTicker:(NSMutableDictionary*)theTicker currency:(NSMutableString*)currency;
--(NSMutableArray*)titlesFromCellVal:(NSMutableDictionary *)tickerCellValDict;
--(void)sendNotifToViewController:(NSString*)theNotif;
+- (void)currencyChange:(NSMutableString*)currency;
+- (void)update:(NSMutableDictionary*)theNewTicker;
+- (NSMutableDictionary*)cellValFromTicker:(NSMutableDictionary*)theTicker currency:(NSMutableString*)currency;
+- (NSMutableArray*)titlesFromCellVal:(NSMutableDictionary *)tickerCellValDict;
+- (void)sendNotifToViewController:(NSString*)theNotif;
+- (void)currencyChangeNotify:(NSString*)notification newCurrency:(NSMutableString*)currency;
 
 @property ( atomic, retain )  NSMutableDictionary *ticker;
 @property ( atomic, retain ) NSMutableDictionary *cellValues;

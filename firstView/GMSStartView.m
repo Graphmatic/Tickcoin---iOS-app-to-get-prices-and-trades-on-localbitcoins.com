@@ -32,15 +32,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Register for notification.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidEnterBackground:)
-                                                 name:UIApplicationDidEnterBackgroundNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"changeNow" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"changeCurrenciesList" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
-
 
     // backup parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
@@ -144,23 +135,25 @@
     }
     
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
-    // Register for notification.
+    // Register for notification. (placed in viewDidLoad(), notifs are not re-activated after views switching.)
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"changeNow" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"changeCurrenciesList" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"currencySwitching" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"currencyListUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
-    
 }
 
+//
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    //datas handler//
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -205,28 +198,28 @@
          self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartNoConnect:) userInfo:error repeats:YES];
      }];
     [operation start];
-    
 }
+
 - (void)prepareDatas:(NSNotification *)notification
 {
     [self.tableView reloadData];
-    
 }
+
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    //currency Picker//
 //---------------------------------------------------------------------------------------------------------------------------//
 - (void) updatePickerList:(NSNotification *)notification
 {
-    
     NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
-    
 }
+
 - (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return 1;
 }
+
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     return self.firstViewDatas.currenciesList.count;
@@ -240,6 +233,7 @@
     NSAttributedString *pickerTitleColor = [[NSAttributedString alloc] initWithString:pickerTitle attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSParagraphStyleAttributeName:centeredStyle}];
     return pickerTitleColor;
 }
+
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
@@ -330,7 +324,7 @@
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    //messages handler//
 //---------------------------------------------------------------------------------------------------------------------------//
-- (void) messageBoxChange:(NSNotification *)notification
+- (void)messageBoxChange:(NSNotification *)notification
 {
     self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), lastRecordDate, currentCurrency];
     
@@ -340,7 +334,7 @@
     self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
     
 }
--(void)timerStartNoConnect:(NSTimer *)theTimer
+- (void)timerStartNoConnect:(NSTimer *)theTimer
 {
     alt = !alt;
     NSError *err = [theTimer userInfo];
@@ -353,6 +347,7 @@
     alt = !alt;
     self.messageBoxLabel.text = [self.messageBoxMessage dailyMessages:alt connected:connected];
 }
+
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // facebook //
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -514,6 +509,7 @@
             break;
     }
 }
+
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // sms message //
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -549,6 +545,7 @@
         [self deselectRow:indexP];
     }
 }
+
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller
                  didFinishWithResult:(MessageComposeResult)result
 {
@@ -570,6 +567,7 @@
             break;
     }
 }
+
 - (void) viewDidUnload
 {
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
@@ -577,9 +575,9 @@
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
-    
     NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:NO];
@@ -588,8 +586,10 @@
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
 }
+
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
+    // save current selected currency to db (should have been already done...)
     [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
 }
 

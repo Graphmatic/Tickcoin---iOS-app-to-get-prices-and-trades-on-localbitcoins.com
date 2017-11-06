@@ -36,7 +36,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 
 // Data
-- (void)initFakeData;
+- (void)initWithDatas;
 
 @end
 
@@ -49,7 +49,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     self = [super init];
     if (self)
     {
-        [self initFakeData];
+        [self initWithDatas];
     }
     return self;
 }
@@ -59,7 +59,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        [self initFakeData];
+        [self initWithDatas];
     }
     return self;
 }
@@ -69,14 +69,14 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        [self initFakeData];
+        [self initWithDatas];
     }
     return self;
 }
 
 #pragma mark - Date
 
-- (void)initFakeData
+- (void)initWithDatas
 {
     noChartForCurrX = NO;
     self.graphDatas = [GMSchartViewData sharedGraphViewTableData:currentCurrency];
@@ -141,25 +141,23 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     self.barChartView.headerView = self.headerView;
     self.barChartView.footerView = footerView;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(prepareDatas:)
-                                                 name:@"thisDayChartChange"
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateGraph:)
-                                                 name:@"changeNow"
-                                               object:nil];
-    
-    lockChart = NO;  // this flag is used to check if GMSchartViewData singleton is
-
-    [self.view addSubview:self.barChartView];
-    [self updateGraph:nil];
-    
-    [self prepareDatas:nil];
-    [self.barChartView reloadData];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(prepareDatas:)
+//                                                 name:@"thisDayChartChange"
+//                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(updateGraph:)
+//                                                 name:@"currencySwitching"
+//                                               object:nil];
     
     // add observer so visual range is adapted as soon as graphDatas are updated
-    [self.graphDatas.visualRangeForPricesAndVolumes addObserver:self forKeyPath:@"pricesDelta" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    [self.graphDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    
+    lockChart = NO;  // this flag is used to check if GMSchartViewData singleton is computing
+
+    [self.view addSubview:self.barChartView];
+    
+
 
 }
 
@@ -266,9 +264,9 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 #pragma mark - Data web request
 
-- (void)prepareDatas:(NSNotification *)notification
+- (void)setupVisibleElement
 {
-    if (noChartForCurrX == NO)
+    if ( noChartForCurrX == NO )
     {
         self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -289,90 +287,29 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     startingApp = NO;
 }
 
-- (void)updateGraph:(NSNotification *)notification
-{
-    if (startingApp == YES)
-    {
-        [self graphWebRequest];
-        
-    }
-    else
-    {
-        NSDate *isNow = [[NSDate alloc]init];
-        isNow = [GMSUtilitiesFunction roundDateToHour:isNow];
-        NSComparisonResult compareDate;
-        NSTimeInterval plusOneH = (60 * 60);
-        NSDate *minDelay = [graphRequestStart dateByAddingTimeInterval:plusOneH];
-        compareDate = [isNow compare:minDelay]; // comparing two dates
-        
-        if(compareDate != NSOrderedAscending) //isNow is equal or later -->  try to send request
-        {
-            if( lockChart == NO)
-            {
-                [self graphWebRequest];
-            }
-            else
-            {
-                [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(graphWebRequest) userInfo:nil repeats:NO];
-            }
-        }
-        else
-        {
-            if ([self.graphDatas.thisDayDatasAllCurrencies objectForKey:currentCurrency] != nil)
-            {
-                [[NSNotificationCenter defaultCenter]
-                 postNotificationName:@"thisDayChartChange"
-                 object:nil
-                 userInfo:nil];
-            }
-            else
-            {
-                if( lockChart == NO)
-                {
-                    [self graphWebRequest];
-                }
-                else
-                {
-                    [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(graphWebRequest) userInfo:nil repeats:NO];
-                }
-            }
-        }
-    }
-}
-
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     
-    if ([keyPath isEqualToString:@"visualRangeForPrices"]) {
-        // adapt visual range
-        CGFloat q = ( [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] / 100 ) * 10; // limit upper range
-        CGFloat lowFloor = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] - q;
-        if ( lowFloor < 0 ) { lowFloor = 0; }
-        self.barChartView.minimumValue = 6000;
-        self.barChartView.maximumValue = 20000;
-        
-        // debug
-        NSLog(@"visualRange was changed.");
-        NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue], [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue]);
+    if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
+            // Update misc. visible elements
+            [self setupVisibleElement];
+            
+            // setup visual range
+            CGFloat q = ( [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] / 100 ) * 2; // limit upper range
+            CGFloat lowFloor = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] - q;
+            if ( lowFloor < 0 ) { lowFloor = 0; }
+            self.barChartView.minimumValue = lowFloor;
+            self.barChartView.maximumValue = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][1]doubleValue] + q;
+            
+            // debug
+            NSLog(@"visualRange was changed.");
+            NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue], [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][1]doubleValue]);
+
+            // triggering re-drawn
+            [self.barChartView reloadData];
+        });
     }
 }
 
-- (void) graphWebRequest
-{
-    NSString *fullURL = [GMSUtilitiesFunction graphUrl];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
-    AFHTTPRequestOperation *operationGraph = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    [operationGraph setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationGraph, id responseObject)
-     {
-         [self.graphDatas chartListingCleaned:responseObject];
-         noChartForCurrX = NO;
-     }
-                                          failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)
-     {
-         [self.graphDatas dummyArrayForMissingChart];
-         noChartForCurrX = YES;
-     }];
-    [operationGraph start];
-}
 @end
-
-

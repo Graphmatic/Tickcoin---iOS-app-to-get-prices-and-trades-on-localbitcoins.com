@@ -15,16 +15,16 @@
 @end
 @implementation GMSchartViewData
 
-static GMSchartViewData* _sharedGraphViewTableData;
+static GMSchartViewData* _sharedGraphViewTableData = nil;
 
-@synthesize thisDayDatas, thisDayDatasAllCurrencies, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess;
+@synthesize thisDayDatas, thisDayDatasAllCurrencies, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady;
 
 +(GMSchartViewData*)sharedGraphViewTableData:(NSMutableString*)currency
 {
     @synchronized([GMSchartViewData class])
     {
-        if (!_sharedGraphViewTableData) {
-            [[self alloc] init:firstLaunch currency:currency];
+        if ( !_sharedGraphViewTableData || ( ![currency isEqualToString:_sharedGraphViewTableData.currency] ) ) {
+            _sharedGraphViewTableData = [[self alloc] init:currency];
         }
         return _sharedGraphViewTableData;
     }
@@ -36,7 +36,6 @@ static GMSchartViewData* _sharedGraphViewTableData;
     @synchronized([GMSchartViewData class])
     {
         NSAssert(_sharedGraphViewTableData == nil, @"Attempted to allocate a second instance of a singleton.");
-        
         _sharedGraphViewTableData = [super alloc];
         return _sharedGraphViewTableData;
     }
@@ -44,26 +43,43 @@ static GMSchartViewData* _sharedGraphViewTableData;
     return nil;
 }
 
-- (id)init:(BOOL)firstlaunch currency:(NSMutableString*)currency
+- (id)init:(NSMutableString*)currency
 {
     self = [super init];
-    if (self != nil) {
+    if ( self != nil ){
         // debug
         NSLog(@"initializing a ChartViewData");
         // Init self's objects
+        self.isReady = NO;
         self.cvsHandlerQ = [NSOperationQueue new];
         self.cvsHandlerQ.maxConcurrentOperationCount=1;
         self.dateAscSorted = [[NSMutableArray alloc] init];
         self.thisDayDatas = [[NSMutableDictionary alloc] init];
         self.thisDayDatasAllCurrencies = [[NSMutableDictionary alloc]init];
-
         self.currency = currency;
+        
+        // Add Notification observer to be informed of currency switching
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySwitching:) name:@"currencySwitching" object:nil];
         // start web query
         [self apiQuery];
     }
     return self;
 }
 
+- (void)resetSharedInstance {
+    @synchronized(self) {
+        _sharedGraphViewTableData = nil;
+    }
+}
+
+- (void)currencySwitching:(NSNotification*)theNotif
+{
+    NSDictionary *rxNotifDatas = theNotif.userInfo;
+    [self resetSharedInstance];
+    _sharedGraphViewTableData = [self init:[rxNotifDatas objectForKey:@"newCurrency"]];
+}
+
+// the initial XHR query
 - (void)apiQuery
 {
     NSString *fullURL = [GMSUtilitiesFunction graphUrl];
@@ -98,6 +114,13 @@ static GMSchartViewData* _sharedGraphViewTableData;
      }];
     [operationGraph start];
 }
+
+// helper to refresh data (no currency switching)
+-(void)refreshFromWeb
+{
+    [self apiQuery];
+}
+
 -(void)chartListingCleaned:(id)responseObject
 {
     NSInvocationOperation *buildTheChartData = [[NSInvocationOperation alloc]initWithTarget:self
@@ -180,7 +203,8 @@ static GMSchartViewData* _sharedGraphViewTableData;
                 [thisDayDatasTmp setObject:[rawArray objectAtIndex:z] forKey:thisDate];
             }
         }
-        NSLog(@"first :%@", thisDayDatasTmp);
+//        NSLog(@"first :%@", thisDayDatasTmp);
+        
         // calculation of hourly price average
         NSArray *ks = [thisDayDatasTmp allKeys];
         for ( NSString *k in ks )
@@ -195,6 +219,7 @@ static GMSchartViewData* _sharedGraphViewTableData;
 
         }
         NSLog(@"second :%@", thisDayDatasTmp);
+        
         //check if we get datas for each hour, if not add empty array
         if ([thisDayDatasTmp count] < 24)
         {
@@ -229,6 +254,9 @@ static GMSchartViewData* _sharedGraphViewTableData;
         
         // Calculation of visual ranges
         self.visualRangeForPricesAndVolumes = [GMSchartViewData datasDeltasLoop:thisDayDatasTmp];
+        
+        // Instance is ready to use
+        self.isReady = YES;
         
     });
     
