@@ -17,7 +17,7 @@
 
 static GMSchartViewData* _sharedGraphViewTableData = nil;
 
-@synthesize thisDayDatas, thisDayDatasAllCurrencies, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady;
+@synthesize thisDayDatas, previousPricesAndVolumes, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady;
 
 +(GMSchartViewData*)sharedGraphViewTableData:(NSMutableString*)currency
 {
@@ -55,7 +55,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
         self.cvsHandlerQ.maxConcurrentOperationCount=1;
         self.dateAscSorted = [[NSMutableArray alloc] init];
         self.thisDayDatas = [[NSMutableDictionary alloc] init];
-        self.thisDayDatasAllCurrencies = [[NSMutableDictionary alloc]init];
+        self.previousPricesAndVolumes = [[NSMutableDictionary alloc]init];
         self.currency = currency;
         
         // Add Notification observer to be informed of currency switching
@@ -82,6 +82,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
 // the initial XHR query
 - (void)apiQuery
 {
+    self.isReady = NO;
     NSString *fullURL = [GMSUtilitiesFunction graphUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
     AFHTTPRequestOperation *operationGraph = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -98,11 +99,12 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
          // debug
          NSLog(@"API query NOK");
          self.apiQuerySuccess = NO;
-         // try to get previous recorded datas from DB
-         if ( [[NSUserDefaults standardUserDefaults] objectForKey:@"previousDayGraph"] != nil )
+         // try to get previous recorded datas from DB and check if datas exist for given currency
+         if ( [[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]objectForKey:self.currency] != nil )
          {
-             self.thisDayDatasAllCurrencies  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousDayGraph"]]mutableCopy];
-             self.thisDayDatas = [[self.thisDayDatasAllCurrencies objectForKey:self.currency]mutableCopy];
+             self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
+             self.thisDayDatas = [[self.previousPricesAndVolumes objectForKey:self.currency]mutableCopy];
+             self.isReady = YES;
          }
          else
          {
@@ -129,18 +131,11 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
     
     [buildTheChartData setCompletionBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter]
-             postNotificationName:@"thisDayChartChange"
-             object:nil
-             userInfo:nil];
-            NSLog(@"notif send graph");
-
+            // Notify UI that Instance is ready to use
+            self.isReady = YES;
+            
         });
-        //save that
-        NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self.thisDayDatasAllCurrencies];
-        [[NSUserDefaults standardUserDefaults] setObject:thisDayDatasToSave forKey:@"previousDayGraph"];
     }];
-    
     [buildTheChartData setQueuePriority:NSOperationQueuePriorityHigh];
     [self.cvsHandlerQ addOperation:buildTheChartData];
 }
@@ -178,12 +173,12 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
             NSDate *thisDate = [[NSDate alloc]initWithTimeIntervalSince1970:[[[rawArray objectAtIndex:z] objectAtIndex:0]floatValue]];
             thisDate = [GMSUtilitiesFunction roundDateToHour:thisDate];
             
+            
             if ([thisDayDatasTmp objectForKey:thisDate])
             {
                 // sum amount in BTC
                 float a = [[[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:2]floatValue];
                 float b = a + [[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue];
-                NSNumber *newAmt = [NSNumber numberWithFloat:b];
                 
                 // price average - first summing and counting ops for given time
                 int cnt = 1;
@@ -193,9 +188,25 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
                 {
                     cnt += [[[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:3]intValue];
                 }
+                // to compute weighted avaerage later
+                NSMutableArray *pvs;
+                NSArray *pv = [NSArray arrayWithObjects:[NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:1]floatValue]], [NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue]], nil];
+
+                if ( [[thisDayDatasTmp objectForKey:thisDate] count] > 4 )
+                {
+                    pvs = [[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:4];
+                    [pvs addObject:pv];
+                }
+                else {
+                    pvs = [[NSMutableArray alloc]initWithObjects:pv, nil];
+                }
+               
+                
+                NSNumber *newAmt = [NSNumber numberWithFloat:b];
                 NSNumber *newCnt = [NSNumber numberWithInt:cnt];
                 NSNumber *newPrSum = [NSNumber numberWithFloat:d];
-                NSMutableArray *bump = [[NSMutableArray alloc]initWithObjects:[[rawArray objectAtIndex:z]objectAtIndex:0], newPrSum, newAmt, newCnt, nil];
+            
+                NSMutableArray *bump = [[NSMutableArray alloc]initWithObjects:[[rawArray objectAtIndex:z]objectAtIndex:0], newPrSum, newAmt, newCnt, pvs, nil];
                 [thisDayDatasTmp setObject:bump forKey:thisDate];
             }
             else
@@ -203,21 +214,47 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
                 [thisDayDatasTmp setObject:[rawArray objectAtIndex:z] forKey:thisDate];
             }
         }
-//        NSLog(@"first :%@", thisDayDatasTmp);
         
-        // calculation of hourly price average
+        // debug
+
+        
+        // calculation of hourly price average (non-weighted)
         NSArray *ks = [thisDayDatasTmp allKeys];
         for ( NSString *k in ks )
         {
-            if ( [[thisDayDatasTmp objectForKey:k] count] > 3 ) {
-                NSMutableArray *arr = [thisDayDatasTmp objectForKey:k];
+            NSMutableArray *arr = [thisDayDatasTmp objectForKey:k];
+            
+            if ( [[thisDayDatasTmp objectForKey:k] count] > 3 )
+            { // there is sorted datas for this time
                 float priceAverage = [[arr objectAtIndex:1]floatValue] / [[arr objectAtIndex:3]floatValue];
                 NSNumber *pAverage = [NSNumber numberWithFloat:priceAverage];
                 [arr replaceObjectAtIndex:1 withObject:pAverage];
                 [thisDayDatasTmp setObject:arr forKey:k];
             }
-
         }
+        
+        // calculation of weighted average : (p x v) + (p x v) + ... / sum(v)
+        for ( NSString *k in ks )
+        {
+            if ( [[thisDayDatasTmp objectForKey:k] count] > 3 )
+            { // there is sorted datas for this time
+                float pMultv = 0;
+                float sumVol = 0;
+                NSMutableArray *pvs  = [[NSMutableArray alloc]initWithObjects:[[thisDayDatasTmp objectForKey:k]objectAtIndex:4], nil];
+                for(int x = 0; x < [pvs count]; x++)
+                {
+                    pMultv += ([[[[pvs objectAtIndex:x]objectAtIndex:0]objectAtIndex:0]floatValue] * [[[[pvs objectAtIndex:x]objectAtIndex:0]objectAtIndex:1]floatValue]);
+                    sumVol += [[[[pvs objectAtIndex:x]objectAtIndex:0]objectAtIndex:1]floatValue];
+                }
+                float wAverage = pMultv / sumVol;
+                NSLog(@"wAverage :%f", wAverage);
+            
+                [[thisDayDatasTmp objectForKey:k] setObject:[NSNumber numberWithFloat:wAverage] atIndex:4];
+            }
+        }
+
+        
+        // debug
         NSLog(@"second :%@", thisDayDatasTmp);
         
         //check if we get datas for each hour, if not add empty array
@@ -250,16 +287,15 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
         self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
         
         self.thisDayDatas = [thisDayDatasTmp mutableCopy];
-        [self.thisDayDatasAllCurrencies setObject:thisDayDatas forKey:currentCurrency];
+        [self.previousPricesAndVolumes setObject:thisDayDatas forKey:currentCurrency];
         
         // Calculation of visual ranges
         self.visualRangeForPricesAndVolumes = [GMSchartViewData datasDeltasLoop:thisDayDatasTmp];
         
-        // Instance is ready to use
-        self.isReady = YES;
-        
+        // Backup datas
+        NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self.previousPricesAndVolumes];
+        [[NSUserDefaults standardUserDefaults] setObject:thisDayDatasToSave forKey:@"previousPricesAndVolumes"];
     });
-    
 }
 
 // generate fake datas if connection error and if no old datas are available
@@ -294,18 +330,9 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
         NSArray *keys = [dummyOne allKeys];
         self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
         self.thisDayDatas = [dummyOne mutableCopy];
-        [self.thisDayDatasAllCurrencies setObject:self.thisDayDatas forKey:currentCurrency];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter]
-             postNotificationName:@"thisDayChartChange"
-             object:nil
-             userInfo:nil];
-            NSLog(@"notif send graph");
-            //save that
-        });
-        NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self.thisDayDatasAllCurrencies];
-        [[NSUserDefaults standardUserDefaults] setObject:thisDayDatasToSave forKey:@"previousDayGraph"];
+        [self.previousPricesAndVolumes setObject:self.thisDayDatas forKey:currentCurrency];
+        // Notify UI
+        self.isReady = YES;
     });
 }
 

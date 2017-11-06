@@ -320,7 +320,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
         }
         else
         {
-            if ([self.graphDatas.thisDayDatasAllCurrencies objectForKey:currentCurrency] != nil)
+            if ([self.graphDatas.previousPricesAndVolumes objectForKey:currentCurrency] != nil)
             {
                 [[NSNotificationCenter defaultCenter]
                  postNotificationName:@"thisDayChartChange"

@@ -143,7 +143,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(prepareDatas:)
-//                                                 name:@"thisDayChartChange"
+//                                                 name:@"refreshPriceGraph"
 //                                               object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(updateGraph:)

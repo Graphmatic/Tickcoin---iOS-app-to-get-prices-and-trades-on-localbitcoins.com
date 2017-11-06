@@ -18,7 +18,7 @@ extern NSDate *graphRequestStart;
 @property  (retain, nonatomic) NSMutableDictionary *thisDayDatas;
 @property  (retain, atomic) NSString *currency;
 @property (retain, atomic) NSMutableArray *dateAscSorted;
-@property (retain, nonatomic) NSMutableDictionary *thisDayDatasAllCurrencies;
+@property (retain, nonatomic) NSMutableDictionary *previousPricesAndVolumes;
 @property NSOperationQueue *cvsHandlerQ;
 @property (retain, nonatomic) NSMutableDictionary *visualRangeForPricesAndVolumes;
 @property (readwrite) BOOL apiQuerySuccess;
