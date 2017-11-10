@@ -199,6 +199,7 @@ static UIColor *kGMSBarChartViewDefaultBarColor = nil;
             }
 
             CGFloat height = [self normalizedHeightForRawHeight:[self.chartDataDictionary objectForKey:key]];
+            
             CGFloat extensionHeight = height > 0.0 ? kGMSBarChartViewPopOffset : 0.0;
             barView.frame = CGRectMake(xOffset, self.bounds.size.height - height - self.footerView.frame.size.height + self.headerPadding, [self barWidth], height + extensionHeight - self.headerPadding);
             [mutableBarViews addObject:barView];
@@ -280,7 +281,6 @@ static UIColor *kGMSBarChartViewDefaultBarColor = nil;
     {
         return 0;
     }
-    
     return ((value - minHeight) / (maxHeight - minHeight)) * [self availableHeight];
 }
 

@@ -165,14 +165,13 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 {
     [super viewWillAppear:animated];
     [self.barChartView setState:GMSChartViewStateExpanded];
-    
 }
 
 #pragma mark - GMSBarChartViewDelegate
 
 - (CGFloat)barChartView:(GMSBarChartView *)barChartView heightForBarViewAtAtIndex:(NSUInteger)index
 {
-    return [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1] floatValue];
+    return [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2] floatValue];
 }
 
 #pragma mark - GMSBarChartViewDataSource
@@ -215,13 +214,13 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         }
         else
         {
-            if ([[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1] isKindOfClass:[NSString class]])
+            if ([[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2] isKindOfClass:[NSString class]])
             {
-                priceForSelHour = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1];
+                priceForSelHour = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2];
             }
             else
             {
-                priceForSelHour = [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1]stringValue];
+                priceForSelHour = [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2]stringValue];
             }
             priceForSelHour = [GMSUtilitiesFunction roundTwoDecimal:priceForSelHour];
             detailsText = [detailsText stringByAppendingString:priceForSelHour];
@@ -281,7 +280,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), currentCurrency];
     }
     
-    [self.barChartView reloadData];
+    //[self.barChartView reloadData];
     
     lockChart = NO;
     startingApp = NO;
@@ -296,15 +295,12 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
             [self setupVisibleElement];
             
             // setup visual range
-            CGFloat q = ( [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] / 100 ) * 2; // limit upper range
-            CGFloat lowFloor = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] - q;
-            if ( lowFloor < 0 ) { lowFloor = 0; }
-            self.barChartView.minimumValue = lowFloor;
-            self.barChartView.maximumValue = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][1]doubleValue] + q;
+            self.barChartView.minimumValue = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] * 0.85;
+            self.barChartView.maximumValue =  [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] * 1.15;
             
-            // debug
-            NSLog(@"visualRange was changed.");
-            NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue], [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][1]doubleValue]);
+//            // debug
+//            NSLog(@"visualRange was changed.");
+//            NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", self.barChartView.minimumValue, self.barChartView.maximumValue);
 
             // triggering re-drawn
             [self.barChartView reloadData];
