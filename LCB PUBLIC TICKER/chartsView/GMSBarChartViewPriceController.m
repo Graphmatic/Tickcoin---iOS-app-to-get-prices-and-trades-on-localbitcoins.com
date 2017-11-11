@@ -141,24 +141,12 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     self.barChartView.headerView = self.headerView;
     self.barChartView.footerView = footerView;
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(prepareDatas:)
-//                                                 name:@"refreshPriceGraph"
-//                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(updateGraph:)
-//                                                 name:@"currencySwitching"
-//                                               object:nil];
-    
     // add observer so visual range is adapted as soon as graphDatas are updated
     [self.graphDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
     
     lockChart = NO;  // this flag is used to check if GMSchartViewData singleton is computing
 
     [self.view addSubview:self.barChartView];
-    
-
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -261,8 +249,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     return self.barChartView;
 }
 
-#pragma mark - Data web request
-
 - (void)setupVisibleElement
 {
     if ( noChartForCurrX == NO )
@@ -279,9 +265,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     {
         self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), currentCurrency];
     }
-    
-    //[self.barChartView reloadData];
-    
+
     lockChart = NO;
     startingApp = NO;
 }
@@ -296,7 +280,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
             
             // setup visual range
             self.barChartView.minimumValue = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] * 0.85;
-            self.barChartView.maximumValue =  [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] * 1.15;
+            self.barChartView.maximumValue =  [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][1]doubleValue] * 1.15;
             
 //            // debug
 //            NSLog(@"visualRange was changed.");
