@@ -46,11 +46,14 @@
                          [self setFrame:CGRectMake(0.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
                          
                          break;
-                     default:
-                         self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig.png"];
+                     case 3:
+                         self.topBrand = [UIImage imageNamed:@"header_charts"];
                          [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
-                         
                          break;
+//                     default:
+//                         self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig.png"];
+//                         [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
+//                         break;
                  }
                 self = [super initWithImage:self.topBrand];
               

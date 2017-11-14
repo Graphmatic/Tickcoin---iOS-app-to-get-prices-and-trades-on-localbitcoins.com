@@ -551,7 +551,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p2s-iz-Kpt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-410.5" y="-872.5"/>
+            <point key="canvasLocation" x="90" y="-277"/>
         </scene>
         <!--ChartPrice-->
         <scene sceneID="xcj-uQ-YQn">

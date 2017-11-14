@@ -83,8 +83,8 @@
         [self addChildViewController:self.fourthViewController];
         UIView* destView4 = ((UIViewController *)self.fourthViewController).view;
         destView4.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-              [self.view addSubview:destView4];
-        destView4.frame = CGRectMake(1, 354, 261, (self.fourthViewController.view.superview.frame.size.height/2)-5);
+        [self.view addSubview:destView4];
+        destView4.frame = CGRectMake(1, 354, 261, (self.fourthViewController.view.superview.frame.size.height)-5);
         [segue.destinationViewController didMoveToParentViewController:self];
     }
     

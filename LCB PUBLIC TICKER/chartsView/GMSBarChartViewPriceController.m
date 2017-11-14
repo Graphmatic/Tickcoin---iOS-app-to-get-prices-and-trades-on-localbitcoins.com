@@ -94,11 +94,20 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     CGFloat childViewHeight = self.view.bounds.size.height;
     
     // header of first chart (price)
-
-    self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(0,
-                                                                           0,
-                                                                           self.view.bounds.size.width - (GMSPriceChartPadding * 2),
-                                                                           GMSPriceChartHeaderHeight)];
+    if ( !IS_IPAD )
+    {
+        self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(0,
+                                                                               0,
+                                                                               self.view.bounds.size.width - (GMSPriceChartPadding * 2),
+                                                                               GMSPriceChartHeaderHeight)];
+    }
+    else
+    {
+        self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(0,
+                                                                               0,
+                                                                               self.view.bounds.size.width - (GMSPriceChartPadding * 2),
+                                                                               GMSPriceChartHeaderHeight)];
+    }
     
     self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
     self.headerView.separatorColor = GMSColorWhite;
@@ -118,7 +127,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         frameForBarChartView = CGRectMake(GMSPriceChartPadding,
                                           GMSPriceChartsViewPaddingTop,
                                           518 -(GMSPriceChartPadding * 2),
-                                          258);
+                                          (childViewHeight / 2) - GMSPriceChartHeaderHeight);
     }
     else
     {
