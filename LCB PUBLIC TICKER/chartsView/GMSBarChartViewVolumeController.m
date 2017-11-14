@@ -188,31 +188,27 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (void)barChartView:(GMSBarChartView *)barChartView didSelectBarAtIndex:(NSUInteger)index touchPoint:(CGPoint)touchPoint
 {
-    
     if( lockChart == NO)
     {
-        NSString *detailsText = @"BTC";
-        detailsText = [detailsText stringByAppendingString:@"\n"];
-        NSString *volumeForSelHour = [[NSString alloc] init];
-        if ([[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1]floatValue] == 0)
+        NSArray *hourlyDatas;
+        BOOL isTrade = true;
+        
+        float value = [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2]floatValue];
+        
+        if ( value == 0 )
         {
-            detailsText = NSLocalizedString(@"_NO_TRADE" ,  @"NO TRADES");
+            isTrade = NO;
+            hourlyDatas = nil;
         }
         else
         {
-            if ([[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1] isKindOfClass:[NSString class]])
-            {
-                volumeForSelHour = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1];
-            }
-            else
-            {
-                volumeForSelHour = [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:1]stringValue];
-            }
-            
-            detailsText = [detailsText stringByAppendingString:[GMSUtilitiesFunction roundTwoDecimal:volumeForSelHour]];
+            hourlyDatas = [NSArray arrayWithArray:[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]];
         }
+        
         [self setTooltipVisible:YES animated:YES atTouchPoint:touchPoint];
-        [self.tooltipView setText:detailsText];
+        
+        hourlyDatas = [NSArray arrayWithArray:[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]];
+        [self.tooltipView bindAllValues:isTrade :hourlyDatas];
     }
 }
 

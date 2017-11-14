@@ -147,6 +147,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     lockChart = NO;  // this flag is used to check if GMSchartViewData singleton is computing
 
     [self.view addSubview:self.barChartView];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -192,29 +193,26 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 {
     if( lockChart == NO)
     {
-        NSString *detailsText = [[NSString alloc] initWithString:currentCurrency];
-        detailsText = [detailsText stringByAppendingString:@"\n"];
-        NSString *priceForSelHour = [[NSString alloc] init];
+        NSArray *hourlyDatas;
+        BOOL isTrade = true;
         
-        if ([[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2]floatValue] == 0)
+        float value = [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2]floatValue];
+        
+        if ( value == 0 )
         {
-            detailsText = NSLocalizedString(@"_NO_TRADE" ,  @"NO TRADES");
+            isTrade = NO;
+            hourlyDatas = nil;
         }
         else
         {
-            if ([[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2] isKindOfClass:[NSString class]])
-            {
-                priceForSelHour = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2];
-            }
-            else
-            {
-                priceForSelHour = [[[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]objectAtIndex:2]stringValue];
-            }
-            priceForSelHour = [GMSUtilitiesFunction roundTwoDecimal:priceForSelHour];
-            detailsText = [detailsText stringByAppendingString:priceForSelHour];
+            hourlyDatas = [NSArray arrayWithArray:[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]];
         }
+        
         [self setTooltipVisible:YES animated:YES atTouchPoint:touchPoint];
-        [self.tooltipView setText:detailsText];
+
+        hourlyDatas = [NSArray arrayWithArray:[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:index]]];
+        [self.tooltipView bindAllValues:isTrade :hourlyDatas];
+
     }
 }
 
@@ -229,18 +227,19 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 #pragma mark - Buttons
 
-- (void)chartToggleButtonPressed:(id)sender
-{
-    UIView *buttonImageView = [self.navigationItem.rightBarButtonItem valueForKey:kGMSBarChartViewControllerNavButtonViewKey];
-    buttonImageView.userInteractionEnabled = NO;
-    
-    CGAffineTransform transform = self.barChartView.state == GMSChartViewStateExpanded ? CGAffineTransformMakeRotation(M_PI) : CGAffineTransformMakeRotation(0);
-    buttonImageView.transform = transform;
-    
-    [self.barChartView setState:self.barChartView.state == GMSChartViewStateExpanded ? GMSChartViewStateCollapsed : GMSChartViewStateExpanded animated:YES callback:^{
-        buttonImageView.userInteractionEnabled = YES;
-    }];
-}
+
+//- (IBAction)chartToggleButtonPressed:(id)sender
+//{
+//    UIView *buttonImageView = [self.navigationItem.rightBarButtonItem valueForKey:kGMSBarChartViewControllerNavButtonViewKey];
+//    buttonImageView.userInteractionEnabled = NO;
+//
+//    CGAffineTransform transform = self.barChartView.state == GMSChartViewStateExpanded ? CGAffineTransformMakeRotation(M_PI) : CGAffineTransformMakeRotation(0);
+//    buttonImageView.transform = transform;
+//
+//    [self.barChartView setState:self.barChartView.state == GMSChartViewStateExpanded ? GMSChartViewStateCollapsed : GMSChartViewStateExpanded animated:YES callback:^{
+//        buttonImageView.userInteractionEnabled = YES;
+//    }];
+//}
 
 #pragma mark - Overrides
 
