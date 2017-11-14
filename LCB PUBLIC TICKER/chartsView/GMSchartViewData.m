@@ -175,6 +175,8 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
                     self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
                     // assign resulting Dictionnary to instance property
                     self.thisDayDatas = [thisDayDatasTmpFull mutableCopy];
+                    // debug
+                    // NSLog(@"cooked! : %@", thisDayDatasTmpFull);
                     // Backup datas
                     [self.previousPricesAndVolumes setObject:thisDayDatas forKey:currentCurrency];
                     NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self.previousPricesAndVolumes];
@@ -204,14 +206,16 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
         // to compute weighted avaerage later
         NSMutableArray *pvs;
         NSArray *pv = [NSArray arrayWithObjects:[NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:1]floatValue]], [NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue]], nil];
-        
+
         NSMutableArray *bump;
+        
         if ([thisDayDatasTmp objectForKey:thisDate])
         {
             // sum amount in BTC
             float a = [[[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:1]floatValue];
             float b = a + [[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue];
             
+            // build helper pairs to calculation of weighted price average
             if ( [[[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:2]isKindOfClass:[NSMutableArray class]] )
             {
                 pvs = [[thisDayDatasTmp objectForKey:thisDate]objectAtIndex:2];
@@ -223,13 +227,13 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
             
             NSNumber *newAmt = [NSNumber numberWithFloat:b];
             
-            bump = [[NSMutableArray alloc]initWithObjects:[[rawArray objectAtIndex:z]objectAtIndex:0], newAmt, pvs, nil];
+            bump = [[NSMutableArray alloc]initWithObjects:[[rawArray objectAtIndex:z]objectAtIndex:0], newAmt, pvs, thisDate, nil];
             [thisDayDatasTmp setObject:bump forKey:thisDate];
         }
         else
         {
             pvs = [[NSMutableArray alloc]initWithObjects:pv, nil];
-            bump = [[NSMutableArray alloc]initWithObjects:[[rawArray objectAtIndex:z]objectAtIndex:0], [NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue]], pvs, nil];
+            bump = [[NSMutableArray alloc]initWithObjects:[[rawArray objectAtIndex:z]objectAtIndex:0], [NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue]], pvs, thisDate, nil];
             [thisDayDatasTmp setObject:bump forKey:thisDate];
         }
     }
@@ -237,21 +241,62 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
     completion(thisDayDatasTmp);
 }
 
-// calculation of weighted average : (p x v) + (p x v) + ... / sum(v)
+// calculation of weighted average : (p x v) + (p x v) + ... / sum(v) and high/low extraction
 - (void)weightedAverage:(NSMutableDictionary *)thisDayDatasTemp :(void(^)(NSMutableDictionary *thisDayDatasTmp))completion
 {
+    
+    
     for ( NSString *k in thisDayDatasTemp )
     {
+        NSMutableArray *pvs  = [[NSMutableArray alloc]initWithObjects:[[thisDayDatasTemp objectForKey:k]objectAtIndex:2], nil];
+
         float pMultv = 0;
         float sumVol = 0;
-        NSMutableArray *pvs  = [[NSMutableArray alloc]initWithObjects:[[thisDayDatasTemp objectForKey:k]objectAtIndex:2], nil];
-        for(int x = 0; x < [pvs count]; x++)
+        
+        float highP = 0; // the highest Price in this hour
+        float lowP = INFINITY; // the lowest price
+        float highPv = 0; // the volume for highest Price in this hour
+        float lowPv = 0; // the volume for lowest Price in this hour
+        
+        float highV = 0;  // same for volume
+        float lowV = INFINITY;
+        float highVp = 0;
+        float lowVp = 0;
+        
+        for(int x = 0; x < [[pvs objectAtIndex:0] count]; x++)
         {
-            pMultv += ([[[[pvs objectAtIndex:x]objectAtIndex:0]objectAtIndex:0]floatValue] * [[[[pvs objectAtIndex:x]objectAtIndex:0]objectAtIndex:1]floatValue]);
-            sumVol += [[[[pvs objectAtIndex:x]objectAtIndex:0]objectAtIndex:1]floatValue];
+            float p = [[[[pvs objectAtIndex:0]objectAtIndex:x]objectAtIndex:0]floatValue];
+            float v = [[[[pvs objectAtIndex:0]objectAtIndex:x]objectAtIndex:1]floatValue];
+            
+            pMultv += (p * v);
+            sumVol += v;
+            // low and high
+            if ( p > highP )
+            {
+                highP = p;
+                highPv = v;
+            }
+            if ( p < lowP )
+            {
+                lowP = p;
+                lowPv = v;
+            }
+            if ( v > highV )
+            {
+                highV = v;
+                highVp = p;
+            }
+            if ( v < lowV )
+            {
+                lowV = v;
+                lowVp = p;
+            }
         }
         float wAverage = pMultv / sumVol;
         [[thisDayDatasTemp objectForKey:k] setObject:[NSNumber numberWithFloat:wAverage] atIndex:2];
+        NSArray *highAndLow = [NSArray arrayWithObjects:[NSNumber numberWithFloat:lowP], [NSNumber numberWithFloat:lowPv], [NSNumber numberWithFloat:highP], [NSNumber numberWithFloat:highPv], [NSNumber numberWithFloat:lowV], [NSNumber numberWithFloat:lowVp], [NSNumber numberWithFloat:highV], [NSNumber numberWithFloat:highVp], nil];
+        [[thisDayDatasTemp objectForKey:k] setObject:[NSNumber numberWithFloat:wAverage] atIndex:2];
+        [[thisDayDatasTemp objectForKey:k] setObject:highAndLow atIndex:4];
     }
     completion(thisDayDatasTemp);
 }
@@ -265,20 +310,20 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
         NSTimeInterval secondsPerHour = 60 * 60;
         NSDate *nextHour  = [[NSDate alloc] init];
         nextHour = [graphRequestStart dateByAddingTimeInterval: secondsPerHour];
-        NSLog(@"starting 24 loop");
+
         for (int o = 0; o < 24; o++)
         {
             if(![thisDayDatasTemp objectForKey:nextHour])
             {
-                NSLog(@"adding one empty keydate - %d", o);
                 NSNumber *zeroVal =[[NSNumber alloc]initWithInt:0];
-                
                 NSTimeInterval zeroTimestamp = ([nextHour timeIntervalSince1970]);
                 NSInteger zeroTimestampInt = zeroTimestamp;
                 NSString *zeroTimestampIntStr = [[NSString alloc]init];
                 zeroTimestampIntStr = [NSString stringWithFormat:@"%ld", (long)zeroTimestampInt ];
+                NSDate *thisDate = [[NSDate alloc]initWithTimeIntervalSince1970:zeroTimestamp];
+//                thisDate = [GMSUtilitiesFunction roundDateToHour:thisDate];
                 
-                NSArray *bump = [[NSArray alloc]initWithObjects:zeroTimestampIntStr, zeroVal, zeroVal, nil];
+                NSArray *bump = [[NSArray alloc]initWithObjects:zeroTimestampIntStr, zeroVal, zeroVal, thisDate, nil];
                 [thisDayDatasTemp setObject:bump forKey:nextHour];
             }
             nextHour = [nextHour dateByAddingTimeInterval: secondsPerHour];

@@ -462,7 +462,7 @@
             NSString *twDate = [dateFormatter stringFromDate:date];
             NSString *affiliateId = [[NSUserDefaults standardUserDefaults] objectForKey:@"affiliateTag"];
             NSString *titleForEmail = [NSString stringWithFormat:NSLocalizedString(@"_EMAIL_DAILY_TICKER", @"Localbitcoins.com: BTC DAILY PRICE")];
-            NSString *body = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - <a href='https://www.localbitcoins.com/%@>Localbitcoins.com</a>: BTC %@: %@\n"),affiliateId, twDate, celltoTweet.textLabel.text, celltoTweet.detailTextLabel.text];
+            NSString *body = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_DAILY_TICKER", @"%@ - <a href='https://www.localbitcoins.com/%@>Localbitcoins.com</a>: BTC %@: %@\n"), twDate, affiliateId, celltoTweet.textLabel.text, celltoTweet.detailTextLabel.text];
             
             
             MFMailComposeViewController *newMailView = [[MFMailComposeViewController alloc] init];

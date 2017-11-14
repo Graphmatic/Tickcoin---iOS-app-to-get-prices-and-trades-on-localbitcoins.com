@@ -24,8 +24,9 @@
     NSString* stringCurrencyFormat = [numFormatterCur stringFromNumber:toNumber];
     return stringCurrencyFormat;
 }
+
 //round to two decimal
-+ (NSString*)roundTwoDecimal:(NSString *)theNumb
++ (NSString*)twoDecimalStrFormat:(NSString *)theNumb
 {
     NSDecimalNumber *tmpN = [NSDecimalNumber decimalNumberWithString:theNumb];
     NSNumberFormatter *numFormatterTwoDec = [[NSNumberFormatter alloc] init];
