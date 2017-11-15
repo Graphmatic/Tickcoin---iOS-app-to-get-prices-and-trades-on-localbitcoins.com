@@ -303,7 +303,7 @@ CGFloat const GMSChartTooltipViewDefaultHeight = 280.0f;
         self.highVolPrice.frame = CGRectMake(halfW, lowHighVolP, halfW, slot);
         
         CGFloat allElementsHeight = (currencyH * 2) + (dateH * 2) + (subH * 2) + (highLowH * 2) + 5;
-        NSLog(@"total height = %f", allElementsHeight);
+
         [self drawRect:CGRectMake(0, 0, GMSChartTooltipViewDefaultWidth, GMSChartTooltipViewDefaultHeight)];
     }
     else

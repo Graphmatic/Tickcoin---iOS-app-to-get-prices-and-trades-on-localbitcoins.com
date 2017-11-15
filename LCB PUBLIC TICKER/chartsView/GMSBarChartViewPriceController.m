@@ -28,7 +28,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 @interface GMSBarChartViewPriceController () <GMSBarChartViewDelegate, GMSBarChartViewDataSource>
 {
     GMSBarChartFooterView *footerView;
-    BOOL noChartForCurrX;
 }
 @property (nonatomic, strong) GMSBarChartView *barChartView;
 @property (nonatomic, strong) GMSchartViewData *graphDatas;
@@ -78,7 +77,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)initWithDatas
 {
-    noChartForCurrX = NO;
     self.graphDatas = [GMSchartViewData sharedGraphViewTableData:currentCurrency];
 }
 
@@ -146,8 +144,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     
     // add observer so visual range is adapted as soon as graphDatas are updated
     [self.graphDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
-    
-    lockChart = NO;  // this flag is used to check if GMSchartViewData singleton is computing
 
     [self.view addSubview:self.barChartView];
 
@@ -194,7 +190,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)barChartView:(GMSBarChartView *)barChartView didSelectBarAtIndex:(NSUInteger)index touchPoint:(CGPoint)touchPoint
 {
-    if( lockChart == NO)
+    if( self.graphDatas.isReady == YES)
     {
         NSArray *hourlyDatas;
         BOOL isTrade = true;
@@ -221,7 +217,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)didUnselectBarChartView:(GMSBarChartView *)barChartView
 {
-    if( lockChart == NO)
+    if( self.graphDatas.isReady == YES)
     {
         [self setTooltipVisible:NO animated:YES];
     }
@@ -253,7 +249,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)setupVisibleElement
 {
-    if ( noChartForCurrX == NO )
+    if( self.graphDatas.isReady == YES)
     {
         self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -267,9 +263,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     {
         self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), currentCurrency];
     }
-
-    lockChart = NO;
-    startingApp = NO;
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{

@@ -28,7 +28,6 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 @interface GMSBarChartViewVolumeController () <GMSBarChartViewDelegate, GMSBarChartViewDataSource>
 {
     GMSBarChartFooterView *footerView;
-    BOOL noChartForCurrX;
 }
 @property (nonatomic, strong) GMSBarChartView *barChartView;
 @property (nonatomic, strong) GMSchartViewData *graphDatas;
@@ -78,7 +77,6 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (void)initFakeData
 {
-    noChartForCurrX = NO;
     self.graphDatas = [GMSchartViewData sharedGraphViewTableData:currentCurrency];
 }
 
@@ -145,8 +143,6 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     // add observer so visual range is adapted as soon as graphDatas are updated
     [self.graphDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
     
-    lockChart = NO;  // this flag is used to check if GMSchartViewData singleton is busy
-    
     [self.view addSubview:self.barChartView];
 
 }
@@ -192,7 +188,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (void)barChartView:(GMSBarChartView *)barChartView didSelectBarAtIndex:(NSUInteger)index touchPoint:(CGPoint)touchPoint
 {
-    if( lockChart == NO)
+    if ( self.graphDatas.isReady == YES )
     {
         NSArray *hourlyDatas;
         BOOL isTrade = true;
@@ -218,7 +214,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (void)didUnselectBarChartView:(GMSBarChartView *)barChartView
 {
-    if( lockChart == NO)
+    if ( self.graphDatas.isReady == YES )
     {
         [self setTooltipVisible:NO animated:YES];
     }
@@ -249,7 +245,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (void)setupVisibleElement
 {
-    if ( noChartForCurrX == NO )
+    if ( self.graphDatas.isReady == YES )
     {
         self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -263,9 +259,6 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     {
         self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), currentCurrency];
     }
-    
-    lockChart = NO;
-    startingApp = NO;
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
