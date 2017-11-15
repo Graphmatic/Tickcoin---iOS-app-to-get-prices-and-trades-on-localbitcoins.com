@@ -11,16 +11,16 @@
 #import "GMSchartViewData.h"
 // Numerics
 CGFloat const GMSVolumeChartHeight = 254.0f;
-CGFloat const GMSVolumeChartPadding = 2.0f;
+CGFloat GMSVolumeChartPadding = 2.0f;
 CGFloat GMSVolumeChartsViewPaddingTop = 0.0f;
 
 CGFloat const GMSVolumeChartHeaderHeight = 50.0f;
 CGFloat const GMSVolumeChartHeaderPadding = 10.0f;
-CGFloat const GMSVolumeChartFooterHeight = 25.0f;
+CGFloat GMSVolumeChartFooterHeight = 25.0f;
 CGFloat const GMSVolumeChartFooterPadding = 5.0f;
 NSUInteger GMSVolumeBarPadding = 1;
 NSInteger const GMSVolumeMaxBarHeight = 5000;
-NSInteger const GMSVolumeMinBarHeight = 1;
+NSInteger const GMSVolumeMinBarHeight = 0;
 
 // Strings
 NSString * const kGMSVolumeNavButtonViewKey = @"view";
@@ -90,32 +90,36 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     
     CGFloat childViewWidth = self.view.bounds.size.width;
     CGFloat childViewHeight = self.view.bounds.size.height;
-    
+    if ( IS_IPAD )
+    {
+        GMSVolumeChartPadding = 0.0f;
+        GMSVolumeChartFooterHeight = 22.0f;
+    }
     // header of first chart (price)
     self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(0,
                                                                            0,
-                                                                           self.view.bounds.size.width - (GMSVolumeChartPadding * 2),
+                                                                           childViewWidth - GMSVolumeChartPadding,
                                                                            GMSVolumeChartHeaderHeight)];
     
     self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART" ,  @"Volumes traded - last 24H - %@"), currentCurrency];
     self.headerView.separatorColor = GMSColorWhite;
     
     // footer of first chart (price)
-    footerView = [[GMSBarChartFooterView alloc] initWithFrame:CGRectMake(GMSVolumeChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(GMSVolumeChartFooterHeight * 0.5), self.view.bounds.size.width - (GMSVolumeChartPadding * 2), GMSVolumeChartFooterHeight)];
+    footerView = [[GMSBarChartFooterView alloc] initWithFrame:CGRectMake(GMSVolumeChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(GMSVolumeChartFooterHeight * 0.5), self.view.bounds.size.width - GMSVolumeChartPadding, GMSVolumeChartFooterHeight)];
     footerView.padding = GMSVolumeChartFooterPadding;
-    footerView.leftLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_Yesterday",@"Yesterday")];
+    footerView.leftLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_Yesterday", @"Yesterday")];
     footerView.leftLabel.textColor = [UIColor whiteColor];
-    footerView.rightLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_Now",@"Now")];
+    footerView.rightLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_Now", @"Now")];
     footerView.rightLabel.textColor = [UIColor whiteColor];
     
     // the bargraph itself
     CGRect frameForBarChartView;
     if ( IS_IPAD )
     {
-        frameForBarChartView = CGRectMake(GMSVolumeChartPadding,
-                                          GMSVolumeChartsViewPaddingTop,
-                                          518 -(GMSVolumeChartPadding * 2),
-                                          258);
+        frameForBarChartView = CGRectMake(0,
+                                          0,
+                                          516,
+                                          206);
     }
     else
     {

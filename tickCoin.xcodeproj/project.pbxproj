@@ -343,8 +343,8 @@
 		283C4EF31FA62F65005A4F3F /* chartsView */ = {
 			isa = PBXGroup;
 			children = (
-				28387DFC1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m */,
 				28387DFB1FA76AED00D416DE /* GMSBarChartViewVolumeController.h */,
+				28387DFC1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m */,
 				2821DF1E1FA76365003913E6 /* GMSBarChartViewPriceController.h */,
 				2821DF1F1FA76366003913E6 /* GMSBarChartViewPriceController.m */,
 				F063CAC31922A42D00722F02 /* GMSchartViewData.h */,
@@ -428,6 +428,7 @@
 		F02BFCC8191A382500D2520D /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				F0C01E4C191BEC8200A45B9B /* StoryboardForIpad.storyboard */,
 				F07640FC1929E7A700DA6616 /* Classes */,
 				F07640C61929E6B400DA6616 /* Cells */,
 				F07640C91929E6B400DA6616 /* Constants */,
@@ -449,7 +450,6 @@
 				28BAB03E1F9DFAB3008F9358 /* README.md */,
 				F06E96E0192FBE17003A5786 /* GMSStripHtmlFromString.h */,
 				F06E96E1192FBE17003A5786 /* GMSStripHtmlFromString.m */,
-				F0C01E4C191BEC8200A45B9B /* StoryboardForIpad.storyboard */,
 				F012459318E7208F002FAADA /* UIKit+AFNetworking */,
 				F012457618E72085002FAADA /* AFNetworking */,
 				F055652718E6DD9300481688 /* LCB PUBLIC TICKER */,
