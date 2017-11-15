@@ -169,7 +169,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q7K-oy-ZJu" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-452" y="-577"/>
+            <point key="canvasLocation" x="-687" y="-784"/>
         </scene>
         <!--Bids-->
         <scene sceneID="46W-dQ-PHn">
@@ -280,12 +280,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8cs-xe-cNt" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="118" y="-821"/>
+            <point key="canvasLocation" x="-55" y="-821"/>
         </scene>
         <!--Container View Controller-->
         <scene sceneID="R7G-YO-aBa">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" definesPresentationContext="YES" id="m7O-XL-WIN" customClass="ContainerViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mainWrapper" automaticallyAdjustsScrollViewInsets="NO" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="m7O-XL-WIN" customClass="ContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eae-8p-3eC"/>
                         <viewControllerLayoutGuide type="bottom" id="DFx-M9-PdT"/>
@@ -432,27 +432,27 @@
         <!--Charts-->
         <scene sceneID="ViD-sH-Dy1">
             <objects>
-                <viewController title="Charts" id="IGM-P2-Api" customClass="GMSChartsView" sceneMemberID="viewController">
+                <viewController autoresizesArchivedViewToFullSize="NO" title="Charts" id="IGM-P2-Api" customClass="GMSChartsView" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Sss-Eg-pgK"/>
                         <viewControllerLayoutGuide type="bottom" id="9h3-Ol-JJH"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Dxx-jc-4oy">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="516" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vJM-SU-9Vg">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="508"/>
+                            <containerView verifyAmbiguity="off" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vJM-SU-9Vg">
+                                <rect key="frame" x="0.0" y="0.0" width="516" height="208"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
-                                    <segue destination="hhd-Ad-lzq" kind="embed" id="ZxF-x6-ATz"/>
+                                    <segue destination="hhd-Ad-lzq" kind="embed" id="fY6-mP-L7C"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xgg-w8-8In">
-                                <rect key="frame" x="0.0" y="509" width="768" height="515"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <containerView verifyAmbiguity="off" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xgg-w8-8In">
+                                <rect key="frame" x="0.0" y="207" width="516" height="208"/>
+                                <autoresizingMask key="autoresizingMask"/>
                                 <connections>
-                                    <segue destination="xxu-We-gx3" kind="embed" id="yMP-f4-SQP"/>
+                                    <segue destination="xxu-We-gx3" kind="embed" id="ZOb-vA-Pqo"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -461,7 +461,7 @@
                     <tabBarItem key="tabBarItem" title="Item" id="py5-dm-XMv"/>
                     <navigationItem key="navigationItem" id="E0x-Tc-kio"/>
                     <nil key="simulatedTopBarMetrics"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="516" height="414"/>
                     <connections>
                         <outlet property="chartsPriceView" destination="vJM-SU-9Vg" id="pDl-xH-fSB"/>
                         <outlet property="chartsVolumeView" destination="xgg-w8-8In" id="jsB-5u-wDZ"/>
@@ -470,7 +470,7 @@
                 <navigationItem id="AcZ-l4-PQo"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xEn-kX-Uew" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-302" y="543"/>
+            <point key="canvasLocation" x="-687" y="-51"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Gxy-bw-f2R">
@@ -599,7 +599,6 @@
                             <outlet property="lowTitle" destination="eEs-GH-T9l" id="57t-wD-AtP"/>
                             <outlet property="lowVolprice" destination="QlZ-RF-oT8" id="1g0-ca-0tN"/>
                             <outlet property="lowVolume" destination="1je-t1-Znr" id="gPr-Oj-fjD"/>
-                            <outlet property="lowtitle" destination="eEs-GH-T9l" id="RyO-h2-N2d"/>
                             <outlet property="priceAverage" destination="3ZY-Xp-Unv" id="oLw-7P-cJz"/>
                             <outlet property="sumVolume" destination="2c2-Zd-Sjw" id="Sf9-uB-0bR"/>
                         </connections>
@@ -607,12 +606,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cai-5Y-O7O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1510" y="543"/>
+            <point key="canvasLocation" x="679" y="123"/>
         </scene>
         <!--ChartPrice-->
         <scene sceneID="goJ-UQ-U18">
             <objects>
-                <viewController storyboardIdentifier="GMSBarChartViewPriceController" autoresizesArchivedViewToFullSize="NO" title="ChartPrice" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="currentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hhd-Ad-lzq" customClass="GMSBarChartViewPriceController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GMSBarChartViewPriceController" title="ChartPrice" automaticallyAdjustsScrollViewInsets="NO" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="currentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hhd-Ad-lzq" customClass="GMSBarChartViewPriceController" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="Item" id="QCM-7v-euK"/>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -621,12 +620,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fh3-uA-Wam" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="653" y="245"/>
+            <point key="canvasLocation" x="-70" y="-228"/>
         </scene>
         <!--ChartVolume-->
         <scene sceneID="BtF-bE-2en">
             <objects>
-                <viewController storyboardIdentifier="GMSBarChartViewVolumeController" autoresizesArchivedViewToFullSize="NO" title="ChartVolume" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="currentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xxu-We-gx3" customClass="GMSBarChartViewVolumeController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GMSBarChartViewVolumeController" title="ChartVolume" automaticallyAdjustsScrollViewInsets="NO" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalTransitionStyle="crossDissolve" modalPresentationStyle="currentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xxu-We-gx3" customClass="GMSBarChartViewVolumeController" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -634,7 +633,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OvT-9G-8cO" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="653" y="847"/>
+            <point key="canvasLocation" x="-70" y="123"/>
         </scene>
     </scenes>
     <resources>

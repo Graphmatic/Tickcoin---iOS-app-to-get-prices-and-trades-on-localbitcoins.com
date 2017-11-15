@@ -14,6 +14,7 @@
 #define second @"secondController"
 #define third @"thirdController"
 #define fourth @"fourthController"
+
 //#define fifth @"fifthController"
 
 @interface ContainerViewController () 
@@ -84,10 +85,13 @@
         UIView* destView4 = ((UIViewController *)self.fourthViewController).view;
         destView4.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.view addSubview:destView4];
-        destView4.frame = CGRectMake(1, 354, 261, (self.fourthViewController.view.superview.frame.size.height)-5);
+        CGRect screenRect = [[UIScreen mainScreen] bounds];
+        CGFloat screenHeight = screenRect.size.height;
+        NSLog(@"ipad height : %f", screenHeight);
+        destView4.frame = CGRectMake(1, 355, 516, screenHeight - 354);
         [segue.destinationViewController didMoveToParentViewController:self];
     }
-    
+
 //    if ([segue.identifier isEqualToString:fifth])
 //    {
 //        self.fifthViewController = segue.destinationViewController;

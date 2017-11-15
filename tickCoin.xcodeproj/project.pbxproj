@@ -343,8 +343,8 @@
 		283C4EF31FA62F65005A4F3F /* chartsView */ = {
 			isa = PBXGroup;
 			children = (
-				28387DFC1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m */,
 				28387DFB1FA76AED00D416DE /* GMSBarChartViewVolumeController.h */,
+				28387DFC1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m */,
 				2821DF1E1FA76365003913E6 /* GMSBarChartViewPriceController.h */,
 				2821DF1F1FA76366003913E6 /* GMSBarChartViewPriceController.m */,
 				F063CAC31922A42D00722F02 /* GMSchartViewData.h */,

@@ -32,13 +32,7 @@
     // backup parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
-    
-    
-    if( IS_IPAD )
-    {
-    }
-   
-    
+
     if ( !IS_IPAD )
     {
         //add header
@@ -61,23 +55,10 @@
 
         [self.view addSubview:self.chartsVolumeView];
     }
+    
     else
     {
-        // origine of subviews
-        CGFloat chartViewOrigine = self.headerChartsImg.frame.size.height + 2;
-        
-        
-        [self.chartsPriceView setFrame:CGRectMake(0,
-                                                  chartViewOrigine,
-                                                  viewWidth,
-                                                  (viewHeight - chartViewOrigine) / 2)];
         [self.view addSubview:self.chartsPriceView];
-        
-        [self.chartsVolumeView setFrame:CGRectMake(0,
-                                                   ((viewHeight - chartViewOrigine) / 2) + 22,
-                                                   viewWidth,
-                                                   (viewHeight - chartViewOrigine) / 2)];
-        
         [self.view addSubview:self.chartsVolumeView];
     }
    
