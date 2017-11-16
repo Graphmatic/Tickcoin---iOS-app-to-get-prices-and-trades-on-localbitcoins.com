@@ -65,7 +65,7 @@
                    self.topBrand = [UIImage imageNamed:@"header_exchange"];
                     break;
                 case 1:
-                    self.topBrand = [UIImage imageNamed:@"LCB-headerImgBids.png"];
+                    self.topBrand = [UIImage imageNamed:@"header_bids"];
                     break;
                 case 2:
                     self.topBrand = [UIImage imageNamed:@"LCB-headerImgAsks.png"];

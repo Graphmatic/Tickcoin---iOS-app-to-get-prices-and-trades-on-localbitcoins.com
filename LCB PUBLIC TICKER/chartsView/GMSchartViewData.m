@@ -10,12 +10,13 @@
 #import "GMSUtilitiesFunction.h"
 @interface GMSchartViewData ()
 {
-    float dayPriceForSelectedCurrency;
+
 }
 @end
+
 @implementation GMSchartViewData
 
-static GMSchartViewData* _sharedGraphViewTableData = nil;
+static GMSchartViewData * _sharedGraphViewTableData = nil;
 
 @synthesize thisDayDatas, previousPricesAndVolumes, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady;
 
@@ -121,12 +122,12 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
 }
 
 // helper to refresh data (no currency switching)
--(void)refreshFromWeb
+- (void)refreshFromWeb
 {
     [self apiQuery];
 }
 
--(void)chartListingCleaned:(id)responseObject
+- (void)chartListingCleaned:(id)responseObject
 {
     NSInvocationOperation *buildTheChartData = [[NSInvocationOperation alloc]initWithTarget:self
                                                                                    selector:@selector(chartArray:)
@@ -144,13 +145,11 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
 }
 
 //Reorder and merge chart datas
--(void)chartArray:(id)responseObject
+- (void)chartArray:(id)responseObject
 {
     dispatch_queue_t chartPrepareQueue = dispatch_queue_create("com.graphmatic.cvsHandler", DISPATCH_QUEUE_SERIAL);
     
     dispatch_sync(chartPrepareQueue, ^{
-        lockChart = YES;
-        
         // parsing datas
         NSString *data =  [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:NSUTF8StringEncoding];
         NSMutableArray *rawArray = [[NSMutableArray alloc]init];
@@ -203,7 +202,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
         NSDate *thisDate = [[NSDate alloc]initWithTimeIntervalSince1970:[[[rawArray objectAtIndex:z] objectAtIndex:0]floatValue]];
         thisDate = [GMSUtilitiesFunction roundDateToHour:thisDate];
         
-        // to compute weighted avaerage later
+        // to compute weighted average later
         NSMutableArray *pvs;
         NSArray *pv = [NSArray arrayWithObjects:[NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:1]floatValue]], [NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue]], nil];
 
@@ -244,8 +243,6 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
 // calculation of weighted average : (p x v) + (p x v) + ... / sum(v) and high/low extraction
 - (void)weightedAverage:(NSMutableDictionary *)thisDayDatasTemp :(void(^)(NSMutableDictionary *thisDayDatasTmp))completion
 {
-    
-    
     for ( NSString *k in thisDayDatasTemp )
     {
         NSMutableArray *pvs  = [[NSMutableArray alloc]initWithObjects:[[thisDayDatasTemp objectForKey:k]objectAtIndex:2], nil];

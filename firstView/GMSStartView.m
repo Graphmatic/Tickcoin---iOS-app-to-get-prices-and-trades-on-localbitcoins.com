@@ -12,13 +12,13 @@
 
 @interface GMSStartView ()
 {
-    
     int messagesCount;
     BOOL alt;
-    
 }
 @end
+
 @implementation GMSStartView
+
 @synthesize previousDatas ,firstViewDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack;
 
 - (NSManagedObjectContext *)managedObjectContext {
@@ -33,7 +33,7 @@
 {
     [super viewDidLoad];
 
-    // backup parent view size
+    // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
     

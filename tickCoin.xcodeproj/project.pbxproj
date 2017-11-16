@@ -17,7 +17,7 @@
 		283C4EF91FA632EE005A4F3F /* GMSStartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4EF71FA632EE005A4F3F /* GMSStartView.m */; };
 		283C4EFD1FA634E0005A4F3F /* GMSBidsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4EFC1FA634E0005A4F3F /* GMSBidsView.m */; };
 		283C4EFE1FA634E0005A4F3F /* GMSBidsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4EFC1FA634E0005A4F3F /* GMSBidsView.m */; };
-		283C4EFF1FA63541005A4F3F /* GMSSecondViewTableData.m in Sources */ = {isa = PBXBuildFile; fileRef = F07AF6C918FD85140091D05F /* GMSSecondViewTableData.m */; };
+		283C4EFF1FA63541005A4F3F /* GMSBidsAsksDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = F07AF6C918FD85140091D05F /* GMSBidsAsksDatas.m */; };
 		283C4F031FA6364A005A4F3F /* GMSAsksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4F011FA6364A005A4F3F /* GMSAsksView.m */; };
 		283C4F041FA6364A005A4F3F /* GMSAsksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4F011FA6364A005A4F3F /* GMSAsksView.m */; };
 		2855A3BD1F9F6E6100BA3398 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F055653318E6DD9300481688 /* Main.storyboard */; };
@@ -94,7 +94,7 @@
 		F07640FB1929E6B400DA6616 /* GMSChartTooltipView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07640ED1929E6B400DA6616 /* GMSChartTooltipView.m */; };
 		F07641031929E7A700DA6616 /* GMSBarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07640FE1929E7A700DA6616 /* GMSBarChartView.m */; };
 		F07641041929E7A700DA6616 /* GMSChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07641001929E7A700DA6616 /* GMSChartView.m */; };
-		F07AF6CA18FD85140091D05F /* GMSSecondViewTableData.m in Sources */ = {isa = PBXBuildFile; fileRef = F07AF6C918FD85140091D05F /* GMSSecondViewTableData.m */; };
+		F07AF6CA18FD85140091D05F /* GMSBidsAsksDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = F07AF6C918FD85140091D05F /* GMSBidsAsksDatas.m */; };
 		F083FAE31974372E0072F02B /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F083FAE21974372E0072F02B /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F08760C719002D1D003BB5C0 /* LCB-headerImgBids.png in Resources */ = {isa = PBXBuildFile; fileRef = F08760C519002D1D003BB5C0 /* LCB-headerImgBids.png */; };
 		F08760C819002D1D003BB5C0 /* LCB-headerImg2@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = F08760C619002D1D003BB5C0 /* LCB-headerImg2@x2.png */; };
@@ -268,8 +268,8 @@
 		F07640FE1929E7A700DA6616 /* GMSBarChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBarChartView.m; sourceTree = "<group>"; };
 		F07640FF1929E7A700DA6616 /* GMSChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSChartView.h; sourceTree = "<group>"; };
 		F07641001929E7A700DA6616 /* GMSChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSChartView.m; sourceTree = "<group>"; };
-		F07AF6C818FD85140091D05F /* GMSSecondViewTableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSSecondViewTableData.h; sourceTree = "<group>"; };
-		F07AF6C918FD85140091D05F /* GMSSecondViewTableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSSecondViewTableData.m; sourceTree = "<group>"; };
+		F07AF6C818FD85140091D05F /* GMSBidsAsksDatas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSBidsAsksDatas.h; sourceTree = "<group>"; };
+		F07AF6C918FD85140091D05F /* GMSBidsAsksDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBidsAsksDatas.m; sourceTree = "<group>"; };
 		F083FAE21974372E0072F02B /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		F08760C519002D1D003BB5C0 /* LCB-headerImgBids.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LCB-headerImgBids.png"; path = "photoshop/LCB-headerImgBids.png"; sourceTree = "<group>"; };
 		F08760C619002D1D003BB5C0 /* LCB-headerImg2@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LCB-headerImg2@x2.png"; path = "photoshop/LCB-headerImg2@x2.png"; sourceTree = "<group>"; };
@@ -360,8 +360,8 @@
 			children = (
 				283C4EFB1FA634E0005A4F3F /* GMSBidsView.h */,
 				283C4EFC1FA634E0005A4F3F /* GMSBidsView.m */,
-				F07AF6C818FD85140091D05F /* GMSSecondViewTableData.h */,
-				F07AF6C918FD85140091D05F /* GMSSecondViewTableData.m */,
+				F07AF6C818FD85140091D05F /* GMSBidsAsksDatas.h */,
+				F07AF6C918FD85140091D05F /* GMSBidsAsksDatas.m */,
 			);
 			path = bidsView;
 			sourceTree = "<group>";
@@ -850,7 +850,7 @@
 				F0B5651718E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */,
 				F01245A918E7208F002FAADA /* UIImageView+AFNetworking.m in Sources */,
 				F03FB22C18E84F8500A65036 /* GMSUtilitiesFunction.m in Sources */,
-				F07AF6CA18FD85140091D05F /* GMSSecondViewTableData.m in Sources */,
+				F07AF6CA18FD85140091D05F /* GMSBidsAsksDatas.m in Sources */,
 				F00B2146191C0705006D3B6F /* ContainerViewController.m in Sources */,
 				F055652E18E6DD9300481688 /* main.m in Sources */,
 				F07641041929E7A700DA6616 /* GMSChartView.m in Sources */,
@@ -888,7 +888,7 @@
 				F065FE8C18E7B226005B0376 /* GMSlabelFromJson.m in Sources */,
 				F055655018E6DD9300481688 /* LCB_PUBLIC_TICKERTests.m in Sources */,
 				2821DF1C1FA749BA003913E6 /* GMSChartsView.m in Sources */,
-				283C4EFF1FA63541005A4F3F /* GMSSecondViewTableData.m in Sources */,
+				283C4EFF1FA63541005A4F3F /* GMSBidsAsksDatas.m in Sources */,
 				F03FB22D18E84F8500A65036 /* GMSUtilitiesFunction.m in Sources */,
 				283C4F041FA6364A005A4F3F /* GMSAsksView.m in Sources */,
 				F065FE7F18E73DD0005B0376 /* GMSMessageBox.m in Sources */,

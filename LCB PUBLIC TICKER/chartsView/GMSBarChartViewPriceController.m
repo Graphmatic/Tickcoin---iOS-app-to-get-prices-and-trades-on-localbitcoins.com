@@ -73,8 +73,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     return self;
 }
 
-#pragma mark - Date
-
 - (void)initWithDatas
 {
     self.graphDatas = [GMSchartViewData sharedGraphViewTableData:currentCurrency];
@@ -86,10 +84,12 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 {
     [super loadView];
     
-    [self.view layoutIfNeeded];
-    [self.view setNeedsLayout];
+//    [self.view layoutIfNeeded];
+//    [self.view setNeedsLayout];
     CGFloat childViewWidth = self.view.bounds.size.width;
     CGFloat childViewHeight = self.view.bounds.size.height;
+    
+
     
     if ( IS_IPAD )
     {
@@ -97,15 +97,12 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         GMSPriceChartFooterHeight = 22.0f;
     }
     // header of first chart (price)
-
     self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(0, 0, childViewWidth - GMSPriceChartPadding, GMSPriceChartHeaderHeight)];
-    
     self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
     self.headerView.separatorColor = GMSColorWhite;
     
     // footer of first chart (price)
     footerView = [[GMSBarChartFooterView alloc] initWithFrame:CGRectMake(GMSPriceChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(GMSPriceChartFooterHeight * 0.5), self.view.bounds.size.width - GMSPriceChartPadding, GMSPriceChartFooterHeight)];
- 
     footerView.padding = GMSPriceChartFooterPadding;
     footerView.leftLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_Yesterday",@"Yesterday")];
     footerView.leftLabel.textColor = [UIColor whiteColor];

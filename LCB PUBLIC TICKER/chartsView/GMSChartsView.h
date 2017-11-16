@@ -17,4 +17,5 @@
 @property (strong, atomic) GMSTopBrandImage *headerChartsImg;
 @property (weak, nonatomic) IBOutlet UIView *chartsPriceView;
 @property (weak, nonatomic) IBOutlet UIView *chartsVolumeView;
+
 @end
