@@ -7,17 +7,18 @@
 //
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import "GMSFirstViewController.h"
-#import "GMSSecondViewController.h"
-#import "GMSThirdViewController.h"
-#import "GMSFifthViewController.h"
-#import "GMSBarChartViewController.h"
+#import "GMSStartView.h"
+#import "GMSBidsView.h"
+#import "GMSAsksView.h"
+//#import "GMSFifthViewController.h"
+#import "GMSChartsView.h"
+
 @interface ContainerViewController : UIViewController 
 @property (strong, nonatomic) NSString *currentSegueIdentifier;
-@property (strong, nonatomic) GMSFirstViewController *firstViewController;
-@property (strong, nonatomic) GMSSecondViewController *secondViewController;
-@property (strong, nonatomic) GMSThirdViewController *thirdViewController;
-@property  (strong, nonatomic)GMSBarChartViewController *fourthViewController;
-@property (strong, nonatomic) GMSFifthViewController *fifthViewController;
+@property (strong, nonatomic) GMSStartView *firstViewController;
+@property (strong, nonatomic) GMSBidsView *secondViewController;
+@property (strong, nonatomic) GMSAsksView *thirdViewController;
+@property  (strong, nonatomic) GMSChartsView *fourthViewController;
+//@property (strong, nonatomic) GMSFifthViewController *fifthViewController;
 
 @end

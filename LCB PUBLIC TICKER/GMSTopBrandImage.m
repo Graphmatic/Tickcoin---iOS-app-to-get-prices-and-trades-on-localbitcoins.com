@@ -26,39 +26,43 @@
     if (self = [super init])
         {
          self.topBrand = [[UIImage alloc]init];
-            if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+            if ( IS_IPAD )
             {
                 NSLog(@"ipad");
                 switch (viewIndex)
                  {
                     case 0:
-                        self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig.png"];
+                        self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig@x2"];
                          [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
-                         self = [super initWithImage:self.topBrand];
+                        
                         break;
                     case 1:
                          self.topBrand = [UIImage imageNamed:@"LCB_headerImgBidsIpadBig.png"];
                          [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
-                         self = [super initWithImage:self.topBrand];
+                         
                          break;
                      case 2:
                          self.topBrand = [UIImage imageNamed:@"LCB_headerImgAsksIpadBig.png"];
                          [self setFrame:CGRectMake(0.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
-                         self = [super initWithImage:self.topBrand];
+                         
                          break;
-                     default:
-                         self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig.png"];
+                     case 3:
+                         self.topBrand = [UIImage imageNamed:@"header_charts"];
                          [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
-                         self = [super initWithImage:self.topBrand];
                          break;
+//                     default:
+//                         self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig.png"];
+//                         [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
+//                         break;
                  }
+                self = [super initWithImage:self.topBrand];
               
             }
             else
             {
             switch (viewIndex) {
                 case 0:
-                   self.topBrand = [UIImage imageNamed:@"LCB_headerImg.png"];
+                   self.topBrand = [UIImage imageNamed:@"header_exchange"];
                     break;
                 case 1:
                     self.topBrand = [UIImage imageNamed:@"LCB-headerImgBids.png"];
@@ -66,7 +70,9 @@
                 case 2:
                     self.topBrand = [UIImage imageNamed:@"LCB-headerImgAsks.png"];
                     break;
-
+                case 3:
+                    self.topBrand = [UIImage imageNamed:@"header_charts"];
+                    break;
                 default:
                     self.topBrand = [UIImage imageNamed:@"LCB_headerImg.png"];
                     break;

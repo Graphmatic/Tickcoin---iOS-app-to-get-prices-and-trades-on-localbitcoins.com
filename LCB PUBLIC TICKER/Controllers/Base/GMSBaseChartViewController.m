@@ -40,7 +40,7 @@ CGFloat const kGMSBaseChartViewControllerAnimationDuration = 0.25f;
     {
         self.tooltipView = [[GMSChartTooltipView alloc] init];
         self.tooltipView.alpha = 0.0;
-        [self.view addSubview:self.tooltipView];
+        [self.parentViewController.view addSubview:self.tooltipView];
     }
     
     if (!self.tooltipTipView)
@@ -49,6 +49,8 @@ CGFloat const kGMSBaseChartViewControllerAnimationDuration = 0.25f;
         self.tooltipTipView.alpha = 0.0;
         [self.view addSubview:self.tooltipTipView];
     }
+    
+    CGFloat yOrigine = ( self.parentViewController.view.frame.size.height - self.tooltipView.frame.size.height ) / 2;
     
     dispatch_block_t adjustTooltipPosition = ^{
         CGPoint originalTouchPoint = [self.view convertPoint:touchPoint fromView:chartView];
@@ -66,7 +68,7 @@ CGFloat const kGMSBaseChartViewControllerAnimationDuration = 0.25f;
             {
                 convertedTouchPoint.x = maxChartX;
             }
-            self.tooltipView.frame = CGRectMake(convertedTouchPoint.x - ceil(self.tooltipView.frame.size.width * 0.5), CGRectGetMaxY(chartView.headerView.frame), self.tooltipView.frame.size.width, self.tooltipView.frame.size.height);
+            self.tooltipView.frame = CGRectMake(convertedTouchPoint.x - ceil(self.tooltipView.frame.size.width * 0.5), yOrigine, self.tooltipView.frame.size.width, self.tooltipView.frame.size.height);
             
             CGFloat minTipX = (chartView.frame.origin.x + self.tooltipTipView.frame.size.width);
             if (originalTouchPoint.x < minTipX)

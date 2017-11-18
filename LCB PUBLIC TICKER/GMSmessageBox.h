@@ -10,9 +10,13 @@
 
 @interface GMSMessageBox : UIView
 {
-    UIView *messageBoxBackground;
+    UIView *messageBox;
 }
-+ (id)messageBox:(CGFloat)posY;
 
-@property (nonatomic, retain) UIView *messageBoxBackground;
++ (id)init:(CGFloat)posY;
+
+//@property (nonatomic, retain) UIView *messagebox;
+@property (strong, nonatomic) IBOutlet UIView *messageBox;
+
+
 @end

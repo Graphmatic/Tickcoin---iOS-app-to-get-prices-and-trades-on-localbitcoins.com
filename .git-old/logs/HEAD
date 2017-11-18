@@ -1,0 +1,11 @@
+0000000000000000000000000000000000000000 a4404c5c798a6db3887eee643b0196a88eb48c15 Graphmatic <frup@frups-MacBook-Pro.local> 1396090389 +0100	commit (initial): Initial Commit
+a4404c5c798a6db3887eee643b0196a88eb48c15 8910f652bb77918584ab76c7b9431809249a6b11 florian.lx <graphmatic.studio@gmail.com> 1508752812 +0200	commit: state before migration to iOs >= 8
+8910f652bb77918584ab76c7b9431809249a6b11 8910f652bb77918584ab76c7b9431809249a6b11 florian.lx <graphmatic.studio@gmail.com> 1508752839 +0200	checkout: moving from master to iOS8
+8910f652bb77918584ab76c7b9431809249a6b11 f3d86f5602bb781e42ac6279a1660e53208b585f florian.lx <graphmatic.studio@gmail.com> 1508754921 +0200	commit: removing fifth controller and view
+f3d86f5602bb781e42ac6279a1660e53208b585f b8e6fb1a30bf1088b5fe7c28d7e6aafb5cb9da8d florian.lx <graphmatic.studio@gmail.com> 1508760369 +0200	commit: removed iAd remaining files
+b8e6fb1a30bf1088b5fe7c28d7e6aafb5cb9da8d 160f1c82b29174d7c57d2dc114ca84a62c3a104f florian.lx <graphmatic.studio@gmail.com> 1508940916 +0200	commit: fixing layout of first view
+160f1c82b29174d7c57d2dc114ca84a62c3a104f b5e9ff2bf3052895a73d4a0741f0ee9a40d381c5 florian.lx <graphmatic.studio@gmail.com> 1509215423 +0200	commit: layout fixed for first controller on ipad and iphone - added some translation
+b5e9ff2bf3052895a73d4a0741f0ee9a40d381c5 326ad9e7dbe60efaeb5453cf88377b5ef44c391f florian.lx <graphmatic.studio@gmail.com> 1509291149 +0100	commit: added global utility function to popup alert
+326ad9e7dbe60efaeb5453cf88377b5ef44c391f d220da11d2faa4fac2c7378297fcd3942921a6cd florian.lx <graphmatic.studio@gmail.com> 1509294412 +0100	commit: Folders and files structure changes; main views/classes renamed
+d220da11d2faa4fac2c7378297fcd3942921a6cd 91114f19cb4e709f6d4bde47b872dad4d64db6ca florian.lx <graphmatic.studio@gmail.com> 1509387183 +0100	commit: Charts view: Now embedded in a view controller; added a separate barchart for Volume; added an title image
+91114f19cb4e709f6d4bde47b872dad4d64db6ca d1b999e70b2656e0ee1fb21d2a662d12c46ccfbf florian.lx <graphmatic.studio@gmail.com> 1509557064 +0100	commit: pushing to github

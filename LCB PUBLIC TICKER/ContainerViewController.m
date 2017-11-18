@@ -14,7 +14,8 @@
 #define second @"secondController"
 #define third @"thirdController"
 #define fourth @"fourthController"
-#define fifth @"fifthController"
+
+//#define fifth @"fifthController"
 
 @interface ContainerViewController () 
 
@@ -35,7 +36,7 @@
     [self performSegueWithIdentifier:second sender:nil];
     [self performSegueWithIdentifier:third sender:nil];
     [self performSegueWithIdentifier:fourth sender:nil];
-     [self performSegueWithIdentifier:fifth sender:nil];
+//     [self performSegueWithIdentifier:fifth sender:nil];
     _topbarBg.frame = CGRectMake(0, 0, 512, 20);
     [_topbarBg setFrame:CGRectMake(0, 0, 512, 20)];
      [self.view addSubview:_topbarBg];
@@ -83,21 +84,24 @@
         [self addChildViewController:self.fourthViewController];
         UIView* destView4 = ((UIViewController *)self.fourthViewController).view;
         destView4.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-              [self.view addSubview:destView4];
-        destView4.frame = CGRectMake(1, 354, 261, (self.fourthViewController.view.superview.frame.size.height/2)-5);
+        [self.view addSubview:destView4];
+        CGRect screenRect = [[UIScreen mainScreen] bounds];
+        CGFloat screenHeight = screenRect.size.height;
+        NSLog(@"ipad height : %f", screenHeight);
+        destView4.frame = CGRectMake(1, 355, 516, screenHeight - 354);
         [segue.destinationViewController didMoveToParentViewController:self];
     }
-    
-    if ([segue.identifier isEqualToString:fifth])
-    {
-        self.fifthViewController = segue.destinationViewController;
-        [self addChildViewController:self.fifthViewController];
-        UIView* destView5 = ((UIViewController *)self.fifthViewController).view;
-        destView5.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [self.view addSubview:destView5];
-        destView5.frame = CGRectMake(1, 626, self.fifthViewController.view.frame.size.width-3, self.fifthViewController.view.frame.size.height);
-        [segue.destinationViewController didMoveToParentViewController:self];
-    }
+
+//    if ([segue.identifier isEqualToString:fifth])
+//    {
+//        self.fifthViewController = segue.destinationViewController;
+//        [self addChildViewController:self.fifthViewController];
+//        UIView* destView5 = ((UIViewController *)self.fifthViewController).view;
+//        destView5.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//        [self.view addSubview:destView5];
+//        destView5.frame = CGRectMake(1, 626, self.fifthViewController.view.frame.size.width-3, self.fifthViewController.view.frame.size.height);
+//        [segue.destinationViewController didMoveToParentViewController:self];
+//    }
  
 }
 

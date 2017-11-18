@@ -6,33 +6,32 @@
 //  Copyright (c) 2014 frup. All rights reserved.
 //
 
-#import "GMSmessageBox.h"
+#import "GMSMessageBox.h"
+#import <UIKit/UIKit.h>
 
 @implementation GMSMessageBox
 
-@synthesize messageBoxBackground;
+@synthesize messageBox;
 
-+ (id)messageBox:(CGFloat)posY {
-     GMSMessageBox *messageBox = nil;
-  
-        messageBox = [[self alloc] initWithPosY:posY];
-   
++ (id)init:(CGFloat)posY
+{
+    GMSMessageBox *messageBox = nil;
+    messageBox = [[self alloc] initWithPosY:posY];
+    
     return messageBox;
 }
 - (id)initWithPosY:(CGFloat)posY
 {
     if (self = [super init])
     {
-        messageBoxBackground = [[UIView alloc] init];
-        
-       // messageBoxBackground = [UIImage imageNamed:@"LCB_messageBox.png"];
-       // [self setFrame:CGRectMake(0.0, 120.0, self.window.bounds.size.width, 64.0)];
         CGRect frame = CGRectMake(0.0, posY, self.window.bounds.size.width, 64.0);
-        self = [super initWithFrame:frame];
-        messageBoxBackground.backgroundColor = [UIColor colorWithRed:0.827 green:0.827 blue:0.827 alpha:1.0];
+        self = [self initWithFrame:frame];
+        self.backgroundColor = GMSColorRed;
+        
     }
     return self;
     
 }
 
 @end
+

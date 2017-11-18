@@ -24,8 +24,9 @@
     NSString* stringCurrencyFormat = [numFormatterCur stringFromNumber:toNumber];
     return stringCurrencyFormat;
 }
+
 //round to two decimal
-+ (NSString*)roundTwoDecimal:(NSString *)theNumb
++ (NSString*)twoDecimalStrFormat:(NSString *)theNumb
 {
     NSDecimalNumber *tmpN = [NSDecimalNumber decimalNumberWithString:theNumb];
     NSNumberFormatter *numFormatterTwoDec = [[NSNumberFormatter alloc] init];
@@ -128,6 +129,7 @@
     NSMutableString* startURL = [[NSMutableString alloc] initWithString:[graphURLStart stringByAppendingString:currentCurrency]];
     NSString *tmpUrl = [[NSString alloc] initWithString:[startURL stringByAppendingString:graphURLEnd]];
     NSString *fullURL = [[NSString alloc] initWithString:[tmpUrl stringByAppendingString:sinceString]];
+//    NSLog(@"charts api query: %@", fullURL);
     return fullURL;
 }
 
@@ -156,6 +158,44 @@
         }
         
     }
+}
+
+// use that to spread button equally in their parent view
+// Source : https://stackoverflow.com/questions/18706444/simplest-way-to-evenly-distribute-uibuttons-horizontally-across-width-of-view-co
+
++ (void) evenlySpaceTheseButtonsInThisView : (NSArray *) buttonArray : (UIView *) thisView {
+    int widthOfAllButtons = 0;
+    for (int i = 0; i < buttonArray.count; i++) {
+        UIButton *thisButton = [buttonArray objectAtIndex:i];
+        [thisButton setCenter:CGPointMake(0, thisView.frame.size.height / 2.0)];
+        widthOfAllButtons = widthOfAllButtons + thisButton.frame.size.width;
+    }
+    
+    int spaceBetweenButtons = (thisView.frame.size.width - widthOfAllButtons) / (buttonArray.count + 1);
+    
+    UIButton *lastButton = nil;
+    for (int i = 0; i < buttonArray.count; i++) {
+        UIButton *thisButton = [buttonArray objectAtIndex:i];
+        if (lastButton == nil) {
+            [thisButton setFrame:CGRectMake(spaceBetweenButtons, thisButton.frame.origin.y, thisButton.frame.size.width, thisButton.frame.size.height)];
+        } else {
+            [thisButton setFrame:CGRectMake(spaceBetweenButtons + lastButton.frame.origin.x + lastButton.frame.size.width, thisButton.frame.origin.y, thisButton.frame.size.width, thisButton.frame.size.height)];
+        }
+        
+        lastButton = thisButton;
+    }
+}
+
+// Show error/message popup
++ (void) popAlert : (NSString *)title : (NSString *)message : (UIViewController *) currentView {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(title, title)
+                                                                   message:NSLocalizedString(message, message)
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:defaultAction];
+    [currentView presentViewController:alert animated:YES completion:nil];
 }
 
 @end

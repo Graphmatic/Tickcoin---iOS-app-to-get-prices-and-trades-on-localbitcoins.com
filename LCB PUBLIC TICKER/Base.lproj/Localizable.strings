@@ -41,22 +41,32 @@
 "_DONE" = "updated!";
 "_THIS_APP_NEED_INTERNET" = "an internet connection is required";
 "_EMAIL_DAILY_TICKER" = "Localbitcoins.com: BITCOIN DAILY PRICE";
-"_MAIL_SENDING_CANCELLED" = "Mail sending canceled";
+"_MAIL_SENDING_CANCELLED" = "Mail canceled";
 "_MAIL_SAVED" = "Mail saved";
 "_MAIL_SENT" = "Mail sent";
-"_MAIL_SEND_FAIL" = "Mail sending failed";
+"_MAIL_SEND_FAIL" = "Mail failed";
 "_MAIL_NOT_SENT_DEFAULT" = "Mail not sent";
-"_SMS_SENDING_CANCELLED" = "SMS sending canceled";
+"_SMS_SENDING_CANCELLED" = "SMS canceled";
 "_SMS_SENT" = "SMS sent";
-"_SMS_SEND_FAIL" = "SMS sending failed";
+"_SMS_SEND_FAIL" = "SMS failed";
 "_SMS_NOT_SENT_DEFAULT" = "SMS not sent";
 "_TWEET_SENDING_CANCELLED" = "Tweet sending canceled";
 "_TWEET_SENT" = "Tweet sent";
+"_NOTHING_TO_SHARE" = "Nothing to share";
+"_TWITTER_NOT_CONF" = "Twitter is not configured";
+"_FACEBOOK_NOT_CONF" = "Facebook is not configured";
+"_MAIL_NOT_CONF" = "Mail is not configured";
+"_MESSAGE_NOT_CONF" = "Device can not send SMS";
+"_ERROR" = "Error";
 //chart view
-"_PRICE_VOLUMES_CURRENCY - last 24H" = "Price & Volumes - last 24H - %@";
+"_PRICE_CURRENCY_CHART" = "Closed trades prices - past 24H - %@";
+"_PRICE_CURRENCY_CHART_OUTDATED" = "Closed trades prices - Outdated! - %@";
+"_VOLUME_CURRENCY_CHART" = "Closed trades volumes - past 24H - BTC";
+"_VOLUME_CURRENCY_CHART_OUTDATED" = "Closed trades volumes - Outdated - BTC";
 "_Yesterday" = "Yesterday";
 "_Now" = "Now";
 "_NO_CHART_AVAILABLE" = "No chart available for %@";
+"_NO_TRADE" = "No\ntrade";
 //fifth controller
 "_AFFILIATE" = "your affiliate tag:";
 "_DEFAULT_CURRENCY" = "default currency:";
