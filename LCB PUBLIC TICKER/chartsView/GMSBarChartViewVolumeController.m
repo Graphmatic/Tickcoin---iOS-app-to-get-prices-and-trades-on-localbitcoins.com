@@ -247,13 +247,32 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 {
     if ( self.graphDatas.isReady == YES )
     {
-        self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"MM-dd HH:mm"];
-        NSString* startingDate = [dateFormatter stringFromDate:graphRequestStart];
-        footerView.leftLabel.text = startingDate;
-        footerView.leftLabel.textColor = [UIColor whiteColor];
-        footerView.rightLabel.text = @"Now";
+        if ( self.graphDatas.apiQuerySuccess )
+        {
+            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"MM-dd HH:mm"];
+            NSString* startingDate = [dateFormatter stringFromDate:graphRequestStart];
+            footerView.leftLabel.text = startingDate;
+            footerView.leftLabel.textColor = [UIColor whiteColor];
+            footerView.rightLabel.text = @"Now";
+        }
+        else
+        {
+            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART_OUTDATED" ,  @"Price & Volumes traded - Outdated! - %@"), currentCurrency];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"MM-dd HH:mm"];
+            NSDate *outdatedStaringDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:0]]objectAtIndex:3];
+            NSLog(@"sart date : %@", outdatedStaringDate);
+            NSString* startingDate = [dateFormatter stringFromDate:outdatedStaringDate];
+            NSDate *outdatedEndDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:23]]objectAtIndex:3];
+            NSLog(@"sart date : %@", outdatedEndDate);
+            NSString *endDate = [dateFormatter stringFromDate:outdatedEndDate];
+            footerView.leftLabel.text = startingDate;
+            footerView.leftLabel.textColor = GMSColorRed;
+            footerView.rightLabel.textColor = GMSColorRed;
+            footerView.rightLabel.text = endDate;
+        }
     }
     else
     {

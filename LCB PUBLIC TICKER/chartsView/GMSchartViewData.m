@@ -99,14 +99,22 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
          if ( [[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"] != nil )
          {
              self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
+             NSLog(@"WHOLE SAVED OBJ : %@" , self.previousPricesAndVolumes);
              if ( [self.previousPricesAndVolumes objectForKey:self.currency] != nil )
              {
+                 NSLog(@"Currency SAVED OBJ : %@" , [self.previousPricesAndVolumes objectForKey:self.currency] );
                  self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
-                 self.thisDayDatas = [[self.previousPricesAndVolumes objectForKey:self.currency]mutableCopy];
-                 self.isReady = YES;
+                 self.thisDayDatas = [[[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]] objectForKey:self.currency]mutableCopy];
+                 NSArray *keys = [self.thisDayDatas allKeys];
+                 self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     // Notify UI that Instance is ready to use
+                     self.isReady = YES;
+                 });
              }
              else
              {
+                 NSLog(@"generate fake datas no data for currency");
                  // generate fake datas
                  [self dummyArrayForMissingChart];
              }
@@ -114,6 +122,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
          else
          {
              // generate fake datas
+             NSLog(@"generate fake datas: nothing in DB");
              [self dummyArrayForMissingChart];
          }
      }];
@@ -178,7 +187,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
                     // debug
                     // NSLog(@"cooked! : %@", thisDayDatasTmpFull);
                     // Backup datas
-                    [self.previousPricesAndVolumes setObject:thisDayDatas forKey:currentCurrency];
+                    [self.previousPricesAndVolumes setObject:[thisDayDatasTmpFull mutableCopy] forKey:currentCurrency];
                     NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self.previousPricesAndVolumes];
                     [[NSUserDefaults standardUserDefaults] setObject:thisDayDatasToSave forKey:@"previousPricesAndVolumes"];
                 }];
@@ -321,8 +330,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
                 NSString *zeroTimestampIntStr = [[NSString alloc]init];
                 zeroTimestampIntStr = [NSString stringWithFormat:@"%ld", (long)zeroTimestampInt ];
                 NSDate *thisDate = [[NSDate alloc]initWithTimeIntervalSince1970:zeroTimestamp];
-//                thisDate = [GMSUtilitiesFunction roundDateToHour:thisDate];
-                
+
                 NSArray *bump = [[NSArray alloc]initWithObjects:zeroTimestampIntStr, zeroVal, zeroVal, thisDate, nil];
                 [thisDayDatasTemp setObject:bump forKey:nextHour];
             }
@@ -360,7 +368,11 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
         self.thisDayDatas = [dummyOne mutableCopy];
         [self.previousPricesAndVolumes setObject:self.thisDayDatas forKey:currentCurrency];
         // Notify UI
-        self.isReady = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Notify UI that Instance is ready to use
+            self.isReady = YES;
+            
+        });
     });
 }
 
@@ -420,6 +432,4 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
     return volumesAndPricesRanges;
 }
 
-
 @end
-
