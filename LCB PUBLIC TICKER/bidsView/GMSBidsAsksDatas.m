@@ -148,7 +148,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
             
             // Notify UI that Instance is ready to use
             self.isReady = YES;
-            
+
             // backup today datas in DB
             [self.bidsAsksAllCurrencies setObject:responseObject forKey:self.currency];
             [[NSUserDefaults standardUserDefaults]setObject:self.bidsAsksAllCurrencies forKey:@"previousBidsAsksListing"];
@@ -168,6 +168,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
     }
     else
     {
+        NSLog(@"888");
         [self deviationFilter:[responseObj objectForKey:@"bids"] deviation:self.bidsMaxDeviation :^(NSMutableArray *sortedBidsDatas ) {
             self.orderBids = sortedBidsDatas;
             // save deviation value in DB
@@ -221,24 +222,32 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
     if ( [orderType isEqualToString:@"bids"] )
     {
         NSMutableArray *bArr = (NSMutableArray*)[[self.bidsAsksAllCurrencies objectForKey:self.currency] objectForKey:@"bids"];
+        self.bidsMaxDeviation = maxDeviation;
         
         if (self.bidsMaxDeviation == 201) // no deviation filter
         {
+            // debug
+            NSLog(@"201");
             self.orderBids = (NSMutableArray*)[NSOrderedSet orderedSetWithArray:bArr].array;
         }
         else
         {
+            // debug
+            NSLog(@"0-100");
             [self deviationFilter:bArr deviation:self.bidsMaxDeviation :^(NSMutableArray *sortedBidsDatas ) {
                 self.orderBids = sortedBidsDatas;
                 // save deviation value in DB
                 [[NSUserDefaults standardUserDefaults]  setObject:[NSString stringWithFormat:@"%i", self.bidsMaxDeviation] forKey:@"bidsMaxDeviation"];
                 self.isReady = YES;
+                // debug
+                NSLog(@"after filter : %@", self.orderBids);
             }];
         }
     }
     else
     {
         NSMutableArray *aArr = (NSMutableArray*)[[self.bidsAsksAllCurrencies objectForKey:self.currency] objectForKey:@"asks"];
+        self.asksMaxDeviation = maxDeviation;
         
         if (self.bidsMaxDeviation == 201) // no deviation filter
         {

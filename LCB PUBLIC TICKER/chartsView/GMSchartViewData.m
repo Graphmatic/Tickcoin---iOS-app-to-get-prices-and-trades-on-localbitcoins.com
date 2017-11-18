@@ -85,20 +85,25 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
 {
     self.isReady = NO;
     NSString *fullURL = [GMSUtilitiesFunction graphUrl];
+    NSLog(@"URL : %@", fullURL);
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
     AFHTTPRequestOperation *operationGraph = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operationGraph setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationGraph, id responseObject)
      {
+          NSLog(@"Obj Success : %@", responseObject);
          self.apiQuerySuccess = YES;
          // Build the datas object
          [self chartListingCleaned:responseObject];
      }
                                           failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)
      {
+         NSLog(@"Query failure");
          self.apiQuerySuccess = NO;
          // try to get previous recorded datas from DB and check if datas exist for given currency
          if ( [[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"] != nil )
          {
+             NSLog(@"Query failure : something in DB");
+
              self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
              if ( [self.previousPricesAndVolumes objectForKey:self.currency] != nil )
              {
@@ -114,6 +119,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
          }
          else
          {
+             NSLog(@"Query failure : nothing in DB");
              // generate fake datas
              [self dummyArrayForMissingChart];
          }
@@ -175,7 +181,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
                     // assign resulting Dictionnary to instance property
                     self.thisDayDatas = [thisDayDatasTmpFull mutableCopy];
                     // debug
-                    // NSLog(@"cooked! : %@", thisDayDatasTmpFull);
+                     NSLog(@"cooked! : %@", thisDayDatasTmpFull);
                     // Backup datas
                     [self.previousPricesAndVolumes setObject:thisDayDatas forKey:currentCurrency];
                     NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self.previousPricesAndVolumes];
@@ -416,7 +422,6 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     
     return volumesAndPricesRanges;
 }
-
 
 @end
 

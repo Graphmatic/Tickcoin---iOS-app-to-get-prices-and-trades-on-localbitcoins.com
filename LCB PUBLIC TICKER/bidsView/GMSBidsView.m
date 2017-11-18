@@ -26,28 +26,10 @@
 
 @synthesize timerMessages, editMaxDev, settingSquare, bidsDatas, sliderVal, sliderValName, secondViewMessage, messageBox, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation;
 
-#pragma mark - Alloc/Init
-
-- (id)init
-{
-    self = [super init];
-    if (self)
-    {
-        [self initWithDatas];
-    }
-    return self;
-}
-
-- (void)initWithDatas
-{
-    self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationBids"]intValue] || 201;
-    self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:currentCurrency];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     // layout
     // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
@@ -151,6 +133,9 @@
 {
     self.secondViewMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
     
+    self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationBids"]intValue] || 201;
+    self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:currentCurrency];
+    
     // add observer
     [self.bidsDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
     // notif listener
@@ -181,10 +166,11 @@
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_background_sel.png"]];
     
     cell.textLabel.text = key;
+    cellVal = [[self.bidsDatas.orderBids objectAtIndex:indexPath.row]objectAtIndex:1];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", cellVal];
     
-    cellVal = [[self.bidsDatas.orderBids objectAtIndex:indexPath.row]objectAtIndex:1];
-
+    // debug
+    NSLog(@"index 1 : %@", [[self.bidsDatas.orderBids objectAtIndex:indexPath.row]objectAtIndex:1]);
     return cell;
 }
 
@@ -229,7 +215,7 @@
 }
 
 //double tap to change order
--(void) tapToChangeArrOrder:(UIGestureRecognizer*) recognizer {
+- (void)tapToChangeArrOrder:(UIGestureRecognizer*) recognizer {
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.secondViewMessage.text = nil;
@@ -244,14 +230,15 @@
     }
     [self.tableView reloadData];
 }
--(void) displayMaxDeviationSlider:(UIGestureRecognizer*) recognizer
+
+- (void) displayMaxDeviationSlider:(UIGestureRecognizer*) recognizer
 {
     if (settingOn == NO)
     {
         [self showOverlaySetting];
     }
 }
--(void)showOverlaySetting
+- (void)showOverlaySetting
 {
     if ( !IS_IPAD )
     {
@@ -381,7 +368,7 @@
                              settingOn = NO;  }];
     }
     self.sliderVal.hidden =YES;
-    [self.bidsDatas changeDeviation:self.maxDeviation];
+    [self.bidsDatas changeDeviation:self.maxDeviation orderType:@"bids"];
 }
 
 - (void)didReceiveMemoryWarning

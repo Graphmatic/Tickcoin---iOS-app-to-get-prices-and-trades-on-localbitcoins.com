@@ -382,7 +382,7 @@
                              settingOn = NO;  }];
     }
     self.sliderVal.hidden =YES;
-    [self.asksDatas changeDeviation:self.maxDeviation];
+    [self.asksDatas changeDeviation:self.maxDeviation orderType:@"asks"];
 }
 
 - (void)didReceiveMemoryWarning

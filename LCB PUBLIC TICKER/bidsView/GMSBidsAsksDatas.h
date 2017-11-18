@@ -31,6 +31,6 @@ extern NSMutableString *currentCurrency;
 - (void)apiQuery;
 - (void)resetSharedInstance;
 - (void)listingBuilder:(id)responseObject;
-- (void)changeDeviation:(int)maxDeviation;
+- (void)changeDeviation:(int)maxDeviation orderType:(NSString *)orderType;
 
 @end
