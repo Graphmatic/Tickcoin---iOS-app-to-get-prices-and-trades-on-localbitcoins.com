@@ -60,7 +60,9 @@
 "_ERROR" = "Error";
 //chart view
 "_PRICE_CURRENCY_CHART" = "Closed trades prices - past 24H - %@";
+"_PRICE_CURRENCY_CHART_OUTDATED" = "Closed trades prices - Outdated! - %@";
 "_VOLUME_CURRENCY_CHART" = "Closed trades volumes - past 24H - BTC";
+"_VOLUME_CURRENCY_CHART_OUTDATED" = "Closed trades volumes - Outdated - BTC";
 "_Yesterday" = "Yesterday";
 "_Now" = "Now";
 "_NO_CHART_AVAILABLE" = "No chart available for %@";
