@@ -56,8 +56,10 @@
 "_MESSAGE_NOT_CONF" = "SMS non disponibles";
 "_ERROR" = "Erreur";
 //chart view
-"_PRICE_CURRENCY_CHART" = "Transactions sur 24H - %@";
-"_VOLUME_CURRENCY_CHART" = "Closed trades volumes - past 24H - BTC";
+"_PRICE_CURRENCY_CHART" = "Cotation sur 24H - %@";
+"_VOLUME_CURRENCY_CHART" = "Volumes sur 24H - BTC";
+"_PRICE_CURRENCY_CHART_OUTDATED" = "Cotation sur 24H  - Outdated! - %@";
+"_VOLUME_CURRENCY_CHART_OUTDATED" = "Volumes sur 24H - Outdated! - BTC";
 "_Yesterday" = "Hier";
 "_Now" = "Maintenant";
 "_NO_CHART_AVAILABLE" = "Aucune donnée - %@";

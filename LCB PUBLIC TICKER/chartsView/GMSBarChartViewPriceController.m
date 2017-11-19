@@ -246,15 +246,34 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)setupVisibleElement
 {
-    if( self.graphDatas.isReady == YES)
+    if ( self.graphDatas.isReady == YES)
     {
-        self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"MM-dd HH:mm"];
-        NSString* startingDate = [dateFormatter stringFromDate:graphRequestStart];
-        footerView.leftLabel.text = startingDate;
-        footerView.leftLabel.textColor = [UIColor whiteColor];
-        footerView.rightLabel.text = @"Now";
+        if ( self.graphDatas.apiQuerySuccess )
+        {
+            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"MM-dd HH:mm"];
+            NSString* startingDate = [dateFormatter stringFromDate:graphRequestStart];
+            footerView.leftLabel.text = startingDate;
+            footerView.leftLabel.textColor = [UIColor whiteColor];
+            footerView.rightLabel.text = @"Now";
+        }
+        else
+        {
+            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART_OUTDATED" ,  @"Price & Volumes traded - Outdated! - %@"), currentCurrency];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"MM-dd HH:mm"];
+            NSDate *outdatedStaringDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:0]]objectAtIndex:3];
+            NSLog(@"sart date : %@", outdatedStaringDate);
+            NSString* startingDate = [dateFormatter stringFromDate:outdatedStaringDate];
+            NSDate *outdatedEndDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:23]]objectAtIndex:3];
+            NSLog(@"sart date : %@", outdatedEndDate);
+            NSString *endDate = [dateFormatter stringFromDate:outdatedEndDate];
+            footerView.leftLabel.text = startingDate;
+            footerView.leftLabel.textColor = GMSColorRed;
+            footerView.rightLabel.textColor = GMSColorRed;
+            footerView.rightLabel.text = endDate;
+        }
     }
     else
     {
@@ -264,6 +283,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     
+    NSLog(@"Observer isReady triggered : %@", [change objectForKey:@"new"]);
     if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
     {
         dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
@@ -279,6 +299,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 //            NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", self.barChartView.minimumValue, self.barChartView.maximumValue);
 
             // triggering re-drawn
+            NSLog(@"in chart view : %@", self.graphDatas.thisDayDatas);
             [self.barChartView reloadData];
         });
     }
