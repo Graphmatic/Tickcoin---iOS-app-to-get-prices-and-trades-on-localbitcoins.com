@@ -37,7 +37,7 @@
                         
                         break;
                     case 1:
-                         self.topBrand = [UIImage imageNamed:@"LCB_headerImgBidsIpadBig.png"];
+                         self.topBrand = [UIImage imageNamed:@"header_bids"];
                          [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
                          
                          break;

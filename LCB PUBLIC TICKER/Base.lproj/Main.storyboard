@@ -92,64 +92,6 @@
                                     <outlet property="delegate" destination="CZ4-MO-1fc" id="Qa5-aQ-FP4"/>
                                 </connections>
                             </tableView>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="SocialStack" translatesAutoresizingMaskIntoConstraints="NO" id="4wv-6u-IaT">
-                                <rect key="frame" x="-5" y="284" width="375" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bXu-cN-DcP">
-                                        <rect key="frame" x="95" y="0.0" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <accessibility key="accessibilityConfiguration">
-                                            <bool key="isElement" value="NO"/>
-                                        </accessibility>
-                                        <size key="titleShadowOffset" width="2" height="2"/>
-                                        <state key="normal" image="tw-icon.png"/>
-                                        <connections>
-                                            <action selector="tweetSelectedRow:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="Qbm-dA-iDb"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iUS-Gf-XfG">
-                                        <rect key="frame" x="95" y="39" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <accessibility key="accessibilityConfiguration">
-                                            <bool key="isElement" value="NO"/>
-                                        </accessibility>
-                                        <state key="normal" image="fb-icon.png">
-                                            <attributedString key="attributedTitle"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="fbSelectedRow:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="YHV-AR-iXH"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qQ2-GO-vl2">
-                                        <rect key="frame" x="95" y="39" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <accessibility key="accessibilityConfiguration">
-                                            <bool key="isElement" value="NO"/>
-                                        </accessibility>
-                                        <state key="normal" image="mail-icon.png">
-                                            <attributedString key="attributedTitle"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="emailSelectedRow:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="h0k-m3-Grk"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Bk-ur-N6H">
-                                        <rect key="frame" x="95" y="39" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <accessibility key="accessibilityConfiguration">
-                                            <bool key="isElement" value="NO"/>
-                                        </accessibility>
-                                        <state key="normal" image="mess-icon.png">
-                                            <attributedString key="attributedTitle"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="messageSelectedRow:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="pIk-8a-7g0"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="0.82079607248306274" green="0.83058387041091919" blue="0.86685234308242798" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.40000000000000002" green="0.47058823529411764" blue="0.55686274509803924" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -159,15 +101,9 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="SocialStack" destination="4wv-6u-IaT" id="78V-de-vsu"/>
-                        <outlet property="emailIt" destination="qQ2-GO-vl2" id="YM9-gz-2lx"/>
-                        <outlet property="faceBook" destination="iUS-Gf-XfG" id="b3h-6q-4bL"/>
                         <outlet property="messageBoxLabel" destination="nsM-uo-vmP" id="SvB-SP-ggK"/>
-                        <outlet property="messageIt" destination="2Bk-ur-N6H" id="Z8u-6c-KHF"/>
                         <outlet property="picker" destination="FxW-BT-rEz" id="zTO-eX-XT4"/>
-                        <outlet property="socialStack" destination="4wv-6u-IaT" id="ass-Wf-D0f"/>
                         <outlet property="tableView" destination="1Mj-da-W8K" id="gA6-Xs-V8k"/>
-                        <outlet property="tweetIt" destination="bXu-cN-DcP" id="GvJ-8j-UFm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qh2-T1-AhA" sceneMemberID="firstResponder"/>
@@ -630,11 +566,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="fb-icon.png" width="50" height="50"/>
         <image name="first" width="30" height="30"/>
-        <image name="mail-icon.png" width="50" height="50"/>
-        <image name="mess-icon.png" width="50" height="50"/>
         <image name="second" width="30" height="30"/>
-        <image name="tw-icon.png" width="50" height="50"/>
     </resources>
 </document>
