@@ -24,7 +24,7 @@
 
 @implementation GMSBidsView
 
-@synthesize timerMessages, editMaxDev, settingSquare, bidsDatas, sliderVal, sliderValName, secondViewMessage, messageBox, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation;
+@synthesize timerMessages, editMaxDev, bidsDatas, sliderVal, sliderValName, dynamicMessage, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation;
 
 - (void)viewDidLoad
 {
@@ -42,24 +42,27 @@
     // Some position helpers
     CGFloat messageBoxOrigY = self.headerImg.topBrand.size.height + 2;
     
-    // add messageBox
-    self.messageBox = [GMSMessageBox init:messageBoxOrigY];
-    [self.view addSubview:self.messageBox];
+    // add empty room for dynamic messages
     CGFloat messageBoxHeight = 64.0;
-    CGFloat tableViewHeaderOriginY = messageBoxOrigY + messageBoxHeight;
     
     // add dynamic label in messageBox
-    [self.messageBox addSubview:self.secondViewMessage];
+    self.dynamicMessage.frame = CGRectMake(0, messageBoxOrigY, viewWidth, messageBoxHeight - 4);
+    self.dynamicMessage.backgroundColor = [UIColor clearColor];
+    self.dynamicMessage.textColor = GMSColorBlueGreyDark;
+    [self.view addSubview:self.dynamicMessage];
     
-    // constraints to position message label in wrapper
-    [NSLayoutConstraint constraintWithItem:self.secondViewMessage attribute:NSLayoutAttributeCenterX
-                                 relatedBy:NSLayoutRelationEqual toItem:self.messageBox
-                                 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:+0.0];
-    [NSLayoutConstraint constraintWithItem:self.secondViewMessage attribute:NSLayoutAttributeCenterY
-                                 relatedBy:NSLayoutRelationEqual toItem:self.messageBox
-                                 attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:+0.0];
+    // Frame position for setting slider view
+    self.settingSquare.frame = CGRectMake(0, messageBoxOrigY, viewWidth, messageBoxHeight - 4);
+    self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
+    self.settingSquare.alpha = 0.80;
+    // hidden by default if not iPad
+    if ( !IS_IPAD )
+    {
+        self.settingSquare.hidden = YES;
+    }
     
     // tableview pseudo header (an UIView..)
+    CGFloat tableViewHeaderOriginY = messageBoxOrigY + messageBoxHeight;
     self.tableViewHeader.frame = CGRectMake(0, tableViewHeaderOriginY -7, viewWidth, 24);
     [self.tableViewHeader setBackgroundColor: GMSColorBlueGreyDark];
     // left and right label in tableView header
@@ -124,14 +127,14 @@
 
     // init message processor
     self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
-    self.secondViewMessage.text = self.messageBoxMessage.messageBoxString;
+    self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
     
 
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    self.secondViewMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
+    self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
     
     self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationBids"]intValue] || 201;
     self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:currentCurrency];
@@ -183,7 +186,7 @@
             if ([self.bidsDatas.orderBids count] == 0) {
                 if(self.timerMessages)[self.timerMessages invalidate];
                 self.timerMessages = nil;
-                self.secondViewMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_FILTER_NULL", @"no order in this range, please edit display filter")];
+                self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_FILTER_NULL", @"no order in this range, please edit display filter")];
             }
             else
             {
@@ -211,14 +214,14 @@
     if(messagesCount == 4){messagesCount = 0;}
     NSArray *callBack = [self.messageBoxMessage bidsViewMessages:messagesCount connected:connected maxDeviation:self.maxDeviation doubleTap:doubleTapLabel];
     messagesCount = [[callBack objectAtIndex:0]intValue];
-    self.secondViewMessage.text = [callBack objectAtIndex:1];
+    self.dynamicMessage.text = [callBack objectAtIndex:1];
 }
 
 //double tap to change order
 - (void)tapToChangeArrOrder:(UIGestureRecognizer*) recognizer {
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
-    self.secondViewMessage.text = nil;
+    self.dynamicMessage.text = nil;
     NSArray* reverseOrder = [[self.bidsDatas.orderBids reverseObjectEnumerator] allObjects];
     self.bidsDatas.orderBids = (NSMutableArray*)reverseOrder;
     if(doubleTapLabel == YES)
@@ -243,24 +246,26 @@
     if ( !IS_IPAD )
     {
         settingOn = YES;
-        [self.settingSquare setBackgroundColor:[UIColor blackColor]];
-        self.settingSquare.alpha = 0.9;
+        self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
+        self.settingSquare.alpha = 0.80;
     }
     else
     {
         [self.settingSquare setBackgroundColor:[UIColor whiteColor]];
     }
-    self.settingSquare.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.settingSquare.layer.borderWidth = 0.7f;
+    self.settingSquare.layer.borderColor = (__bridge CGColorRef _Nullable)(GMSColorBlueGrey);
+    self.settingSquare.layer.borderWidth = 0.8f;
     
     self.settingSquare.hidden = YES;
     self.editMaxDev = [[UISlider alloc]init];
     CGRect posSlider = editMaxDev.frame;
+    CGRect okButtonFrame;
     if ( !IS_IPAD )
     {
-        posSlider.size.width = 270;
-        posSlider.origin.y=21;
-        posSlider.origin.x= 8;
+        posSlider.size.width = ( self.settingSquare.frame.size.width / 100 ) * 70;
+        posSlider.origin.y = ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height ) / 2;
+        posSlider.origin.x = ( self.settingSquare.frame.size.width / 100 ) * 10;
+        okButtonFrame = CGRectMake( ( self.settingSquare.frame.size.width / 100 ) * 80, ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height) / 2 , self.editMaxDev.frame.size.height, self.editMaxDev.frame.size.height);
     }
     else
     {
@@ -268,7 +273,7 @@
         posSlider.origin.y=21;
         posSlider.origin.x= 10;
     }
-    self.editMaxDev.frame= posSlider;
+    self.editMaxDev.frame = posSlider;
     self.editMaxDev.thumbTintColor = [UIColor whiteColor];
     self.editMaxDev.minimumValue = 1;
     self.editMaxDev.maximumValue = 201;
@@ -322,9 +327,9 @@
              forControlEvents:UIControlEventTouchUpInside];
         [self->done setTitle:@"OK" forState:UIControlStateNormal];
         [[self->done titleLabel] setFont:[UIFont fontWithName:@"Avenir-BookOblique" size:16]];
-        self->done.frame = CGRectMake(278.0, 21.0, 40.0, 30.0);
+        self->done.frame = okButtonFrame;
     }
-    self.secondViewMessage.text = nil;
+    self.dynamicMessage.text = nil;
     [self.settingSquare addSubview:self.sliderValName];
     [self.settingSquare addSubview:self.sliderVal];
     [self.settingSquare addSubview:self.editMaxDev];
@@ -367,7 +372,8 @@
                              self.settingSquare.hidden = YES;
                              settingOn = NO;  }];
     }
-    self.sliderVal.hidden =YES;
+    self.sliderVal.hidden = YES;
+//    self.settingSquare.hidden = YES;
     [self.bidsDatas changeDeviation:self.maxDeviation orderType:@"bids"];
 }
 

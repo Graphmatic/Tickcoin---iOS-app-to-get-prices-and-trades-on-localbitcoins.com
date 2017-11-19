@@ -18,12 +18,12 @@ extern NSMutableString *currentCurrency;
 
 }
 
-@property (strong, nonatomic) GMSMessageBox *messageBox;
+//@property (strong, nonatomic) GMSMessageBox *messageBox;
 @property (strong, atomic) GMSTopBrandImage *headerImg;
 @property (nonatomic, weak) NSTimer *timerMessages;
 @property (weak, nonatomic) IBOutlet UIView *tableViewHeader;
 @property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
-@property (weak, nonatomic) IBOutlet UILabel *secondViewMessage;
+@property (weak, nonatomic) IBOutlet UILabel *dynamicMessage;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (retain, nonatomic) IBOutlet UILabel *sliderValName;
 @property (retain, nonatomic) IBOutlet UILabel *sliderVal;

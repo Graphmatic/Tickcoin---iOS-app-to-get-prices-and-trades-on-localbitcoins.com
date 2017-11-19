@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="m7O-XL-WIN">
+    <device id="ipad9_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -266,7 +270,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="250" height="612"/>
                     <connections>
-                        <outlet property="secondViewMessage" destination="7fx-ct-Sqs" id="z0r-Bo-7Fg"/>
+                        <outlet property="dynamicMessage" destination="7fx-ct-Sqs" id="z0r-Bo-7Fg"/>
                         <outlet property="settingSquare" destination="UJs-c9-hgM" id="Kh5-Y0-sId"/>
                         <outlet property="sliderVal" destination="NMW-a1-c4x" id="T7b-lS-4pZ"/>
                         <outlet property="sliderValName" destination="pxN-RX-zUm" id="Pwx-E4-UeB"/>
