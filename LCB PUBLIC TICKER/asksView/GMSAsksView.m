@@ -13,10 +13,7 @@
 {
     BOOL alt;
     BOOL connected;
-    BOOL settingOn;
     int messagesCount;
-    BOOL doubleTapLabel;
-    BOOL graphs;
     UIButton *done;
     
 }
@@ -24,7 +21,7 @@
 
 @implementation GMSAsksView
 
-@synthesize timerMessages, editMaxDev, asksDatas, sliderVal, sliderInfoTxt, dynamicMessage, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation;
+@synthesize timerMessages, editMaxDev, sliderOn, asksDatas, sliderVal, sliderInfoTxt, dynamicMessage, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation, waitingSpin, sortedDesc;
 
 - (void)viewDidLoad
 {
@@ -117,28 +114,23 @@
     {
         // slider always visible
         self.sliderVal.hidden = YES;
-        settingOn = YES;
+        self.sliderOn = YES;
         [self showOverlaySetting];
     }
     
     // various init
     messagesCount = 0;
-    graphs = NO;
-    
-    // init message processor
-    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
-    self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
-    
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
+
+    
     self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_BUY_ADD_FOR_CUR_x", @"ASKS - %@"), currentCurrency];
     
-    if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationAsks"] != nil )
+    if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"asksMaxDeviation"] != nil )
     {
-        self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationAsks"]intValue];
+        self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"asksMaxDeviation"]intValue];
     }
     else
     {
@@ -153,6 +145,7 @@
     }
     
     self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), [NSString stringWithFormat:@"%d%%", self.maxDeviation]];
+    
     self.asksDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:currentCurrency];
     
     // add observer
@@ -168,6 +161,31 @@
     [self.editMaxDev addTarget:self
                         action:@selector(closeSettingView:)
               forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+    
+    // init message processor
+    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
+
+    
+    if ( !self.asksDatas.isReady )
+    {
+        self.waitingSpin = [[UIActivityIndicatorView alloc]
+                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.waitingSpin.center = CGPointMake(160, 240);
+        self.waitingSpin.hidesWhenStopped = YES;
+        [self.view addSubview:self.waitingSpin];
+        [self.waitingSpin startAnimating];
+    }
+    else
+    {
+        [self.waitingSpin stopAnimating];
+        [self.tableView reloadData];
+    }
+    
+    self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+
 }
 
 //tableView
@@ -194,14 +212,21 @@
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     
-    if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
+    if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1  ) //  are datas ready to use ?
     {
+        NSLog(@"isReady in ASKS VIEW : %@", keyPath);
         dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
+            self.sortedDesc = NO;
+            // remove spinner if any
+            [self.waitingSpin stopAnimating];
             // Update misc. visible elements
             if ([self.asksDatas.orderAsks count] == 0) {
                 if(self.timerMessages)[self.timerMessages invalidate];
                 self.timerMessages = nil;
                 self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_FILTER_NULL", @"no order in this range, please edit display filter")];
+                if(self.timerMessages)[self.timerMessages invalidate];
+                self.timerMessages = nil;
+                self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
             }
             else
             {
@@ -226,42 +251,36 @@
 
 -(void)timerStartMulti:(NSTimer*)theTimer
 {
-    if(messagesCount == 4){messagesCount = 0;}
-    NSArray *callBack = [self.messageBoxMessage asksViewMessages:messagesCount connected:connected maxDeviation:self.maxDeviation doubleTap:doubleTapLabel];
+    if(messagesCount == 3){messagesCount = 0;}
+    NSArray *callBack = [self.messageBoxMessage asksViewMessages:messagesCount connected:connected maxDeviation:self.maxDeviation isDescSorted:self.sortedDesc];
     messagesCount = [[callBack objectAtIndex:0]intValue];
     self.dynamicMessage.text = [callBack objectAtIndex:1];
 }
 
 //double tap to change order
-- (void)tapToChangeArrOrder:(UIGestureRecognizer*) recognizer {
-    //    if(self.timerMessages)[self.timerMessages invalidate];
-    //    self.timerMessages = nil;
-    //    self.dynamicMessage.text = nil;
+- (void)tapToChangeArrOrder:(UIGestureRecognizer*) recognizer
+{
     NSArray* reverseOrder = [[self.asksDatas.orderAsks reverseObjectEnumerator] allObjects];
     self.asksDatas.orderAsks = (NSMutableArray*)reverseOrder;
-    if(doubleTapLabel == YES)
-    {
-        doubleTapLabel = NO;
-    }
-    else{
-        doubleTapLabel = YES;
-    }
+    self.sortedDesc = !self.sortedDesc;
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
     [self.tableView reloadData];
 }
 
 - (void) displayMaxDeviationSlider:(UIGestureRecognizer*) recognizer
 {
-    if (settingOn == NO)
+    if (self.sliderOn == NO)
     {
         [self showOverlaySetting];
     }
 }
 - (void)showOverlaySetting
 {
-    
     if ( !IS_IPAD )
     {
-        settingOn = YES;
+        self.sliderOn = YES;
         self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
         self.settingSquare.alpha = 0.80;
     }
@@ -365,8 +384,6 @@
 
 - (IBAction)sliderMoving:(id)sender
 {
-    //    self.sliderVal.hidden = NO;
-    
     self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
     self.maxDeviation = (int)lround(self.editMaxDev.value);
 }
@@ -381,25 +398,24 @@
     {
         self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
     }
-    
 }
 
 - (IBAction)closeSettingView:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"maxDeviationAsks"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"asksMaxDeviation"];
     if ( !IS_IPAD )
     {
         [UIView animateWithDuration:0.5f
                          animations:^{self.settingSquare.alpha = 0.0;}
                          completion:^(BOOL finished){
+                             self.sortedDesc = NO;
                              [self.sliderInfoTxt removeFromSuperview];
                              [self.editMaxDev removeFromSuperview];
                              [self->done removeFromSuperview];
                              self.settingSquare.hidden = YES;
-                             settingOn = NO;  }];
+                             self.sliderOn = NO;  }];
     }
     self.sliderVal.hidden = YES;
-    //    self.settingSquare.hidden = YES;
     [self.asksDatas changeDeviation:self.maxDeviation orderType:@"asks"];
 }
 
@@ -408,10 +424,51 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void) viewDidUnload
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    self.sortedDesc = NO;
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    if ( self.sliderOn )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"asksMaxDeviation"];
+        [self.sliderInfoTxt removeFromSuperview];
+        [self.editMaxDev removeFromSuperview];
+        [self->done removeFromSuperview];
+        self.settingSquare.hidden = YES;
+        self.sliderVal.hidden = YES;
+        self.sliderOn = NO;
+    }
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
+    self.sortedDesc = NO;
+}
+
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
+    // save current selected currency to db (should have been already done...)
+    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
     NSDate *recdATE = [NSDate date];
-    [[NSUserDefaults standardUserDefaults]setObject:recdATE forKey:@"lastRecordDateOrderBook"];
+    [[NSUserDefaults standardUserDefaults] setObject:recdATE forKey:@"lastRecordDateOrderBook"];
+    if ( self.sliderOn )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"asksMaxDeviation"];
+        [self.sliderInfoTxt removeFromSuperview];
+        [self.editMaxDev removeFromSuperview];
+        [self->done removeFromSuperview];
+        self.settingSquare.hidden = YES;
+        self.sliderVal.hidden = YES;
+        self.sliderOn = NO;
+    }
+    self.sortedDesc = NO;
 }
 
 

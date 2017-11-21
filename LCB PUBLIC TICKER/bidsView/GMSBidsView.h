@@ -20,6 +20,7 @@ extern NSMutableString *currentCurrency;
 
 //@property (strong, nonatomic) GMSMessageBox *messageBox;
 @property (strong, atomic) GMSTopBrandImage *headerImg;
+@property (strong, nonatomic)UIActivityIndicatorView *waitingSpin;
 @property (nonatomic, weak) NSTimer *timerMessages;
 @property (weak, nonatomic) IBOutlet UIView *tableViewHeader;
 @property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
@@ -33,5 +34,7 @@ extern NSMutableString *currentCurrency;
 @property (strong, atomic) GMSBidsAsksDatas *bidsDatas;
 @property (retain, nonatomic) UILabel *headerTitleLeft;
 @property (retain, nonatomic) UILabel *headerTitleRight;
+@property BOOL sliderOn;
+@property BOOL sortedAsc;
 
 @end

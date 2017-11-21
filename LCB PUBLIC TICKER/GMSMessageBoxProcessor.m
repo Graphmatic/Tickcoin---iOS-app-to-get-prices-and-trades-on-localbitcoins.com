@@ -75,40 +75,34 @@
     return self.messageBoxString;
     
 }
-- (NSArray*)bidsViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev doubleTap:(bool)doubleTapLabel
+- (NSArray*)bidsViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isAscSorted:(bool)isAscSorted
 {
     switch (messagesCount)
     {
         case 0:
-            if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
+            if ( !IS_IPAD )
             {
-            self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
+                if(maxDev == 201)
+                {
+                    self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER_DISABLED", @"display filter: disabled")];
+                }
+                else
+                {
+                    self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER", @"display filter: +/- %d%% of last price"),(int)maxDev];
+                }
             }
             break;
         case 1:
-            if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
+            if ( !IS_IPAD )
             {
-            if(maxDev == 201)
-            {
-                self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER_DISABLED", @"display filter: disabled")];
-            }
-            else
-            {
-                self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER", @"display filter: +/- %d%% of last price"),(int)maxDev];
-            }
-            }
-            break;
-        case 2:
-            if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-            {
-            self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_SETTING", @"swipe to right to edit this filter threshold")];
+                self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_SETTING", @"swipe to right to edit this filter threshold")];
             }
             break;
         default:
             self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"Sell ads - %@"), currentCurrency];
             break;
-        case 3:
-            if(doubleTapLabel == NO)
+        case 2:
+            if ( isAscSorted == NO )
             {
                 self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DOUBLE_TAP_ASCENDING", "double tap to sort ascending")];
             }
@@ -124,43 +118,36 @@
     NSArray *bidsMessageBack = [[NSArray alloc]initWithObjects:newMessageCount,self.messageBoxString, nil];
     return bidsMessageBack;
 }
-- (NSArray*)asksViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev doubleTap:(bool)doubleTapLabel
+- (NSArray*)asksViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isDescSorted:(bool)isDescSorted
 {
     switch (messagesCount)
     {
         case 0:
-            if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
+            if ( !IS_IPAD )
             {
-            self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_BUY_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
+                if(maxDev == 201)
+                {
+                    self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER_DISABLED", @"display filter: disabled")];
+                }
+                else
+                {
+                    self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER", @"display filter: +/- %d%% of last price"),(int)maxDev];
+                }
             }
             break;
         case 1:
-            if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
+            if ( !IS_IPAD )
             {
-            if(maxDev == 201)
-            {
-                self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER_DISABLED", @"display filter: disabled")];
-            }
-            else
-            {
-                self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER", @"display filter: +/- %d%% of last price"),(int)maxDev];
-            }
-            }
-            break;
-        case 2:
-            if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-            {
-            self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_SETTING", @"swipe to right to edit this filter threshold")];
+                self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_SETTING", @"swipe to right to edit this filter threshold")];
             }
             break;
         default:
             self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"Sell ads - %@"), currentCurrency];
             break;
-        case 3:
-            if(doubleTapLabel == NO)
+        case 2:
+            if ( isDescSorted == NO )
             {
                 self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_DOUBLE_TAP_DESCENDING", "double tap to sort descending")];
-                
             }
             else
             {

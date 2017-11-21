@@ -221,22 +221,6 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     }
 }
 
-
-#pragma mark - Buttons
-
-//- (void)chartToggleButtonPressed:(id)sender
-//{
-//    UIView *buttonImageView = [self.navigationItem.rightBarButtonItem valueForKey:kGMSVolumeNavButtonViewKey];
-//    buttonImageView.userInteractionEnabled = NO;
-//
-//    CGAffineTransform transform = self.barChartView.state == GMSChartViewStateExpanded ? CGAffineTransformMakeRotation(M_PI) : CGAffineTransformMakeRotation(0);
-//    buttonImageView.transform = transform;
-//
-//    [self.barChartView setState:self.barChartView.state == GMSChartViewStateExpanded ? GMSChartViewStateCollapsed : GMSChartViewStateExpanded animated:YES callback:^{
-//        buttonImageView.userInteractionEnabled = YES;
-//    }];
-//}
-
 #pragma mark - Overrides
 
 - (GMSChartView *)chartView

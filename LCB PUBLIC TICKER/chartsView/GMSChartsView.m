@@ -64,6 +64,13 @@
 }
 
 
+- (void) applicationDidEnterBackground:(NSNotification*)notification
+{
+    // save current selected currency to db (should have been already done...)
+    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
+}
+
+
 @end
 
 
