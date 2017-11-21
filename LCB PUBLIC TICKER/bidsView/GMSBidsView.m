@@ -13,10 +13,7 @@
 {
     BOOL alt;
     BOOL connected;
-    BOOL settingOn;
     int messagesCount;
-    BOOL doubleTapLabel;
-    BOOL graphs;
     UIButton *done;
 
 }
@@ -24,7 +21,7 @@
 
 @implementation GMSBidsView
 
-@synthesize timerMessages, editMaxDev, bidsDatas, sliderVal, sliderInfoTxt, dynamicMessage, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation;
+@synthesize timerMessages, editMaxDev, bidsDatas, sliderVal, sliderOn, sliderInfoTxt, dynamicMessage, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation, waitingSpin, sortedAsc;
 
 - (void)viewDidLoad
 {
@@ -117,28 +114,25 @@
     {
         // slider always visible
         self.sliderVal.hidden = YES;
-        settingOn = YES;
+        self.sliderOn = YES;
         [self showOverlaySetting];
     }
     
     // various init
     messagesCount = 0;
-    graphs = NO;
-
-    // init message processor
-    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
-    self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
-    
-
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
+
+    // init message processor
+    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
+    
     self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
     
-    if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationBids"] != nil )
+    if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"bidsMaxDeviation"] != nil )
     {
-        self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationBids"]intValue];
+        self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"bidsMaxDeviation"]intValue];
     }
     else
     {
@@ -169,6 +163,29 @@
     [self.editMaxDev addTarget:self
                         action:@selector(closeSettingView:)
               forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+    
+
+    
+    if ( !self.bidsDatas.isReady )
+    {
+        self.waitingSpin = [[UIActivityIndicatorView alloc]
+                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.waitingSpin.center = CGPointMake(160, 240);
+        self.waitingSpin.hidesWhenStopped = YES;
+        [self.view addSubview:self.waitingSpin];
+        [self.waitingSpin startAnimating];
+    }
+    else
+    {
+        [self.waitingSpin stopAnimating];
+        [self.tableView reloadData];
+    }
+    
+    self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+
 }
 
 //tableView
@@ -198,11 +215,17 @@
     if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
     {
         dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
+            // remove spinner if any
+            [self.waitingSpin stopAnimating];
+            self.sortedAsc = NO;
             // Update misc. visible elements
             if ([self.bidsDatas.orderBids count] == 0) {
                 if(self.timerMessages)[self.timerMessages invalidate];
                 self.timerMessages = nil;
                 self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_FILTER_NULL", @"no order in this range, please edit display filter")];
+                if(self.timerMessages)[self.timerMessages invalidate];
+                self.timerMessages = nil;
+                self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
             }
             else
             {
@@ -227,32 +250,24 @@
 
 -(void)timerStartMulti:(NSTimer*)theTimer
 {
-    if(messagesCount == 4){messagesCount = 0;}
-    NSArray *callBack = [self.messageBoxMessage bidsViewMessages:messagesCount connected:connected maxDeviation:self.maxDeviation doubleTap:doubleTapLabel];
+    if(messagesCount == 3){messagesCount = 0;}
+    NSArray *callBack = [self.messageBoxMessage bidsViewMessages:messagesCount connected:connected maxDeviation:self.maxDeviation isAscSorted:self.sortedAsc];
     messagesCount = [[callBack objectAtIndex:0]intValue];
     self.dynamicMessage.text = [callBack objectAtIndex:1];
 }
 
 //double tap to change order
-- (void)tapToChangeArrOrder:(UIGestureRecognizer*) recognizer {
-//    if(self.timerMessages)[self.timerMessages invalidate];
-//    self.timerMessages = nil;
-//    self.dynamicMessage.text = nil;
+- (void)tapToChangeArrOrder:(UIGestureRecognizer*) recognizer
+{
     NSArray* reverseOrder = [[self.bidsDatas.orderBids reverseObjectEnumerator] allObjects];
     self.bidsDatas.orderBids = (NSMutableArray*)reverseOrder;
-    if(doubleTapLabel == YES)
-    {
-        doubleTapLabel = NO;
-    }
-    else{
-        doubleTapLabel = YES;
-    }
+    self.sortedAsc = !self.sortedAsc;
     [self.tableView reloadData];
 }
 
 - (void) displayMaxDeviationSlider:(UIGestureRecognizer*) recognizer
 {
-    if (settingOn == NO)
+    if (self.sliderOn == NO)
     {
         [self showOverlaySetting];
     }
@@ -262,7 +277,7 @@
 
     if ( !IS_IPAD )
     {
-        settingOn = YES;
+        self.sliderOn = YES;
         self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
         self.settingSquare.alpha = 0.80;
     }
@@ -366,8 +381,6 @@
 
 - (IBAction)sliderMoving:(id)sender
 {
-//    self.sliderVal.hidden = NO;
-    
     self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
     self.maxDeviation = (int)lround(self.editMaxDev.value);
 }
@@ -387,20 +400,20 @@
 
 - (IBAction)closeSettingView:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"maxDeviationBids"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"bidsMaxDeviation"];
     if ( !IS_IPAD )
     {
         [UIView animateWithDuration:0.5f
                          animations:^{self.settingSquare.alpha = 0.0;}
                          completion:^(BOOL finished){
+                             self.sortedAsc = NO;
                              [self.sliderInfoTxt removeFromSuperview];
                              [self.editMaxDev removeFromSuperview];
                              [self->done removeFromSuperview];
                              self.settingSquare.hidden = YES;
-                             settingOn = NO;  }];
+                             self.sliderOn = NO;  }];
     }
     self.sliderVal.hidden = YES;
-//    self.settingSquare.hidden = YES;
     [self.bidsDatas changeDeviation:self.maxDeviation orderType:@"bids"];
 }
 
@@ -409,13 +422,53 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void) viewDidUnload
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    self.sortedAsc = NO;
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    if ( self.sliderOn )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"bidsMaxDeviation"];
+        [self.sliderInfoTxt removeFromSuperview];
+        [self.editMaxDev removeFromSuperview];
+        [self->done removeFromSuperview];
+        self.settingSquare.hidden = YES;
+        self.sliderVal.hidden = YES;
+        self.sliderOn = NO;
+        // remove spinner if any
+        [self.waitingSpin stopAnimating];
+    }
+    self.sortedAsc = NO;
+}
+
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
+    // save current selected currency to db (should have been already done...)
+    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
     NSDate *recdATE = [NSDate date];
-    [[NSUserDefaults standardUserDefaults]setObject:recdATE forKey:@"lastRecordDateOrderBook"];
+    [[NSUserDefaults standardUserDefaults] setObject:recdATE forKey:@"lastRecordDateOrderBook"];
+    if ( self.sliderOn )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"bidsMaxDeviation"];
+        [self.sliderInfoTxt removeFromSuperview];
+        [self.editMaxDev removeFromSuperview];
+        [self->done removeFromSuperview];
+        self.settingSquare.hidden = YES;
+        self.sliderVal.hidden = YES;
+        self.sliderOn = NO;
+    }
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
+    self.sortedAsc = NO;
 }
-                          
 
 @end
-                          
-                          

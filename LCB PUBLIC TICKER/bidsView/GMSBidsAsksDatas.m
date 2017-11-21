@@ -168,7 +168,6 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
     }
     else
     {
-        NSLog(@"888");
         [self deviationFilter:[responseObj objectForKey:@"bids"] deviation:self.bidsMaxDeviation :^(NSMutableArray *sortedBidsDatas ) {
             self.orderBids = sortedBidsDatas;
             // save deviation value in DB
@@ -226,21 +225,15 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
         
         if (self.bidsMaxDeviation == 201) // no deviation filter
         {
-            // debug
-            NSLog(@"201");
             self.orderBids = (NSMutableArray*)[NSOrderedSet orderedSetWithArray:bArr].array;
         }
         else
         {
-            // debug
-            NSLog(@"0-100");
             [self deviationFilter:bArr deviation:self.bidsMaxDeviation :^(NSMutableArray *sortedBidsDatas ) {
                 self.orderBids = sortedBidsDatas;
                 // save deviation value in DB
                 [[NSUserDefaults standardUserDefaults]  setObject:[NSString stringWithFormat:@"%i", self.bidsMaxDeviation] forKey:@"bidsMaxDeviation"];
                 self.isReady = YES;
-                // debug
-//                NSLog(@"after filter : %@", self.orderBids);
             }];
         }
     }

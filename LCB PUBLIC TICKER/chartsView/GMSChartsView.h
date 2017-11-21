@@ -11,6 +11,7 @@
 
 
 #endif /* GMSChartsView_h */
+extern NSMutableString *currentCurrency;
 
 @interface GMSChartsView :  UIViewController
 

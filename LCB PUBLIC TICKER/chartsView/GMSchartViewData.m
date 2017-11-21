@@ -90,7 +90,6 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     AFHTTPRequestOperation *operationGraph = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operationGraph setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationGraph, id responseObject)
      {
-          NSLog(@"Obj Success : %@", responseObject);
          self.apiQuerySuccess = YES;
          // Build the datas object
          [self chartListingCleaned:responseObject];
@@ -105,10 +104,8 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
              NSLog(@"Query failure : something in DB");
 
              self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
-             NSLog(@"WHOLE SAVED OBJ : %@" , self.previousPricesAndVolumes);
              if ( [self.previousPricesAndVolumes objectForKey:self.currency] != nil )
              {
-                 NSLog(@"Currency SAVED OBJ : %@" , [self.previousPricesAndVolumes objectForKey:self.currency] );
                  self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
                  self.thisDayDatas = [[[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]] objectForKey:self.currency]mutableCopy];
                  NSArray *keys = [self.thisDayDatas allKeys];
@@ -120,7 +117,6 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
              }
              else
              {
-                 NSLog(@"generate fake datas no data for currency");
                  // generate fake datas
                  [self dummyArrayForMissingChart];
              }
@@ -129,7 +125,6 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
          {
              NSLog(@"Query failure : nothing in DB");
              // generate fake datas
-             NSLog(@"generate fake datas: nothing in DB");
              [self dummyArrayForMissingChart];
          }
      }];
@@ -190,7 +185,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
                     // assign resulting Dictionnary to instance property
                     self.thisDayDatas = [thisDayDatasTmpFull mutableCopy];
                     // debug
-                     NSLog(@"cooked! : %@", thisDayDatasTmpFull);
+//                     NSLog(@"cooked! : %@", thisDayDatasTmpFull);
                     // Backup datas
                     [self.previousPricesAndVolumes setObject:[thisDayDatasTmpFull mutableCopy] forKey:currentCurrency];
                     NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self.previousPricesAndVolumes];

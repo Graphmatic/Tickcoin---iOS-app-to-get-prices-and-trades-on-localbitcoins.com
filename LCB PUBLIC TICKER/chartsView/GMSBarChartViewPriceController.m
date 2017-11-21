@@ -221,23 +221,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     }
 }
 
-
-#pragma mark - Buttons
-
-
-//- (IBAction)chartToggleButtonPressed:(id)sender
-//{
-//    UIView *buttonImageView = [self.navigationItem.rightBarButtonItem valueForKey:kGMSBarChartViewControllerNavButtonViewKey];
-//    buttonImageView.userInteractionEnabled = NO;
-//
-//    CGAffineTransform transform = self.barChartView.state == GMSChartViewStateExpanded ? CGAffineTransformMakeRotation(M_PI) : CGAffineTransformMakeRotation(0);
-//    buttonImageView.transform = transform;
-//
-//    [self.barChartView setState:self.barChartView.state == GMSChartViewStateExpanded ? GMSChartViewStateCollapsed : GMSChartViewStateExpanded animated:YES callback:^{
-//        buttonImageView.userInteractionEnabled = YES;
-//    }];
-//}
-
 #pragma mark - Overrides
 
 - (GMSChartView *)chartView
@@ -267,10 +250,10 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"MM-dd HH:mm"];
             NSDate *outdatedStaringDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:0]]objectAtIndex:3];
-            NSLog(@"sart date : %@", outdatedStaringDate);
+//            NSLog(@"sart date : %@", outdatedStaringDate);
             NSString* startingDate = [dateFormatter stringFromDate:outdatedStaringDate];
             NSDate *outdatedEndDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:23]]objectAtIndex:3];
-            NSLog(@"sart date : %@", outdatedEndDate);
+//            NSLog(@"sart date : %@", outdatedEndDate);
             NSString *endDate = [dateFormatter stringFromDate:outdatedEndDate];
             footerView.leftLabel.text = startingDate;
             footerView.leftLabel.textColor = GMSColorRed;
@@ -286,7 +269,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     
-    NSLog(@"Observer isReady triggered : %@", [change objectForKey:@"new"]);
     if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
     {
         dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
@@ -301,8 +283,6 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 //            NSLog(@"visualRange was changed.");
 //            NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", self.barChartView.minimumValue, self.barChartView.maximumValue);
 
-            // triggering re-drawn
-            NSLog(@"in chart view : %@", self.graphDatas.thisDayDatas);
             [self.barChartView reloadData];
         });
     }

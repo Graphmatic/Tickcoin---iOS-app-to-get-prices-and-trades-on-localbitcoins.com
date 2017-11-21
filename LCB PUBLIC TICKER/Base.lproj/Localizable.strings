@@ -20,7 +20,7 @@
 "_SWIPE_DOWN_TO_REFRESH" = "swipe down to refresh";
 "_LAST_ORDER_TITLE" = "Price ( %@ )                                     volume";
 "_DAILY_PRICE_IN" = "%@  -  %@";
-"_WAIT_FOR_DATAS" = "please wait - update...";
+"_WAIT_FOR_DATAS" = "please wait - loading...";
 "_INVALID_DATAS" = "invalid data";
 "_NO_CONNECT_OUTDATED" = "Outdated datas! last sync: %@";
 "_DAILY_PRICE_VARIATION" = "variation since last refresh:";
