@@ -93,7 +93,7 @@
     // add tableView
     CGFloat tableViewOrigY = tableViewHeaderOriginY + 19;
     [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY) )];
-    [self.tableView setBackgroundColor:[UIColor blackColor]];
+    [self.tableView setBackgroundColor: GMSColorDarkGrey];
     // no footer
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.tableView];
@@ -172,6 +172,7 @@
     NSString *key = [[self.bidsDatas.orderBids objectAtIndex:indexPath.row]objectAtIndex:0];
     static NSString *CellIdentifier = @"Item2";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.backgroundColor = GMSColorDarkGrey;
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_background_sel.png"]];
     
     cell.textLabel.text = key;
@@ -225,9 +226,9 @@
 
 //double tap to change order
 - (void)tapToChangeArrOrder:(UIGestureRecognizer*) recognizer {
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
-    self.dynamicMessage.text = nil;
+//    if(self.timerMessages)[self.timerMessages invalidate];
+//    self.timerMessages = nil;
+//    self.dynamicMessage.text = nil;
     NSArray* reverseOrder = [[self.bidsDatas.orderBids reverseObjectEnumerator] allObjects];
     self.bidsDatas.orderBids = (NSMutableArray*)reverseOrder;
     if(doubleTapLabel == YES)

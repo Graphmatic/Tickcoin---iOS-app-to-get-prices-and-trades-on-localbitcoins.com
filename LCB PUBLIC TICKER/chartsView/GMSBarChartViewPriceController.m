@@ -11,10 +11,10 @@
 #import "GMSchartViewData.h"
 // Numerics
 CGFloat const GMSPriceChartHeight = 254.0f;
-CGFloat GMSPriceChartPadding = 2.0f;
+CGFloat GMSPriceChartPadding = 0.0f;
 CGFloat GMSPriceChartsViewPaddingTop = 0.0f;  
 
-CGFloat const GMSPriceChartHeaderHeight = 50.0f;
+CGFloat const GMSPriceChartHeaderHeight = 48.0f;
 CGFloat const GMSPriceChartHeaderPadding = 10.0f;
 CGFloat GMSPriceChartFooterHeight = 25.0f;
 CGFloat GMSPriceChartFooterPadding = 5.0f;
@@ -98,6 +98,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     }
     // header of first chart (price)
     self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(0, 0, childViewWidth - GMSPriceChartPadding, GMSPriceChartHeaderHeight)];
+    self.headerView.titleLabel.backgroundColor = GMSColorBlueGreyDark;
     self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
     self.headerView.separatorColor = GMSColorWhite;
     
@@ -177,7 +178,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (UIColor *)barChartView:(GMSBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index
 {
-    return (index % 2 == 0) ? GMSColorBlue : GMSColorOrange;
+    return (index % 2 == 0) ? GMSColorWhiteBlue : GMSColorPurpleDark;
 }
 
 - (UIColor *)barSelectionColorForBarChartView:(GMSBarChartView *)barChartView
@@ -250,12 +251,14 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     {
         if ( self.graphDatas.apiQuerySuccess )
         {
+            
             self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"MM-dd HH:mm"];
             NSString* startingDate = [dateFormatter stringFromDate:graphRequestStart];
             footerView.leftLabel.text = startingDate;
             footerView.leftLabel.textColor = [UIColor whiteColor];
+            footerView.rightLabel.textColor = [UIColor whiteColor];
             footerView.rightLabel.text = @"Now";
         }
         else

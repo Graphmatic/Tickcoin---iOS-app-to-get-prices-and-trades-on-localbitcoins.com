@@ -118,6 +118,7 @@
                                 <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                                 <color key="sectionIndexColor" red="0.82734102310000002" green="0.82734102310000002" blue="0.82734102310000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="sectionIndexBackgroundColor" red="0.2627450980392157" green="0.2627450980392157" blue="0.2627450980392157" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell autoresizesSubviews="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item" textLabel="zxq-bv-fE2" detailTextLabel="R7J-Vs-Nrw" style="IBUITableViewCellStyleValue1" id="sWp-rX-DXT">
                                         <rect key="frame" x="0.0" y="1" width="375" height="44"/>
@@ -583,7 +584,7 @@
                                 <color key="backgroundColor" red="0.81960784310000001" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTg-m4-vRk">
-                                <rect key="frame" x="0.0" y="60" width="375" height="276"/>
+                                <rect key="frame" x="0.0" y="58" width="375" height="276"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <segue destination="tom-y5-DVU" kind="embed" id="tBM-t6-l2I"/>

@@ -362,7 +362,8 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
             NSInteger zeroTimestampInt = zeroTimestamp;
             NSString *zeroTimestampIntStr = [[NSString alloc]init];
             zeroTimestampIntStr = [NSString stringWithFormat:@"%ld", (long)zeroTimestampInt ];
-            NSArray *bump = [[NSArray alloc]initWithObjects:zeroTimestampIntStr, zeroVal, zeroVal, nil];
+            NSDate *thisDate = [[NSDate alloc]initWithTimeIntervalSince1970:zeroTimestamp];
+            NSArray *bump = [[NSArray alloc]initWithObjects:zeroTimestampIntStr, zeroVal, zeroVal, thisDate, nil];
             [dummyOne setObject:bump forKey:nextHour];
             nextHour = [nextHour dateByAddingTimeInterval: secondsPerHour];
         }
