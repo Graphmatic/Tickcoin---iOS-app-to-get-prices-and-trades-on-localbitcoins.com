@@ -240,7 +240,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
                 [[NSUserDefaults standardUserDefaults]  setObject:[NSString stringWithFormat:@"%i", self.bidsMaxDeviation] forKey:@"bidsMaxDeviation"];
                 self.isReady = YES;
                 // debug
-                NSLog(@"after filter : %@", self.orderBids);
+//                NSLog(@"after filter : %@", self.orderBids);
             }];
         }
     }
