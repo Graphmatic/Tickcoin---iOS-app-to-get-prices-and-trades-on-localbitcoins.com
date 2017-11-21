@@ -125,12 +125,6 @@
     messagesCount = 0;
     graphs = NO;
 
-
-    self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
-    self.editMaxDev.value = self.maxDeviation;
-    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
-    
-
     // init message processor
     self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
     self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
@@ -142,7 +136,24 @@
 {
     self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
     
-    self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationBids"]intValue] || 201;
+    if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationBids"] != nil )
+    {
+        self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationBids"]intValue];
+    }
+    else
+    {
+        self.maxDeviation = self.editMaxDev.value = 201;
+    }
+    if (self.maxDeviation == 201) {
+        self.sliderVal.text = [NSString stringWithFormat:@"ALL"];
+    }
+    else
+    {
+        self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
+    }
+    
+    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), [NSString stringWithFormat:@"%d%%", self.maxDeviation]];
+    
     self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:currentCurrency];
     
     // add observer
@@ -179,8 +190,6 @@
     cellVal = [[self.bidsDatas.orderBids objectAtIndex:indexPath.row]objectAtIndex:1];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", cellVal];
     
-    // debug
-    NSLog(@"index 1 : %@", [[self.bidsDatas.orderBids objectAtIndex:indexPath.row]objectAtIndex:1]);
     return cell;
 }
 

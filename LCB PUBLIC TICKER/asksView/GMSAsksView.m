@@ -36,7 +36,7 @@
     CGFloat viewHeight = self.view.bounds.size.height;
     
     // add header
-    self.headerImg = [GMSTopBrandImage topImage:1];
+    self.headerImg = [GMSTopBrandImage topImage:2];
     [self.view addSubview:self.headerImg];
     
     // Some position helpers
@@ -125,12 +125,6 @@
     messagesCount = 0;
     graphs = NO;
     
-    
-    self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
-    self.editMaxDev.value = self.maxDeviation;
-    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
-    
-    
     // init message processor
     self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
     self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
@@ -142,7 +136,23 @@
 {
     self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_BUY_ADD_FOR_CUR_x", @"ASKS - %@"), currentCurrency];
     
-    self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationAsks"]intValue] || 201;
+    if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationAsks"] != nil )
+    {
+        self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationAsks"]intValue];
+    }
+    else
+    {
+        self.maxDeviation = self.editMaxDev.value = 201;
+    }
+    if (self.maxDeviation == 201) {
+        self.sliderVal.text = [NSString stringWithFormat:@"ALL"];
+    }
+    else
+    {
+        self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
+    }
+    
+    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), [NSString stringWithFormat:@"%d%%", self.maxDeviation]];
     self.asksDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:currentCurrency];
     
     // add observer
@@ -179,8 +189,6 @@
     cellVal = [[self.asksDatas.orderAsks objectAtIndex:indexPath.row]objectAtIndex:1];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", cellVal];
     
-    // debug
-    NSLog(@"index 1 : %@", [[self.asksDatas.orderAsks objectAtIndex:indexPath.row]objectAtIndex:1]);
     return cell;
 }
 
