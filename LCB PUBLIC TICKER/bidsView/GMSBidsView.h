@@ -25,7 +25,7 @@ extern NSMutableString *currentCurrency;
 @property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
 @property (weak, nonatomic) IBOutlet UILabel *dynamicMessage;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (retain, nonatomic) IBOutlet UILabel *sliderValName;
+@property (retain, nonatomic) IBOutlet UILabel *sliderInfoTxt;
 @property (retain, nonatomic) IBOutlet UILabel *sliderVal;
 @property (retain, nonatomic) IBOutlet UIView *settingSquare;
 @property (nonatomic, retain) UISlider *editMaxDev;

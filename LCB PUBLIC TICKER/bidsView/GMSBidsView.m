@@ -24,7 +24,7 @@
 
 @implementation GMSBidsView
 
-@synthesize timerMessages, editMaxDev, bidsDatas, sliderVal, sliderValName, dynamicMessage, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation;
+@synthesize timerMessages, editMaxDev, bidsDatas, sliderVal, sliderInfoTxt, dynamicMessage, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation;
 
 - (void)viewDidLoad
 {
@@ -60,6 +60,8 @@
     {
         self.settingSquare.hidden = YES;
     }
+
+    
     
     // tableview pseudo header (an UIView..)
     CGFloat tableViewHeaderOriginY = messageBoxOrigY + messageBoxHeight;
@@ -96,6 +98,8 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.tableView];
     
+
+    
     //add double tap to reassort tableView ascending/descending
     UITapGestureRecognizer *tapToChangeOrder = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToChangeArrOrder:)];
     [self.tableView addGestureRecognizer:tapToChangeOrder];
@@ -112,7 +116,7 @@
     else
     {
         // slider always visible
-        self.sliderVal.hidden =YES;
+        self.sliderVal.hidden = YES;
         settingOn = YES;
         [self showOverlaySetting];
     }
@@ -120,10 +124,12 @@
     // various init
     messagesCount = 0;
     graphs = NO;
-    
+
+
     self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
     self.editMaxDev.value = self.maxDeviation;
-    self.sliderValName.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
+    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
+    
 
     // init message processor
     self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
@@ -243,6 +249,7 @@
 }
 - (void)showOverlaySetting
 {
+
     if ( !IS_IPAD )
     {
         settingOn = YES;
@@ -303,18 +310,25 @@
     {
         self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
     }
+    CGRect tbFrame = self.tableView.frame;
+    self.sliderVal.frame = CGRectMake(0, tbFrame.origin.y - 49, tbFrame.size.width, tbFrame.size.height);
     
-    self.sliderValName.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
+    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
     if ( !IS_IPAD )
     {
-        self.sliderValName.textColor=[UIColor whiteColor];
+        self.sliderInfoTxt.textColor=[UIColor whiteColor];
     }
     else
     {
-        self.sliderValName.textColor=[UIColor darkGrayColor];
+        self.sliderInfoTxt.textColor=[UIColor darkGrayColor];
     }
-    [self.sliderValName setFont:[UIFont fontWithName:@"Gill Sans" size:14]];
-    self.sliderValName.textAlignment = NSTextAlignmentCenter;
+    // slider val position
+    self.sliderInfoTxt.frame = self.tableViewHeader.frame;
+    self.sliderInfoTxt.backgroundColor = GMSColorBlueGreyDark;
+    
+    
+    [self.sliderInfoTxt setFont:[UIFont fontWithName:@"Gill Sans" size:14]];
+    self.sliderInfoTxt.textAlignment = NSTextAlignmentCenter;
     
     //OK button - iPhone only
     
@@ -330,18 +344,21 @@
         self->done.frame = okButtonFrame;
     }
     self.dynamicMessage.text = nil;
-    [self.settingSquare addSubview:self.sliderValName];
-    [self.settingSquare addSubview:self.sliderVal];
+    self.sliderVal.hidden = NO;
+    [self.view addSubview:self.sliderInfoTxt];
+    [self.view addSubview:self.sliderVal];
     [self.settingSquare addSubview:self.editMaxDev];
     [self.settingSquare addSubview:self->done];
     [self.view addSubview:self.settingSquare];
     self.settingSquare.hidden = NO;
+
 }
 
 - (IBAction)sliderMoving:(id)sender
 {
-    self.sliderVal.hidden = NO;
-    self.sliderValName.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
+//    self.sliderVal.hidden = NO;
+    
+    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
     self.maxDeviation = (int)lround(self.editMaxDev.value);
 }
 
@@ -366,7 +383,7 @@
         [UIView animateWithDuration:0.5f
                          animations:^{self.settingSquare.alpha = 0.0;}
                          completion:^(BOOL finished){
-                             [self.sliderValName removeFromSuperview];
+                             [self.sliderInfoTxt removeFromSuperview];
                              [self.editMaxDev removeFromSuperview];
                              [self->done removeFromSuperview];
                              self.settingSquare.hidden = YES;
