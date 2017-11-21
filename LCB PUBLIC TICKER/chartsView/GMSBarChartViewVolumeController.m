@@ -14,7 +14,7 @@ CGFloat const GMSVolumeChartHeight = 254.0f;
 CGFloat GMSVolumeChartPadding = 2.0f;
 CGFloat GMSVolumeChartsViewPaddingTop = 0.0f;
 
-CGFloat const GMSVolumeChartHeaderHeight = 50.0f;
+CGFloat const GMSVolumeChartHeaderHeight = 48.0f;
 CGFloat const GMSVolumeChartHeaderPadding = 10.0f;
 CGFloat GMSVolumeChartFooterHeight = 25.0f;
 CGFloat const GMSVolumeChartFooterPadding = 5.0f;
@@ -100,6 +100,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
                                                                            GMSVolumeChartHeaderHeight)];
     
     self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART" ,  @"Volumes traded - last 24H - %@"), currentCurrency];
+    self.headerView.titleLabel.backgroundColor = GMSColorBlueGreyDark;
     self.headerView.separatorColor = GMSColorWhite;
     
     // footer of first chart (price)
@@ -178,7 +179,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (UIColor *)barChartView:(GMSBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index
 {
-    return (index % 2 == 0) ? GMSColorBlue : GMSColorOrange;
+    return (index % 2 == 0) ? GMSColorWhiteBlue : GMSColorPurpleDark;
 }
 
 - (UIColor *)barSelectionColorForBarChartView:(GMSBarChartView *)barChartView
@@ -255,6 +256,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
             NSString* startingDate = [dateFormatter stringFromDate:graphRequestStart];
             footerView.leftLabel.text = startingDate;
             footerView.leftLabel.textColor = [UIColor whiteColor];
+            footerView.rightLabel.textColor = [UIColor whiteColor];
             footerView.rightLabel.text = @"Now";
         }
         else

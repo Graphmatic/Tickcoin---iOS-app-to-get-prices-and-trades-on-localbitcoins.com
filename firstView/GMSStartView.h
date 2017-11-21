@@ -23,21 +23,14 @@ extern BOOL test;
     __weak IBOutlet UIPickerView *picker;
 }
 
-
-
-//@property (weak, nonatomic) IBOutlet GMSMessageBox *messageBox;
-
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) UIRefreshControl *refreshTicker;
-
 @property (strong, atomic) GMSTopBrandImage *headerImg;
 @property (nonatomic, weak) NSTimer *timerMessages;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
 @property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
 @property (weak, nonatomic) IBOutlet UILabel *messageBoxLabel;
-
 @property (weak, nonatomic) IBOutlet UIView *socialStack;
-
 @property (weak, nonatomic) IBOutlet UIButton *tweetIt;
 @property (weak, nonatomic) IBOutlet UIButton *faceBook;
 @property (weak, nonatomic) IBOutlet UIButton *emailIt;

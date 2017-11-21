@@ -53,7 +53,7 @@
 //    tabBarItem5.image = [[UIImage imageNamed:@"fourth@x2"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
 //    tabBarItem5.title = @"news";
     }
-    [[UITabBar appearance] setBarTintColor:GMSColorOrange];
+    [[UITabBar appearance] setBarTintColor:GMSColorBlueGrey];
     [[UITabBar appearance] setTintColor:GMSColorWhite];
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];

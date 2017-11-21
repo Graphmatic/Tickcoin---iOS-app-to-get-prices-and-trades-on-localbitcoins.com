@@ -12,13 +12,13 @@
 
 @interface GMSStartView ()
 {
-    
     int messagesCount;
     BOOL alt;
-    
 }
 @end
+
 @implementation GMSStartView
+
 @synthesize previousDatas ,firstViewDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack;
 
 - (NSManagedObjectContext *)managedObjectContext {
@@ -33,7 +33,7 @@
 {
     [super viewDidLoad];
 
-    // backup parent view size
+    // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
     
@@ -123,10 +123,10 @@
     
     //init refreshing touch item
     self.refreshTicker = [[UIRefreshControl alloc] init];
-    self.refreshTicker.tintColor = GMSColorCoolBlue;
+    self.refreshTicker.tintColor = GMSColorDarkGrey;
     [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshTicker];
-    self.tableView.backgroundColor = GMSColorCoolBlue;
+    self.tableView.backgroundColor = GMSColorDarkGrey;
 
     
     if (!test)
@@ -268,7 +268,7 @@
     static NSString *CellIdentifier = @"Item";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_background_sel.png"]];
-    cell.backgroundColor = GMSColorCoolBlue;
+    cell.backgroundColor = GMSColorDarkGrey;
     
     //populate cell
     cell.textLabel.text = key;

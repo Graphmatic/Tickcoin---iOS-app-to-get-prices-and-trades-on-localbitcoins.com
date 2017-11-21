@@ -28,8 +28,7 @@
 
     self.view.backgroundColor = GMSColorBlueGrey;
     
-    
-    // backup parent view size
+    // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
 
