@@ -18,14 +18,13 @@ extern NSMutableString *currentCurrency;
 
 }
 
-@property (strong, nonatomic) GMSMessageBox *messageBox;
 @property (strong, atomic) GMSTopBrandImage *headerImg;
 @property (nonatomic, weak) NSTimer *timerMessages;
 @property (weak, nonatomic) IBOutlet UIView *tableViewHeader;
 @property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
-@property (weak, nonatomic) IBOutlet UILabel *thirdViewMessage;
+@property (weak, nonatomic) IBOutlet UILabel *dynamicMessage;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (retain, nonatomic) IBOutlet UILabel *sliderValName;
+@property (retain, nonatomic) IBOutlet UILabel *sliderInfoTxt;
 @property (retain, nonatomic) IBOutlet UILabel *sliderVal;
 @property (retain, nonatomic) IBOutlet UIView *settingSquare;
 @property (nonatomic, retain) UISlider *editMaxDev;
@@ -35,3 +34,4 @@ extern NSMutableString *currentCurrency;
 @property (retain, nonatomic) UILabel *headerTitleRight;
 
 @end
+
