@@ -11,10 +11,12 @@
 
 
 #endif /* GMSChartsView_h */
+extern NSMutableString *currentCurrency;
 
 @interface GMSChartsView :  UIViewController
 
 @property (strong, atomic) GMSTopBrandImage *headerChartsImg;
 @property (weak, nonatomic) IBOutlet UIView *chartsPriceView;
 @property (weak, nonatomic) IBOutlet UIView *chartsVolumeView;
+
 @end

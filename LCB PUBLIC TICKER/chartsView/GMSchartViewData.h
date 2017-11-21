@@ -11,8 +11,7 @@
 
 @interface GMSchartViewData : NSObject
 extern BOOL firstLaunch;
-extern BOOL connected;
-extern BOOL lockChart;
+
 extern NSDate *graphRequestStart;
 
 @property  (retain, nonatomic) NSMutableDictionary *thisDayDatas;
@@ -31,11 +30,11 @@ extern NSDate *graphRequestStart;
 
 + (GMSchartViewData *)sharedGraphViewTableData:(NSMutableString*)currency;
 - (void)resetSharedInstance;
-- (void)chartArray:(id)responseObject;
-- (void)chartListingCleaned:(id)responseObject;
+- (void)listingBuilder:(id)responseObject;
 - (void)dummyArrayForMissingChart;
 - (void)apiQuery;
 - (void)refreshFromWeb;
 
 + (NSMutableDictionary*)datasDeltasLoop: (NSMutableDictionary*)todayDatas;
+
 @end

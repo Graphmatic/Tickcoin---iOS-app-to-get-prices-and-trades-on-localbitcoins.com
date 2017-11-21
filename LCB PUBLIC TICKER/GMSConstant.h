@@ -32,6 +32,7 @@
 #define GMSColorRed [UIColor colorWithRed:0.75 green:0.18 blue:0.18 alpha:1.0]
 #define GMSColorYellow [UIColor colorWithRed:0.93 green:0.84 blue:0.23 alpha:1.0]
 #define GMSColorCoolBlue [UIColor colorWithRed:0.25 green:0.45 blue:0.67 alpha:1.0]
+#define GMSColorDarkGrey [UIColor colorWithRed:0.26 green:0.26 blue:0.26 alpha:1.0]
 #define GMSColorWhite [UIColor whiteColor]
 #define GMSColorBlack [UIColor blackColor]
 

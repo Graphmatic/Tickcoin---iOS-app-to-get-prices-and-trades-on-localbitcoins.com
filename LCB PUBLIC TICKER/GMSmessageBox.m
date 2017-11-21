@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 frup. All rights reserved.
 //
 
-#import "GMSMessageBox.h"
+#import "GMSmessageBox.h"
 #import <UIKit/UIKit.h>
 
 @implementation GMSMessageBox
@@ -26,8 +26,6 @@
     {
         CGRect frame = CGRectMake(0.0, posY, self.window.bounds.size.width, 64.0);
         self = [self initWithFrame:frame];
-        self.backgroundColor = GMSColorRed;
-        
     }
     return self;
     

@@ -214,39 +214,42 @@ CGFloat const GMSChartTooltipViewDefaultHeight = 280.0f;
         self.lowTitle.text = lowTitleTxt;
         self.highTitle.text = highTitleTxt;
         
-        NSArray *lh = [datasCollection objectAtIndex:4];
-        
-        value = [[lh objectAtIndex:0]floatValue];
-        NSString *lp = [GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]];
-        self.lowPrice.text = [lp stringByAppendingString:unit];
-        
-        value = [[lh objectAtIndex:1]floatValue];
-        NSString *lpv = [@"(" stringByAppendingString:[NSString stringWithFormat:@"%f", value]];
-        self.lowPriceVol.text = [lpv stringByAppendingString:@"Btc)"];
-        
-        value = [[lh objectAtIndex:2]floatValue];
-        NSString *hp = [GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]];
-        self.highPrice.text = [hp stringByAppendingString:unit];
-        
-        value = [[lh objectAtIndex:3]floatValue];
-        NSString *hpv = [@"(" stringByAppendingString:[NSString stringWithFormat:@"%f", value]];
-        self.highPriceVol.text = [hpv stringByAppendingString:@"Btc)"];
-        
-        value = [[lh objectAtIndex:4]floatValue];
-        NSString *lv = [NSString stringWithFormat:@"%f", value];
-        self.lowVolume.text = [lv stringByAppendingString:@"Btc"];
-        
-        value = [[lh objectAtIndex:5]floatValue];
-        NSString *lvp = [@"(" stringByAppendingString:[GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]]];
-        self.lowVolprice.text = [lvp stringByAppendingString:[unit stringByAppendingString:@")"]];
-        
-        value = [[lh objectAtIndex:6]floatValue];
-        NSString *hv = [NSString stringWithFormat:@"%f", value];
-        self.highVol.text = [hv stringByAppendingString:@"Btc"];
+        if ( [datasCollection objectAtIndex:4] != nil )
+        {
+            NSArray *lh = [datasCollection objectAtIndex:4];
+            
+            value = [[lh objectAtIndex:0]floatValue];
+            NSString *lp = [GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]];
+            self.lowPrice.text = [lp stringByAppendingString:unit];
+            
+            value = [[lh objectAtIndex:1]floatValue];
+            NSString *lpv = [@"(" stringByAppendingString:[NSString stringWithFormat:@"%f", value]];
+            self.lowPriceVol.text = [lpv stringByAppendingString:@"Btc)"];
+            
+            value = [[lh objectAtIndex:2]floatValue];
+            NSString *hp = [GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]];
+            self.highPrice.text = [hp stringByAppendingString:unit];
+            
+            value = [[lh objectAtIndex:3]floatValue];
+            NSString *hpv = [@"(" stringByAppendingString:[NSString stringWithFormat:@"%f", value]];
+            self.highPriceVol.text = [hpv stringByAppendingString:@"Btc)"];
+            
+            value = [[lh objectAtIndex:4]floatValue];
+            NSString *lv = [NSString stringWithFormat:@"%f", value];
+            self.lowVolume.text = [lv stringByAppendingString:@"Btc"];
+            
+            value = [[lh objectAtIndex:5]floatValue];
+            NSString *lvp = [@"(" stringByAppendingString:[GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]]];
+            self.lowVolprice.text = [lvp stringByAppendingString:[unit stringByAppendingString:@")"]];
+            
+            value = [[lh objectAtIndex:6]floatValue];
+            NSString *hv = [NSString stringWithFormat:@"%f", value];
+            self.highVol.text = [hv stringByAppendingString:@"Btc"];
 
-        value = [[lh objectAtIndex:7]floatValue];
-        NSString *hvp = [@"(" stringByAppendingString:[GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]]];
-        self.highVolPrice.text = [[hvp stringByAppendingString:unit] stringByAppendingString:@")"];
+            value = [[lh objectAtIndex:7]floatValue];
+            NSString *hvp = [@"(" stringByAppendingString:[GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]]];
+            self.highVolPrice.text = [[hvp stringByAppendingString:unit] stringByAppendingString:@")"];
+        }
     }
 
     // ping UI
@@ -303,7 +306,7 @@ CGFloat const GMSChartTooltipViewDefaultHeight = 280.0f;
         self.highVolPrice.frame = CGRectMake(halfW, lowHighVolP, halfW, slot);
         
         CGFloat allElementsHeight = (currencyH * 2) + (dateH * 2) + (subH * 2) + (highLowH * 2) + 5;
-        NSLog(@"total height = %f", allElementsHeight);
+
         [self drawRect:CGRectMake(0, 0, GMSChartTooltipViewDefaultWidth, GMSChartTooltipViewDefaultHeight)];
     }
     else

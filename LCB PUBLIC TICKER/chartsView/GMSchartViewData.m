@@ -10,12 +10,13 @@
 #import "GMSUtilitiesFunction.h"
 @interface GMSchartViewData ()
 {
-    float dayPriceForSelectedCurrency;
+
 }
 @end
+
 @implementation GMSchartViewData
 
-static GMSchartViewData* _sharedGraphViewTableData = nil;
+static GMSchartViewData * _sharedGraphViewTableData = nil;
 
 @synthesize thisDayDatas, previousPricesAndVolumes, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady;
 
@@ -84,6 +85,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
 {
     self.isReady = NO;
     NSString *fullURL = [GMSUtilitiesFunction graphUrl];
+    NSLog(@"URL : %@", fullURL);
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
     AFHTTPRequestOperation *operationGraph = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operationGraph setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationGraph, id responseObject)
@@ -94,16 +96,24 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
      }
                                           failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)
      {
+         NSLog(@"Query failure");
          self.apiQuerySuccess = NO;
          // try to get previous recorded datas from DB and check if datas exist for given currency
          if ( [[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"] != nil )
          {
+             NSLog(@"Query failure : something in DB");
+
              self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
              if ( [self.previousPricesAndVolumes objectForKey:self.currency] != nil )
              {
                  self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
-                 self.thisDayDatas = [[self.previousPricesAndVolumes objectForKey:self.currency]mutableCopy];
-                 self.isReady = YES;
+                 self.thisDayDatas = [[[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]] objectForKey:self.currency]mutableCopy];
+                 NSArray *keys = [self.thisDayDatas allKeys];
+                 self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     // Notify UI that Instance is ready to use
+                     self.isReady = YES;
+                 });
              }
              else
              {
@@ -113,6 +123,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
          }
          else
          {
+             NSLog(@"Query failure : nothing in DB");
              // generate fake datas
              [self dummyArrayForMissingChart];
          }
@@ -121,12 +132,12 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
 }
 
 // helper to refresh data (no currency switching)
--(void)refreshFromWeb
+- (void)refreshFromWeb
 {
     [self apiQuery];
 }
 
--(void)chartListingCleaned:(id)responseObject
+- (void)chartListingCleaned:(id)responseObject
 {
     NSInvocationOperation *buildTheChartData = [[NSInvocationOperation alloc]initWithTarget:self
                                                                                    selector:@selector(chartArray:)
@@ -144,13 +155,11 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
 }
 
 //Reorder and merge chart datas
--(void)chartArray:(id)responseObject
+- (void)chartArray:(id)responseObject
 {
     dispatch_queue_t chartPrepareQueue = dispatch_queue_create("com.graphmatic.cvsHandler", DISPATCH_QUEUE_SERIAL);
     
     dispatch_sync(chartPrepareQueue, ^{
-        lockChart = YES;
-        
         // parsing datas
         NSString *data =  [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:NSUTF8StringEncoding];
         NSMutableArray *rawArray = [[NSMutableArray alloc]init];
@@ -176,9 +185,9 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
                     // assign resulting Dictionnary to instance property
                     self.thisDayDatas = [thisDayDatasTmpFull mutableCopy];
                     // debug
-                    // NSLog(@"cooked! : %@", thisDayDatasTmpFull);
+//                     NSLog(@"cooked! : %@", thisDayDatasTmpFull);
                     // Backup datas
-                    [self.previousPricesAndVolumes setObject:thisDayDatas forKey:currentCurrency];
+                    [self.previousPricesAndVolumes setObject:[thisDayDatasTmpFull mutableCopy] forKey:currentCurrency];
                     NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self.previousPricesAndVolumes];
                     [[NSUserDefaults standardUserDefaults] setObject:thisDayDatasToSave forKey:@"previousPricesAndVolumes"];
                 }];
@@ -203,7 +212,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
         NSDate *thisDate = [[NSDate alloc]initWithTimeIntervalSince1970:[[[rawArray objectAtIndex:z] objectAtIndex:0]floatValue]];
         thisDate = [GMSUtilitiesFunction roundDateToHour:thisDate];
         
-        // to compute weighted avaerage later
+        // to compute weighted average later
         NSMutableArray *pvs;
         NSArray *pv = [NSArray arrayWithObjects:[NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:1]floatValue]], [NSNumber numberWithFloat:[[[rawArray objectAtIndex:z]objectAtIndex:2]floatValue]], nil];
 
@@ -244,8 +253,6 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
 // calculation of weighted average : (p x v) + (p x v) + ... / sum(v) and high/low extraction
 - (void)weightedAverage:(NSMutableDictionary *)thisDayDatasTemp :(void(^)(NSMutableDictionary *thisDayDatasTmp))completion
 {
-    
-    
     for ( NSString *k in thisDayDatasTemp )
     {
         NSMutableArray *pvs  = [[NSMutableArray alloc]initWithObjects:[[thisDayDatasTemp objectForKey:k]objectAtIndex:2], nil];
@@ -321,8 +328,7 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
                 NSString *zeroTimestampIntStr = [[NSString alloc]init];
                 zeroTimestampIntStr = [NSString stringWithFormat:@"%ld", (long)zeroTimestampInt ];
                 NSDate *thisDate = [[NSDate alloc]initWithTimeIntervalSince1970:zeroTimestamp];
-//                thisDate = [GMSUtilitiesFunction roundDateToHour:thisDate];
-                
+
                 NSArray *bump = [[NSArray alloc]initWithObjects:zeroTimestampIntStr, zeroVal, zeroVal, thisDate, nil];
                 [thisDayDatasTemp setObject:bump forKey:nextHour];
             }
@@ -351,7 +357,8 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
             NSInteger zeroTimestampInt = zeroTimestamp;
             NSString *zeroTimestampIntStr = [[NSString alloc]init];
             zeroTimestampIntStr = [NSString stringWithFormat:@"%ld", (long)zeroTimestampInt ];
-            NSArray *bump = [[NSArray alloc]initWithObjects:zeroTimestampIntStr, zeroVal, zeroVal, nil];
+            NSDate *thisDate = [[NSDate alloc]initWithTimeIntervalSince1970:zeroTimestamp];
+            NSArray *bump = [[NSArray alloc]initWithObjects:zeroTimestampIntStr, zeroVal, zeroVal, thisDate, nil];
             [dummyOne setObject:bump forKey:nextHour];
             nextHour = [nextHour dateByAddingTimeInterval: secondsPerHour];
         }
@@ -360,7 +367,11 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
         self.thisDayDatas = [dummyOne mutableCopy];
         [self.previousPricesAndVolumes setObject:self.thisDayDatas forKey:currentCurrency];
         // Notify UI
-        self.isReady = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Notify UI that Instance is ready to use
+            self.isReady = YES;
+            
+        });
     });
 }
 
@@ -420,6 +431,4 @@ static GMSchartViewData* _sharedGraphViewTableData = nil;
     return volumesAndPricesRanges;
 }
 
-
 @end
-

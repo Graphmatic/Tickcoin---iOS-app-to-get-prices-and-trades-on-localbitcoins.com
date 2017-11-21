@@ -28,8 +28,7 @@
 
     self.view.backgroundColor = GMSColorBlueGrey;
     
-    
-    // backup parent view size
+    // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
 
@@ -62,6 +61,13 @@
         [self.view addSubview:self.chartsVolumeView];
     }
    
+}
+
+
+- (void) applicationDidEnterBackground:(NSNotification*)notification
+{
+    // save current selected currency to db (should have been already done...)
+    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
 }
 
 

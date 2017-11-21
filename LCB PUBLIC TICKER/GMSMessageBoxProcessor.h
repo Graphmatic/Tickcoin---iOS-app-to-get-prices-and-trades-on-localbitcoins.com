@@ -17,8 +17,8 @@ extern BOOL firstLaunch;
 }
 - (id)init;
 //- (NSMutableString*)dailyMessages:(int)messagesCount connected:(BOOL)connected;
-- (NSArray*)bidsViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev doubleTap:(bool)doubleTapLabel;
-- (NSArray*)asksViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev doubleTap:(bool)doubleTapLabel;
+- (NSArray*)bidsViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isAscSorted:(bool)isAscSorted;
+- (NSArray*)asksViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isDescSorted:(bool)isDescSorted;
 - (NSString*)noConnAlert: (NSError*)error alt:(BOOL)altMessages;
 - (NSString*)dailyMessages:(int)messagesCount connected:(BOOL)connected;
 @property (nonatomic, strong)  NSString *messageBoxString;

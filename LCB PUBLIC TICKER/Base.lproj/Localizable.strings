@@ -20,7 +20,7 @@
 "_SWIPE_DOWN_TO_REFRESH" = "swipe down to refresh";
 "_LAST_ORDER_TITLE" = "Price ( %@ )                                     volume";
 "_DAILY_PRICE_IN" = "%@  -  %@";
-"_WAIT_FOR_DATAS" = "please wait - update...";
+"_WAIT_FOR_DATAS" = "please wait - loading...";
 "_INVALID_DATAS" = "invalid data";
 "_NO_CONNECT_OUTDATED" = "Outdated datas! last sync: %@";
 "_DAILY_PRICE_VARIATION" = "variation since last refresh:";
@@ -60,7 +60,9 @@
 "_ERROR" = "Error";
 //chart view
 "_PRICE_CURRENCY_CHART" = "Closed trades prices - past 24H - %@";
+"_PRICE_CURRENCY_CHART_OUTDATED" = "Closed trades prices - Outdated! - %@";
 "_VOLUME_CURRENCY_CHART" = "Closed trades volumes - past 24H - BTC";
+"_VOLUME_CURRENCY_CHART_OUTDATED" = "Closed trades volumes - Outdated - BTC";
 "_Yesterday" = "Yesterday";
 "_Now" = "Now";
 "_NO_CHART_AVAILABLE" = "No chart available for %@";
