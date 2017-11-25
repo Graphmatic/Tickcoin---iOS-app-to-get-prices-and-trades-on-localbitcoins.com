@@ -80,7 +80,7 @@
         [self addChildViewController:segue.destinationViewController];
         UIView* destView3 = ((UIViewController *)segue.destinationViewController).view;
         destView3.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        destView3.frame = CGRectMake(520, 384, self.thirdViewController.view.frame.size.width, self.thirdViewController.view.frame.size.height);
+        destView3.frame = CGRectMake(772, 0, self.thirdViewController.view.frame.size.width, self.thirdViewController.view.frame.size.height);
         [self.view addSubview:destView3];
         [segue.destinationViewController didMoveToParentViewController:self];
     }

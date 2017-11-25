@@ -30,7 +30,7 @@
     // layout
     // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
-    CGFloat viewHeight = self.view.bounds.size.height / 2;
+    CGFloat viewHeight = (self.view.bounds.size.height / 100) * 90;
     
     // add header
     self.headerImg = [GMSTopBrandImage topImage:2];
@@ -38,7 +38,7 @@
     
     // Some position helpers
     CGFloat messageBoxOrigY = self.headerImg.topBrand.size.height + 2;
-    CGFloat ipadLayoutWidth = self.headerImg.topBrand.size.width;
+    CGFloat ipadLayoutWidth = self.headerImg.topBrand.size.width - 4;
     
     // add empty room for dynamic messages
     CGFloat messageBoxHeight = 64.0;
@@ -50,7 +50,7 @@
     }
     else
     {
-        self.dynamicMessage.frame = CGRectMake(0, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
+        self.dynamicMessage.frame = CGRectMake(2, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
     }
     self.dynamicMessage.backgroundColor = [UIColor clearColor];
     self.dynamicMessage.textColor = GMSColorBlueGreyDark;
@@ -63,7 +63,7 @@
     }
     else
     {
-        self.settingSquare.frame = CGRectMake(0, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
+        self.settingSquare.frame = CGRectMake(2, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
     }
     self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
     self.settingSquare.alpha = 0.80;
@@ -77,7 +77,7 @@
     }
     else
     {
-        self.tableViewHeader.frame = CGRectMake(0, tableViewHeaderOriginY -7, ipadLayoutWidth, 24);
+        self.tableViewHeader.frame = CGRectMake(2, tableViewHeaderOriginY -7, ipadLayoutWidth, 24);
     }
     
     [self.tableViewHeader setBackgroundColor: GMSColorBlueGreyDark];
@@ -89,7 +89,7 @@
     }
     else
     {
-        frameHeaderL = CGRectMake(0, 0, ipadLayoutWidth, 24);
+        frameHeaderL = CGRectMake(2, 0, ipadLayoutWidth, 24);
     }
     CGRect frameHeaderR = frameHeaderL;
     CGFloat fhWidth;
@@ -128,7 +128,7 @@
     }
     else
     {
-        [self.tableView setFrame:CGRectMake(0, tableViewOrigY, ipadLayoutWidth, (viewHeight - tableViewOrigY) )];
+        [self.tableView setFrame:CGRectMake(2, tableViewOrigY, ipadLayoutWidth, (viewHeight - tableViewOrigY) )];
     }
     
     [self.tableView setBackgroundColor: GMSColorDarkGrey];
@@ -295,7 +295,7 @@
 -(void)timerStartMulti:(NSTimer*)theTimer
 {
     if(messagesCount == 3){messagesCount = 0;}
-    NSArray *callBack = [self.messageBoxMessage bidsViewMessages:messagesCount connected:connected maxDeviation:self.maxDeviation isAscSorted:self.sortedDesc];
+    NSArray *callBack = [self.messageBoxMessage asksViewMessages:messagesCount connected:connected maxDeviation:self.maxDeviation isDescSorted:self.sortedDesc];
     messagesCount = [[callBack objectAtIndex:0]intValue];
     self.dynamicMessage.text = [callBack objectAtIndex:1];
 }
@@ -427,7 +427,7 @@
                          self.sliderOn = NO;  }];
     //    }
     self.sliderVal.hidden = YES;
-    [self.asksDatas changeDeviation:self.maxDeviation orderType:@"bids"];
+    [self.asksDatas changeDeviation:self.maxDeviation orderType:@"asks"];
 }
 
 - (void)didReceiveMemoryWarning

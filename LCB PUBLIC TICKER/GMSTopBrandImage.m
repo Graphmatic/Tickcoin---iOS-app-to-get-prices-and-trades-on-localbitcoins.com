@@ -37,12 +37,12 @@
                         
                         break;
                     case 1:
-                         self.topBrand = [UIImage imageNamed:@"header_bids_ipad"];
+                         self.topBrand = [UIImage imageNamed:@"header_bids_half"];
                          [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
                          
                          break;
                      case 2:
-                         self.topBrand = [UIImage imageNamed:@"header_asks_ipad"];
+                         self.topBrand = [UIImage imageNamed:@"header_asks_half"];
                          [self setFrame:CGRectMake(0.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
                          
                          break;
