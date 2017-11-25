@@ -219,7 +219,7 @@
             [self.waitingSpin stopAnimating];
             self.sortedAsc = NO;
             // Update misc. visible elements
-            if ([self.bidsDatas.orderBids count] == 0) {
+            if ( ( [self.bidsDatas.orderBids count] == 0 ) && ( self.bidsDatas.isDatas == YES ) ) {
                 if(self.timerMessages)[self.timerMessages invalidate];
                 self.timerMessages = nil;
                 self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_FILTER_NULL", @"no order in this range, please edit display filter")];
@@ -229,9 +229,12 @@
             }
             else
             {
-                if(self.timerMessages)[self.timerMessages invalidate];
-                self.timerMessages = nil;
-                self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+                if ( self.bidsDatas.isDatas ==  NO )
+                {
+                    if(self.timerMessages)[self.timerMessages invalidate];
+                    self.timerMessages = nil;
+                    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+                }
             }
             [self.tableView reloadData];
         });
