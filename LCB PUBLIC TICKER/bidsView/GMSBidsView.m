@@ -30,7 +30,7 @@
     // layout
     // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
-    CGFloat viewHeight = self.view.bounds.size.height;
+    CGFloat viewHeight = self.view.bounds.size.height / 2;
     
     // add header
     self.headerImg = [GMSTopBrandImage topImage:1];
@@ -38,36 +38,69 @@
     
     // Some position helpers
     CGFloat messageBoxOrigY = self.headerImg.topBrand.size.height + 2;
+    CGFloat ipadLayoutWidth = self.headerImg.topBrand.size.width;
     
     // add empty room for dynamic messages
     CGFloat messageBoxHeight = 64.0;
     
     // add dynamic label in messageBox
-    self.dynamicMessage.frame = CGRectMake(0, messageBoxOrigY, viewWidth, messageBoxHeight - 4);
+    if ( !IS_IPAD )
+    {
+        self.dynamicMessage.frame = CGRectMake(0, messageBoxOrigY, viewWidth, messageBoxHeight - 4);
+    }
+    else
+    {
+        self.dynamicMessage.frame = CGRectMake(0, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
+    }
     self.dynamicMessage.backgroundColor = [UIColor clearColor];
     self.dynamicMessage.textColor = GMSColorBlueGreyDark;
     [self.view addSubview:self.dynamicMessage];
     
     // Frame position for setting slider view
-    self.settingSquare.frame = CGRectMake(0, messageBoxOrigY, viewWidth, messageBoxHeight - 4);
+    if ( !IS_IPAD )
+    {
+        self.settingSquare.frame = CGRectMake(0, messageBoxOrigY, viewWidth, messageBoxHeight - 4);
+    }
+    else
+    {
+         self.settingSquare.frame = CGRectMake(0, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
+    }
     self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
     self.settingSquare.alpha = 0.80;
-    // hidden by default if not iPad
-//    if ( !IS_IPAD )
-//    {
-        self.settingSquare.hidden = YES;
-//    }
-
-    
+    self.settingSquare.hidden = YES;
     
     // tableview pseudo header (an UIView..)
     CGFloat tableViewHeaderOriginY = messageBoxOrigY + messageBoxHeight;
-    self.tableViewHeader.frame = CGRectMake(0, tableViewHeaderOriginY -7, viewWidth, 24);
+    if ( !IS_IPAD )
+    {
+        self.tableViewHeader.frame = CGRectMake(0, tableViewHeaderOriginY -7, viewWidth, 24);
+    }
+    else
+    {
+        self.tableViewHeader.frame = CGRectMake(0, tableViewHeaderOriginY -7, ipadLayoutWidth, 24);
+    }
+    
     [self.tableViewHeader setBackgroundColor: GMSColorBlueGreyDark];
     // left and right label in tableView header
-    CGRect frameHeaderL = CGRectMake(0, 0, viewWidth, 24);
+    CGRect frameHeaderL;
+    if ( !IS_IPAD )
+    {
+        frameHeaderL = CGRectMake(0, 0, viewWidth, 24);
+    }
+    else
+    {
+        frameHeaderL = CGRectMake(0, 0, ipadLayoutWidth, 24);
+    }
     CGRect frameHeaderR = frameHeaderL;
-    CGFloat fhWidth = viewWidth - frameHeaderL.origin.x;
+    CGFloat fhWidth;
+    if ( !IS_IPAD )
+    {
+        fhWidth = viewWidth - frameHeaderL.origin.x;
+    }
+    else
+    {
+        fhWidth = ipadLayoutWidth - frameHeaderL.origin.x;
+    }
     frameHeaderL.origin.x = 5;
     frameHeaderL.size.width = fhWidth;
     frameHeaderR.origin.x = -5;
@@ -89,7 +122,15 @@
 
     // add tableView
     CGFloat tableViewOrigY = tableViewHeaderOriginY + 19;
-    [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY) )];
+    if ( !IS_IPAD )
+    {
+        [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY) )];
+    }
+    else
+    {
+        [self.tableView setFrame:CGRectMake(0, tableViewOrigY, ipadLayoutWidth, (viewHeight - tableViewOrigY) )];
+    }
+    
     [self.tableView setBackgroundColor: GMSColorDarkGrey];
     // no footer
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -102,22 +143,12 @@
     [self.tableView addGestureRecognizer:tapToChangeOrder];
     tapToChangeOrder.numberOfTapsRequired=2;
     
-//    if ( !IS_IPAD )
-//    {
-        //init swipe to right that shows maxDeviation slider
-        UISwipeGestureRecognizer *displaySettings = [[UISwipeGestureRecognizer alloc]initWithTarget:self
-                                                                                             action:@selector(displayMaxDeviationSlider:)];
-        displaySettings.direction = UISwipeGestureRecognizerDirectionRight;
-        [self.view addGestureRecognizer:displaySettings];
-//    }
-//    else
-//    {
-//        // slider always visible
-//        self.sliderVal.hidden = YES;
-//        self.sliderOn = YES;
-//        [self showOverlaySetting];
-//    }
-//
+    //init swipe to right that shows maxDeviation slider
+    UISwipeGestureRecognizer *displaySettings = [[UISwipeGestureRecognizer alloc]initWithTarget:self
+                                                                                         action:@selector(displayMaxDeviationSlider:)];
+    displaySettings.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:displaySettings];
+
     // various init
     messagesCount = 0;
 }
@@ -170,7 +201,14 @@
     {
         self.waitingSpin = [[UIActivityIndicatorView alloc]
                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        self.waitingSpin.center = CGPointMake(160, 240);
+        if ( !IS_IPAD )
+        {
+            self.waitingSpin.center = CGPointMake(160, 240);
+        }
+        else
+        {
+            self.waitingSpin.center = CGPointMake(self.tableView.frame.origin.x + (self.tableView.frame.size.width / 2), self.tableView.frame.origin.y + (self.tableView.frame.size.height / 2));
+        }
         self.waitingSpin.hidesWhenStopped = YES;
         [self.view addSubview:self.waitingSpin];
         [self.waitingSpin startAnimating];
@@ -202,9 +240,10 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     cell.backgroundColor = GMSColorDarkGrey;
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_background_sel.png"]];
-    
+    cell.textLabel.font  = GMSAvenirNextCondensedMedium;
     cell.textLabel.text = key;
     cellVal = [[self.bidsDatas.orderBids objectAtIndex:indexPath.row]objectAtIndex:1];
+    cell.detailTextLabel.font = GMSAvenirNextCondensedMedium;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", cellVal];
     
     return cell;
@@ -218,6 +257,8 @@
             // remove spinner if any
             [self.waitingSpin stopAnimating];
             self.sortedAsc = NO;
+            // update table headers
+            self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), currentCurrency];
             // Update misc. visible elements
             if ( ( [self.bidsDatas.orderBids count] == 0 ) && ( self.bidsDatas.isDatas == YES ) ) {
                 if(self.timerMessages)[self.timerMessages invalidate];
@@ -275,19 +316,13 @@
         [self showOverlaySetting];
     }
 }
+
 - (void)showOverlaySetting
 {
-
-//    if ( !IS_IPAD )
-//    {
-        self.sliderOn = YES;
-        self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
-        self.settingSquare.alpha = 0.80;
-//    }
-//    else
-//    {
-//        [self.settingSquare setBackgroundColor:[UIColor whiteColor]];
-//    }
+    self.sliderOn = YES;
+    self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
+    self.settingSquare.alpha = 0.80;
+    
     self.settingSquare.layer.borderColor = (__bridge CGColorRef _Nullable)(GMSColorBlueGrey);
     self.settingSquare.layer.borderWidth = 0.8f;
     
@@ -295,19 +330,12 @@
     self.editMaxDev = [[UISlider alloc]init];
     CGRect posSlider = editMaxDev.frame;
     CGRect okButtonFrame;
-//    if ( !IS_IPAD )
-//    {
-        posSlider.size.width = ( self.settingSquare.frame.size.width / 100 ) * 70;
-        posSlider.origin.y = ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height ) / 2;
-        posSlider.origin.x = ( self.settingSquare.frame.size.width / 100 ) * 10;
-        okButtonFrame = CGRectMake( ( self.settingSquare.frame.size.width / 100 ) * 80, ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height) / 2 , self.editMaxDev.frame.size.height, self.editMaxDev.frame.size.height);
-//    }
-//    else
-//    {
-//        posSlider.size.width = 230;
-//        posSlider.origin.y=21;
-//        posSlider.origin.x= 10;
-//    }
+    
+    posSlider.size.width = ( self.settingSquare.frame.size.width / 100 ) * 70;
+    posSlider.origin.y = ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height ) / 2;
+    posSlider.origin.x = ( self.settingSquare.frame.size.width / 100 ) * 10;
+    okButtonFrame = CGRectMake( ( self.settingSquare.frame.size.width / 100 ) * 80, ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height) / 2 , self.editMaxDev.frame.size.height, self.editMaxDev.frame.size.height);
+    
     self.editMaxDev.frame = posSlider;
     self.editMaxDev.thumbTintColor = [UIColor whiteColor];
     self.editMaxDev.minimumValue = 1;
@@ -315,14 +343,9 @@
     self.editMaxDev.value = self.maxDeviation;
     self.editMaxDev.continuous = YES;
     
-//    if ( !IS_IPAD )
-//    {
-        self.editMaxDev.minimumTrackTintColor = [UIColor whiteColor];
-//    }
-//    else
-//    {
-//        self.editMaxDev.minimumTrackTintColor = [UIColor darkGrayColor];
-//    }
+    
+    self.editMaxDev.minimumTrackTintColor = [UIColor whiteColor];
+    
     [self.editMaxDev addTarget:self
                         action:@selector(sliderMoving:)
               forControlEvents:UIControlEventValueChanged];
@@ -342,15 +365,10 @@
     self.sliderVal.frame = CGRectMake(0, tbFrame.origin.y - 49, tbFrame.size.width, tbFrame.size.height);
     
     self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
-//    if ( !IS_IPAD )
-//    {
-        self.sliderInfoTxt.textColor=[UIColor whiteColor];
-//    }
-//    else
-//    {
-//        self.sliderInfoTxt.textColor=[UIColor darkGrayColor];
-//    }
-//    // slider val position
+    
+    self.sliderInfoTxt.textColor=[UIColor whiteColor];
+    
+    // slider val position
     self.sliderInfoTxt.frame = self.tableViewHeader.frame;
     self.sliderInfoTxt.backgroundColor = GMSColorBlueGreyDark;
     
@@ -358,19 +376,15 @@
     [self.sliderInfoTxt setFont:[UIFont fontWithName:@"Gill Sans" size:14]];
     self.sliderInfoTxt.textAlignment = NSTextAlignmentCenter;
     
-    //OK button - iPhone only
+    self->done = [UIButton buttonWithType:UIButtonTypeSystem];
+    self->done.tintColor = [UIColor whiteColor];
+    [self->done addTarget:self
+                   action:@selector(closeSettingView:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [self->done setTitle:@"OK" forState:UIControlStateNormal];
+    [[self->done titleLabel] setFont:[UIFont fontWithName:@"Avenir-BookOblique" size:16]];
+    self->done.frame = okButtonFrame;
     
-//    if ( !IS_IPAD )
-//    {
-        self->done = [UIButton buttonWithType:UIButtonTypeSystem];
-        self->done.tintColor = [UIColor whiteColor];
-        [self->done addTarget:self
-                       action:@selector(closeSettingView:)
-             forControlEvents:UIControlEventTouchUpInside];
-        [self->done setTitle:@"OK" forState:UIControlStateNormal];
-        [[self->done titleLabel] setFont:[UIFont fontWithName:@"Avenir-BookOblique" size:16]];
-        self->done.frame = okButtonFrame;
-//    }
     self.dynamicMessage.text = nil;
     self.sliderVal.hidden = NO;
     [self.view addSubview:self.sliderInfoTxt];
@@ -379,7 +393,7 @@
     [self.settingSquare addSubview:self->done];
     [self.view addSubview:self.settingSquare];
     self.settingSquare.hidden = NO;
-
+    
 }
 
 - (IBAction)sliderMoving:(id)sender

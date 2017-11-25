@@ -170,7 +170,7 @@
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="81k-lv-m9e">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.23137254901960785" green="0.24705882352941178" blue="0.29411764705882354" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.40000000000000002" green="0.47058823529999999" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                     </view>
@@ -429,7 +429,7 @@
                                 <nil key="highlightedColor"/>
                                 <size key="shadowOffset" width="0.0" height="0.0"/>
                             </label>
-                            <tableView autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" misplaced="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="g2g-ls-2I4">
+                            <tableView autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" misplaced="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="20" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="g2g-ls-2I4">
                                 <rect key="frame" x="0.0" y="125" width="504" height="259"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -439,21 +439,21 @@
                                 <color key="sectionIndexBackgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item2" textLabel="iRt-oA-XCN" detailTextLabel="Hdn-c2-AtC" style="IBUITableViewCellStyleValue1" id="FoC-uc-mta">
-                                        <rect key="frame" x="0.0" y="28" width="504" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="504" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" tableViewCell="FoC-uc-mta" id="eHV-AQ-opC">
-                                            <rect key="frame" x="0.0" y="0.0" width="504" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="504" height="20"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iRt-oA-XCN">
-                                                    <rect key="frame" x="15" y="9" width="39" height="27.5"/>
+                                                    <rect key="frame" x="15" y="-3" width="39" height="27.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hdn-c2-AtC">
-                                                    <rect key="frame" x="436" y="9" width="53" height="27.5"/>
+                                                    <rect key="frame" x="60" y="-3" width="429" height="27.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
                                                     <color key="textColor" red="0.92879478640000002" green="0.92928031219999996" blue="0.95902186950000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -537,7 +537,7 @@
                                 <color key="textColor" red="0.35717304760000002" green="0.35717304760000002" blue="0.35717304760000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="41" sectionHeaderHeight="1" sectionFooterHeight="20" id="KKi-Pq-WhF">
+                            <tableView autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="20" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="KKi-Pq-WhF">
                                 <rect key="frame" x="0.0" y="127" width="375" height="491"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -546,7 +546,7 @@
                                 <color key="sectionIndexBackgroundColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item2" textLabel="Cl6-eB-8dp" detailTextLabel="gY2-ZM-ieJ" rowHeight="55" style="IBUITableViewCellStyleValue1" id="oEA-Nb-upc">
-                                        <rect key="frame" x="0.0" y="1" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" tableViewCell="oEA-Nb-upc" id="55z-zI-bAf">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
