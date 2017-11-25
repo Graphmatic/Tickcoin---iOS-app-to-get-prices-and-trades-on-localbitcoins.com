@@ -80,6 +80,8 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     _sharedGraphViewTableData = [self init:[rxNotifDatas objectForKey:@"newCurrency"]];
 }
 
+
+
 // the initial XHR query
 - (void)apiQuery
 {
@@ -90,43 +92,26 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     AFHTTPRequestOperation *operationGraph = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operationGraph setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationGraph, id responseObject)
      {
-         self.apiQuerySuccess = YES;
-         // Build the datas object
-         [self chartListingCleaned:responseObject];
+         
+         // Build the datas object if response is populated
+         if( [responseObject length] > 0 )
+         {
+             self.apiQuerySuccess = YES;
+            [self chartListingCleaned:responseObject];
+         }
+         else
+         {
+             self.apiQuerySuccess = NO;
+             // try to get previous recorded datas from DB and check if datas exist for given currency
+             chartDatasFromDb(self);
+         }
      }
                                           failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)
      {
          NSLog(@"Query failure");
          self.apiQuerySuccess = NO;
          // try to get previous recorded datas from DB and check if datas exist for given currency
-         if ( [[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"] != nil )
-         {
-             NSLog(@"Query failure : something in DB");
-
-             self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
-             if ( [self.previousPricesAndVolumes objectForKey:self.currency] != nil )
-             {
-                 self.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
-                 self.thisDayDatas = [[[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]] objectForKey:self.currency]mutableCopy];
-                 NSArray *keys = [self.thisDayDatas allKeys];
-                 self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     // Notify UI that Instance is ready to use
-                     self.isReady = YES;
-                 });
-             }
-             else
-             {
-                 // generate fake datas
-                 [self dummyArrayForMissingChart];
-             }
-         }
-         else
-         {
-             NSLog(@"Query failure : nothing in DB");
-             // generate fake datas
-             [self dummyArrayForMissingChart];
-         }
+         chartDatasFromDb(self);
      }];
     [operationGraph start];
 }
@@ -194,6 +179,37 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
             }];
         }];
     });
+}
+
+static void chartDatasFromDb(GMSchartViewData *object) {
+    if ( [[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"] != nil )
+    {
+        NSLog(@"Query failure : something in DB");
+        
+        object.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
+        if ( [object.previousPricesAndVolumes objectForKey:object.currency] != nil )
+        {
+            object.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
+            object.thisDayDatas = [[[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]] objectForKey:object.currency]mutableCopy];
+            NSArray *keys = [object.thisDayDatas allKeys];
+            object.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Notify UI that Instance is ready to use
+                object.isReady = YES;
+            });
+        }
+        else
+        {
+            // generate fake datas
+            [object dummyArrayForMissingChart];
+        }
+    }
+    else
+    {
+        NSLog(@"Query failure : nothing in DB");
+        // generate fake datas
+        [object dummyArrayForMissingChart];
+    }
 }
 
 // summing of volumes and sorting

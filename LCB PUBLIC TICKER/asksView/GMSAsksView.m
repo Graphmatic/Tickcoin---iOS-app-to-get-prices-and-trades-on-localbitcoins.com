@@ -15,7 +15,6 @@
     BOOL connected;
     int messagesCount;
     UIButton *done;
-    
 }
 @end
 

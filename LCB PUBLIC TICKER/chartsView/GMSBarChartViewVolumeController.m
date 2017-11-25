@@ -90,7 +90,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     CGFloat childViewHeight = self.view.bounds.size.height;
     if ( IS_IPAD )
     {
-        GMSVolumeChartPadding = 0.0f;
+        GMSVolumeChartPadding = 2.0f;
         GMSVolumeChartFooterHeight = 22.0f;
     }
     // header of first chart (price)
@@ -115,9 +115,9 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     CGRect frameForBarChartView;
     if ( IS_IPAD )
     {
-        frameForBarChartView = CGRectMake(0,
+        frameForBarChartView = CGRectMake(2,
                                           0,
-                                          516,
+                                          518,
                                           206);
     }
     else

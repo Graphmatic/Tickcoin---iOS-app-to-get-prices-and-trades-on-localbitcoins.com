@@ -32,17 +32,17 @@
                 switch (viewIndex)
                  {
                     case 0:
-                        self.topBrand = [UIImage imageNamed:@"LCB_headerImgIpadBig@x2"];
+                        self.topBrand = [UIImage imageNamed:@"header_exchange_ipad"];
                          [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
                         
                         break;
                     case 1:
-                         self.topBrand = [UIImage imageNamed:@"header_bids"];
+                         self.topBrand = [UIImage imageNamed:@"header_bids_ipad"];
                          [self setFrame:CGRectMake(1.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
                          
                          break;
                      case 2:
-                         self.topBrand = [UIImage imageNamed:@"LCB_headerImgAsksIpadBig.png"];
+                         self.topBrand = [UIImage imageNamed:@"header_asks_ipad"];
                          [self setFrame:CGRectMake(0.0, 0.0, self.topBrand.size.width, self.topBrand.size.height)];
                          
                          break;

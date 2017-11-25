@@ -93,7 +93,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     
     if ( IS_IPAD )
     {
-        GMSPriceChartPadding = 0.0f;
+        GMSPriceChartPadding = 2.0f;
         GMSPriceChartFooterHeight = 22.0f;
     }
     // header of first chart (price)
@@ -114,9 +114,9 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     CGRect frameForBarChartView;
     if ( IS_IPAD )
     {
-        frameForBarChartView = CGRectMake(0,
+        frameForBarChartView = CGRectMake(2,
                                           0,
-                                          516,
+                                          518,
                                           206);
     }
     else

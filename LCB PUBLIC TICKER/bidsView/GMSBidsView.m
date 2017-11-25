@@ -53,10 +53,10 @@
     self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
     self.settingSquare.alpha = 0.80;
     // hidden by default if not iPad
-    if ( !IS_IPAD )
-    {
+//    if ( !IS_IPAD )
+//    {
         self.settingSquare.hidden = YES;
-    }
+//    }
 
     
     
@@ -102,22 +102,22 @@
     [self.tableView addGestureRecognizer:tapToChangeOrder];
     tapToChangeOrder.numberOfTapsRequired=2;
     
-    if ( !IS_IPAD )
-    {
+//    if ( !IS_IPAD )
+//    {
         //init swipe to right that shows maxDeviation slider
         UISwipeGestureRecognizer *displaySettings = [[UISwipeGestureRecognizer alloc]initWithTarget:self
                                                                                              action:@selector(displayMaxDeviationSlider:)];
         displaySettings.direction = UISwipeGestureRecognizerDirectionRight;
         [self.view addGestureRecognizer:displaySettings];
-    }
-    else
-    {
-        // slider always visible
-        self.sliderVal.hidden = YES;
-        self.sliderOn = YES;
-        [self showOverlaySetting];
-    }
-    
+//    }
+//    else
+//    {
+//        // slider always visible
+//        self.sliderVal.hidden = YES;
+//        self.sliderOn = YES;
+//        [self showOverlaySetting];
+//    }
+//
     // various init
     messagesCount = 0;
 }
@@ -275,16 +275,16 @@
 - (void)showOverlaySetting
 {
 
-    if ( !IS_IPAD )
-    {
+//    if ( !IS_IPAD )
+//    {
         self.sliderOn = YES;
         self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
         self.settingSquare.alpha = 0.80;
-    }
-    else
-    {
-        [self.settingSquare setBackgroundColor:[UIColor whiteColor]];
-    }
+//    }
+//    else
+//    {
+//        [self.settingSquare setBackgroundColor:[UIColor whiteColor]];
+//    }
     self.settingSquare.layer.borderColor = (__bridge CGColorRef _Nullable)(GMSColorBlueGrey);
     self.settingSquare.layer.borderWidth = 0.8f;
     
@@ -292,19 +292,19 @@
     self.editMaxDev = [[UISlider alloc]init];
     CGRect posSlider = editMaxDev.frame;
     CGRect okButtonFrame;
-    if ( !IS_IPAD )
-    {
+//    if ( !IS_IPAD )
+//    {
         posSlider.size.width = ( self.settingSquare.frame.size.width / 100 ) * 70;
         posSlider.origin.y = ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height ) / 2;
         posSlider.origin.x = ( self.settingSquare.frame.size.width / 100 ) * 10;
         okButtonFrame = CGRectMake( ( self.settingSquare.frame.size.width / 100 ) * 80, ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height) / 2 , self.editMaxDev.frame.size.height, self.editMaxDev.frame.size.height);
-    }
-    else
-    {
-        posSlider.size.width = 230;
-        posSlider.origin.y=21;
-        posSlider.origin.x= 10;
-    }
+//    }
+//    else
+//    {
+//        posSlider.size.width = 230;
+//        posSlider.origin.y=21;
+//        posSlider.origin.x= 10;
+//    }
     self.editMaxDev.frame = posSlider;
     self.editMaxDev.thumbTintColor = [UIColor whiteColor];
     self.editMaxDev.minimumValue = 1;
@@ -312,14 +312,14 @@
     self.editMaxDev.value = self.maxDeviation;
     self.editMaxDev.continuous = YES;
     
-    if ( !IS_IPAD )
-    {
+//    if ( !IS_IPAD )
+//    {
         self.editMaxDev.minimumTrackTintColor = [UIColor whiteColor];
-    }
-    else
-    {
-        self.editMaxDev.minimumTrackTintColor = [UIColor darkGrayColor];
-    }
+//    }
+//    else
+//    {
+//        self.editMaxDev.minimumTrackTintColor = [UIColor darkGrayColor];
+//    }
     [self.editMaxDev addTarget:self
                         action:@selector(sliderMoving:)
               forControlEvents:UIControlEventValueChanged];
@@ -339,15 +339,15 @@
     self.sliderVal.frame = CGRectMake(0, tbFrame.origin.y - 49, tbFrame.size.width, tbFrame.size.height);
     
     self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
-    if ( !IS_IPAD )
-    {
+//    if ( !IS_IPAD )
+//    {
         self.sliderInfoTxt.textColor=[UIColor whiteColor];
-    }
-    else
-    {
-        self.sliderInfoTxt.textColor=[UIColor darkGrayColor];
-    }
-    // slider val position
+//    }
+//    else
+//    {
+//        self.sliderInfoTxt.textColor=[UIColor darkGrayColor];
+//    }
+//    // slider val position
     self.sliderInfoTxt.frame = self.tableViewHeader.frame;
     self.sliderInfoTxt.backgroundColor = GMSColorBlueGreyDark;
     
@@ -357,8 +357,8 @@
     
     //OK button - iPhone only
     
-    if ( !IS_IPAD )
-    {
+//    if ( !IS_IPAD )
+//    {
         self->done = [UIButton buttonWithType:UIButtonTypeSystem];
         self->done.tintColor = [UIColor whiteColor];
         [self->done addTarget:self
@@ -367,7 +367,7 @@
         [self->done setTitle:@"OK" forState:UIControlStateNormal];
         [[self->done titleLabel] setFont:[UIFont fontWithName:@"Avenir-BookOblique" size:16]];
         self->done.frame = okButtonFrame;
-    }
+//    }
     self.dynamicMessage.text = nil;
     self.sliderVal.hidden = NO;
     [self.view addSubview:self.sliderInfoTxt];
@@ -401,8 +401,8 @@
 - (IBAction)closeSettingView:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"bidsMaxDeviation"];
-    if ( !IS_IPAD )
-    {
+//    if ( !IS_IPAD )
+//    {
         [UIView animateWithDuration:0.5f
                          animations:^{self.settingSquare.alpha = 0.0;}
                          completion:^(BOOL finished){
@@ -412,7 +412,7 @@
                              [self->done removeFromSuperview];
                              self.settingSquare.hidden = YES;
                              self.sliderOn = NO;  }];
-    }
+//    }
     self.sliderVal.hidden = YES;
     [self.bidsDatas changeDeviation:self.maxDeviation orderType:@"bids"];
 }
