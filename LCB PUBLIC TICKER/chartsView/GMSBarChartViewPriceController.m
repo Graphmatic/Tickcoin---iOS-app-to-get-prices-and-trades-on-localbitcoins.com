@@ -93,7 +93,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     
     if ( IS_IPAD )
     {
-        GMSPriceChartPadding = 0.0f;
+        GMSPriceChartPadding = 2.0f;
         GMSPriceChartFooterHeight = 22.0f;
     }
     // header of first chart (price)
@@ -114,9 +114,9 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     CGRect frameForBarChartView;
     if ( IS_IPAD )
     {
-        frameForBarChartView = CGRectMake(0,
+        frameForBarChartView = CGRectMake(2,
                                           0,
-                                          516,
+                                          518,
                                           206);
     }
     else
@@ -250,10 +250,10 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"MM-dd HH:mm"];
             NSDate *outdatedStaringDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:0]]objectAtIndex:3];
-//            NSLog(@"sart date : %@", outdatedStaringDate);
+//            NSLog(@"start date : %@", outdatedStaringDate);
             NSString* startingDate = [dateFormatter stringFromDate:outdatedStaringDate];
             NSDate *outdatedEndDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:23]]objectAtIndex:3];
-//            NSLog(@"sart date : %@", outdatedEndDate);
+//            NSLog(@"start date : %@", outdatedEndDate);
             NSString *endDate = [dateFormatter stringFromDate:outdatedEndDate];
             footerView.leftLabel.text = startingDate;
             footerView.leftLabel.textColor = GMSColorRed;

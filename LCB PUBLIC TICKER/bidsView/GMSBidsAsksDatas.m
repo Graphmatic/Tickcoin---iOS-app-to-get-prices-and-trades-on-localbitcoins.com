@@ -23,7 +23,7 @@
 
 static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
 
-@synthesize firstViewDatas, orderBids, orderAsks, bidsAsksAllCurrencies, previousBidsAsksListing, bidsMaxDeviation, asksMaxDeviation, datasBuilderOp, currency;
+@synthesize firstViewDatas, orderBids, orderAsks, bidsAsksAllCurrencies, previousBidsAsksListing, bidsMaxDeviation, asksMaxDeviation, datasBuilderOp, currency, isDatas;
 
 +(GMSBidsAsksDatas *)sharedBidsAsksDatas:(NSMutableString*)currency
 {
@@ -100,40 +100,34 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
 - (void)apiQuery
 {
     NSString *fullURL = [GMSUtilitiesFunction orderBookUrl];
+    NSLog(@"BIDS ASKS URL : %@", fullURL);
     NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
     AFHTTPRequestOperation *operationOrdersBook = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     operationOrdersBook.responseSerializer = [AFJSONResponseSerializer serializer];
     [operationOrdersBook setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationOrdersBook, id responseObjectOB)
      {
-         self.apiQuerySuccess = YES;
-         // Build the datas object
-         [self listingBuilder:responseObjectOB];
+         if( [responseObjectOB count] > 0 )
+         {
+             NSLog(@"Query success and count >= 1");
+             self.apiQuerySuccess = YES;
+             self.isDatas = YES;
+             // Build the datas object
+             [self listingBuilder:responseObjectOB];
+         }
+         else
+         {
+             NSLog(@"Query failure count == 0");
+             self.apiQuerySuccess = NO;
+             // try to get previous recorded datas from DB and check if datas exist for given currency and type
+             bidsAsksDatasFromDB(self);
+         }
      }
      failure:^(AFHTTPRequestOperation *operationOrdersBook, NSError *error)
      {
          self.apiQuerySuccess = NO;
          // try to get previous recorded datas from DB and check if datas exist for given currency and type
-         if ( [[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"] != nil )
-         {
-             if ( [[[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"]objectForKey:self.currency]!= nil )
-             {
-                 self.previousBidsAsksListing  = [[[[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"]objectForKey:self.currency]mutableCopy];
-                 [self listingBuilder:self.previousBidsAsksListing];
-             }
-         }
-         else
-         {
-             // generate empty data
-             NSMutableArray *emptyArr = [[NSMutableArray alloc]init];
-             [emptyArr addObject:[[NSString alloc] initWithString:NSLocalizedString(@"_NO_DATAS", @"no data")]];
-             [self.orderBids addObject:emptyArr];
-             [self.orderAsks addObject:emptyArr];
-             
-             // notify UI
-             self.isReady = YES;
-         }
+         bidsAsksDatasFromDB(self);
      }];
-    
     [operationOrdersBook start];
 }
 
@@ -157,6 +151,31 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
     
     [builAsksBidsDatas setQueuePriority:NSOperationQueuePriorityHigh];
     [self.datasBuilderOp addOperation:builAsksBidsDatas];
+}
+
+// Try to get datas from DB if web service unavailable
+static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
+    if ( [[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"] != nil )
+    {
+        if ( [[[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"]objectForKey:object.currency]!= nil )
+        {
+            object.previousBidsAsksListing  = [[[[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"]objectForKey:object.currency]mutableCopy];
+            [object listingBuilder:object.previousBidsAsksListing];
+            object.isDatas = YES;
+        }
+    }
+    else
+    {
+        // generate empty data
+        NSMutableArray *emptyArr = [[NSMutableArray alloc]init];
+        [emptyArr addObject:[[NSString alloc] initWithString:NSLocalizedString(@"_NO_DATAS", @"no data")]];
+        [emptyArr addObject:[[NSString alloc] initWithString:NSLocalizedString(@"_NO_DATAS", @"no data")]];
+        [object.orderBids addObject:emptyArr];
+        [object.orderAsks addObject:emptyArr];
+        
+        // notify UI
+        object.isReady = YES;
+    }
 }
 
 - (void)filterDatas:(NSMutableDictionary*)responseObj

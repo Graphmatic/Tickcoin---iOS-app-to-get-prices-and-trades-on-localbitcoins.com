@@ -66,7 +66,8 @@
         [self.view addSubview:self.tableView];
     }
     
-    else {
+    else
+    {
         [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, self.headerImg.frame.size.width, 60)];
     }
     

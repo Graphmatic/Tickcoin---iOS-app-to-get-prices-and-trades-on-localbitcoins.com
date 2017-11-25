@@ -45,6 +45,12 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    // Layout helpers
+    float vWidth = self.view.frame.size.width;
+    float vHeight = self.view.frame.size.height;
+    float leftPaneWidth = ceil(vWidth / 3);
+    float rightPaneWidth = vWidth - leftPaneWidth;
+    
     if ([segue.identifier isEqualToString:first]) {
         self.firstViewController = segue.destinationViewController;
         [self addChildViewController:segue.destinationViewController];
@@ -74,7 +80,7 @@
         [self addChildViewController:segue.destinationViewController];
         UIView* destView3 = ((UIViewController *)segue.destinationViewController).view;
         destView3.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        destView3.frame = CGRectMake(772, 0, self.thirdViewController.view.frame.size.width, self.thirdViewController.view.frame.size.height);
+        destView3.frame = CGRectMake(520, 384, self.thirdViewController.view.frame.size.width, self.thirdViewController.view.frame.size.height);
         [self.view addSubview:destView3];
         [segue.destinationViewController didMoveToParentViewController:self];
     }
@@ -87,8 +93,7 @@
         [self.view addSubview:destView4];
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         CGFloat screenHeight = screenRect.size.height;
-        NSLog(@"ipad height : %f", screenHeight);
-        destView4.frame = CGRectMake(1, 355, 516, screenHeight - 354);
+        destView4.frame = CGRectMake(0, 355, self.fourthViewController.view.frame.size.width, screenHeight - 354);
         [segue.destinationViewController didMoveToParentViewController:self];
     }
 

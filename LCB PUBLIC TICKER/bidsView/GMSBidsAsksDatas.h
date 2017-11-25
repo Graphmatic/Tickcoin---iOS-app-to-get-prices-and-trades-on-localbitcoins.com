@@ -26,6 +26,7 @@ extern NSMutableString *currentCurrency;
 @property int asksMaxDeviation;
 @property (readwrite) BOOL apiQuerySuccess;
 @property (readwrite) BOOL isReady;
+@property (readwrite) BOOL isDatas;
 @property BOOL isConnection;
 
 - (void)apiQuery;
