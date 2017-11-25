@@ -30,7 +30,7 @@
     // layout
     // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
-    CGFloat viewHeight = (self.view.bounds.size.height / 100) * 90;
+    CGFloat viewHeight = (self.view.bounds.size.height / 100) * 94;
     
     // add header
     self.headerImg = [GMSTopBrandImage topImage:2];

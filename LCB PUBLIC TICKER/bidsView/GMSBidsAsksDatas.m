@@ -145,7 +145,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
 
             // backup today datas in DB
             [self.bidsAsksAllCurrencies setObject:responseObject forKey:self.currency];
-            [[NSUserDefaults standardUserDefaults]setObject:self.bidsAsksAllCurrencies forKey:@"previousBidsAsksListing"];
+            [[NSUserDefaults standardUserDefaults]setObject:self.bidsAsksAllCurrencies forKey:@"bidsAsksListing"];
         });
     }];
     
