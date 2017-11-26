@@ -31,41 +31,13 @@
     {
         dispatch_queue_t serialQueue = dispatch_queue_create("com.graphmatic.mustBeSerial", DISPATCH_QUEUE_SERIAL);
         dispatch_sync(serialQueue, ^{
-        self.ticker = [[NSMutableDictionary alloc]init];
-        self.cellValues = [[NSMutableDictionary alloc] init];
-        self.cellTitles = [[NSMutableArray alloc] init];
-        currenciesList = [[NSMutableArray alloc] init];
-        if(firstLaunch)
-        {
-            //load default local json (filled with keys and null values)
-            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tickerAllCurDefault" ofType:@"json"]]];
-            AFHTTPRequestOperation * operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-            operation.responseSerializer = [AFJSONResponseSerializer serializer];
-            [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-             {
-                 NSLog(@"local request ok");
-                 self.ticker = responseObject;
-                 [self initTicker];
-             }
-             failure:^(AFHTTPRequestOperation *operation, NSError *error)
-             {
-                 NSLog(@"local request ERROR");
-                            }];
-            [operation start];
-        }//end first launch
-        else
-        {
-            NSUserDefaults *prevTicker = [NSUserDefaults standardUserDefaults];
-            if([[[prevTicker dictionaryRepresentation] allKeys] containsObject:@"theTicker"])
+            self.ticker = [[NSMutableDictionary alloc]init];
+            self.cellValues = [[NSMutableDictionary alloc] init];
+            self.cellTitles = [[NSMutableArray alloc] init];
+            currenciesList = [[NSMutableArray alloc] init];
+            if(firstLaunch)
             {
-            NSData *tmp = [[NSUserDefaults standardUserDefaults]objectForKey:@"theTicker"];
-            self.ticker   = [[NSKeyedUnarchiver unarchiveObjectWithData:tmp]mutableCopy];
-            currentCurrency = [[NSUserDefaults standardUserDefaults] valueForKey:@"currentCurrency"];
-            lastRecordDate = [[NSUserDefaults standardUserDefaults] valueForKey:@"recordDate"];
-            }
-            else
-            {
-            //load default local json
+                //load default local json (filled with keys and null values)
                 NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tickerAllCurDefault" ofType:@"json"]]];
                 AFHTTPRequestOperation * operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
                 operation.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -75,19 +47,47 @@
                      self.ticker = responseObject;
                      [self initTicker];
                  }
-                   failure:^(AFHTTPRequestOperation *operation, NSError *error)
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error)
                  {
                      NSLog(@"local request ERROR");
-                 }];
+                                }];
                 [operation start];
-            
+            }//end first launch
+            else
+            {
+                NSUserDefaults *prevTicker = [NSUserDefaults standardUserDefaults];
+                if([[[prevTicker dictionaryRepresentation] allKeys] containsObject:@"theTicker"])
+                {
+                NSData *tmp = [[NSUserDefaults standardUserDefaults]objectForKey:@"theTicker"];
+                self.ticker   = [[NSKeyedUnarchiver unarchiveObjectWithData:tmp]mutableCopy];
+                currentCurrency = [[NSUserDefaults standardUserDefaults] valueForKey:@"currentCurrency"];
+                lastRecordDate = [[NSUserDefaults standardUserDefaults] valueForKey:@"recordDate"];
+                }
+                else
+                {
+                //load default local json
+                    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tickerAllCurDefault" ofType:@"json"]]];
+                    AFHTTPRequestOperation * operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+                    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+                    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+                     {
+                         NSLog(@"local request ok");
+                         self.ticker = responseObject;
+                         [self initTicker];
+                     }
+                       failure:^(AFHTTPRequestOperation *operation, NSError *error)
+                     {
+                         NSLog(@"local request ERROR");
+                     }];
+                    [operation start];
+                
 
+                }
+                self.cellValues = [self cellValFromTicker:self.ticker currency:currency];
+                self.cellTitles = [self titlesFromCellVal:cellValues];
+                self.currenciesList = [[[self.ticker allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]mutableCopy];
+               
             }
-            self.cellValues = [self cellValFromTicker:self.ticker currency:currency];
-            self.cellTitles = [self titlesFromCellVal:cellValues];
-            self.currenciesList = [[[self.ticker allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]mutableCopy];
-           
-        }
         });
     }
     return self;
@@ -161,7 +161,6 @@
             }
             else
             {
-                
                 if ([tickerForSelectedCurrency objectForKey:aKey])
                 {
                     NSString *tmpDictString = [GMSUtilitiesFunction verifyAndForceCastToString:[tickerForSelectedCurrency objectForKey:aKey]];
@@ -192,9 +191,9 @@
             }
         }
     }
-   
     return cellTitleTmp;
 }
+
 //get list of keys Json message should have
 -(NSArray*)supposedKeys
 {

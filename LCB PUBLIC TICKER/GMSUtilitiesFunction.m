@@ -163,7 +163,7 @@
 // use that to spread button equally in their parent view
 // Source : https://stackoverflow.com/questions/18706444/simplest-way-to-evenly-distribute-uibuttons-horizontally-across-width-of-view-co
 
-+ (void) evenlySpaceTheseButtonsInThisView : (NSArray *) buttonArray : (UIView *) thisView {
++ (void) evenlySpaceItems : (NSArray *) buttonArray : (UIView *) thisView {
     int widthOfAllButtons = 0;
     for (int i = 0; i < buttonArray.count; i++) {
         UIButton *thisButton = [buttonArray objectAtIndex:i];

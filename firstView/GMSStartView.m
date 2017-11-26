@@ -96,8 +96,7 @@
     [self.socialStack addSubview:self.emailIt];
     
     // constraint to spread buttons accros its superview
-    [GMSUtilitiesFunction evenlySpaceTheseButtonsInThisView:@[self.tweetIt, self.messageIt, self.faceBook, self.emailIt] :self.socialStack];
-    
+    [GMSUtilitiesFunction evenlySpaceItems:@[self.tweetIt, self.messageIt, self.faceBook, self.emailIt] :self.socialStack];
     
     [self.view addSubview:self.socialStack];
     
@@ -105,14 +104,12 @@
     
     if(firstLaunch)
     {
-        self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:nil];
         NSUInteger pickerDefIndex = 0;
         [self.picker reloadAllComponents];
         [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
     }
     else
     {
-        self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:currentCurrency];
         NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
         [self.picker reloadAllComponents];
         [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
@@ -120,21 +117,12 @@
     
     [self.tableView reloadData];
     
-    
-    
     //init refreshing touch item
     self.refreshTicker = [[UIRefreshControl alloc] init];
     self.refreshTicker.tintColor = GMSColorDarkGrey;
     [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshTicker];
     self.tableView.backgroundColor = GMSColorDarkGrey;
-
-    
-    if (!test)
-    {
-        [self updateTicker];
-    }
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -152,6 +140,15 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"currencySwitching" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"currencyListUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
+    if(firstLaunch)
+    {
+        self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:nil];
+    }
+    else
+    {
+        self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:currentCurrency];
+    }
+    [self updateTicker];
 }
 
 //
@@ -161,7 +158,6 @@
 //parse JSON datas from LCB
 - (void)updateTicker
 {
-    
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     connected = YES;
@@ -184,7 +180,7 @@
          [dateFormatter setDateStyle:NSDateFormatterLongStyle];
          [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
          lastRecordDate = [[dateFormatter stringFromDate:recdATE]mutableCopy];
-         //   [[NSUserDefaults standardUserDefaults]setObject:lastRecordDate forKey:@"lastRecordDate"];
+         [[NSUserDefaults standardUserDefaults]setObject:lastRecordDate forKey:@"lastRecordDate"];
          if(self.timerMessages)[self.timerMessages invalidate];
          self.timerMessages = nil;
          self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
@@ -258,7 +254,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return  [self.firstViewDatas.cellTitles count];
+    return [self.firstViewDatas.cellTitles count];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -290,6 +286,9 @@
     }
     return cell;
 }
+
+
+
 //row selected : show share buttons
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -322,6 +321,7 @@
     [self messageBoxChange:nil];
     self.prevSelRow = nil;
 }
+
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    //messages handler//
 //---------------------------------------------------------------------------------------------------------------------------//
