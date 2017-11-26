@@ -151,6 +151,28 @@
 
     // various init
     messagesCount = 0;
+    
+    if ( !self.bidsDatas.isReady )
+    {
+        self.waitingSpin = [[UIActivityIndicatorView alloc]
+                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        if ( !IS_IPAD )
+        {
+            self.waitingSpin.center = CGPointMake(160, 240);
+        }
+        else
+        {
+            self.waitingSpin.center = CGPointMake(self.tableView.frame.origin.x + (self.tableView.frame.size.width / 2), self.tableView.frame.origin.y + (self.tableView.frame.size.height / 2));
+        }
+        self.waitingSpin.hidesWhenStopped = YES;
+        [self.view addSubview:self.waitingSpin];
+        [self.waitingSpin startAnimating];
+    }
+    else
+    {
+        [self.waitingSpin stopAnimating];
+        [self.tableView reloadData];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -197,27 +219,7 @@
     
 
     
-    if ( !self.bidsDatas.isReady )
-    {
-        self.waitingSpin = [[UIActivityIndicatorView alloc]
-                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        if ( !IS_IPAD )
-        {
-            self.waitingSpin.center = CGPointMake(160, 240);
-        }
-        else
-        {
-            self.waitingSpin.center = CGPointMake(self.tableView.frame.origin.x + (self.tableView.frame.size.width / 2), self.tableView.frame.origin.y + (self.tableView.frame.size.height / 2));
-        }
-        self.waitingSpin.hidesWhenStopped = YES;
-        [self.view addSubview:self.waitingSpin];
-        [self.waitingSpin startAnimating];
-    }
-    else
-    {
-        [self.waitingSpin stopAnimating];
-        [self.tableView reloadData];
-    }
+
     
     self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
     if(self.timerMessages)[self.timerMessages invalidate];
@@ -225,6 +227,7 @@
     self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
 
 }
+
 
 //tableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
