@@ -37,6 +37,7 @@
 #define GMSColorBlack [UIColor blackColor]
 
 #pragma mark - Device
+
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 #define IS_RETINA ([[UIScreen mainScreen] scale] >= 2.0)
@@ -56,6 +57,14 @@
 #define IS_IPHONE_5 (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)
 #define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
 #define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
-#define IS_IPHONE_X (IS_IPHONE && SCREEN_MAX_LENGTH == 812.0)
+
+
+#define IS_IPHONE_4_5 ([currentDevice isEqualToString:@"iPhone5,1"] || [currentDevice isEqualToString:@"iPhone5,2"] || [currentDevice isEqualToString:@"iPhone5,3"] || [currentDevice isEqualToString:@"iPhone5,4"] || [currentDevice isEqualToString:@"iPhone6,1"] || [currentDevice isEqualToString:@"iPhone6,2"] || [currentDevice isEqualToString:@"iPhone8,4"] || [currentSimulatorDevice isEqualToString:@"iPhone5,1"] || [currentSimulatorDevice isEqualToString:@"iPhone5,2"] || [currentSimulatorDevice isEqualToString:@"iPhone5,3"] || [currentSimulatorDevice isEqualToString:@"iPhone5,4"] || [currentSimulatorDevice isEqualToString:@"iPhone6,1"] || [currentSimulatorDevice isEqualToString:@"iPhone6,2"] || [currentSimulatorDevice isEqualToString:@"iPhone8,4"])
+
+#define IS_IPHONE_6_7_8 ([currentDevice isEqualToString:@"iPhone7,2"] || [currentDevice isEqualToString:@"iPhone8,1"] || [currentDevice isEqualToString:@"iPhone9,1"] || [currentDevice isEqualToString:@"iPhone9,3"] || [currentDevice isEqualToString:@"iPhone10,1"] || [currentDevice isEqualToString:@"iPhone10,4"] || [currentSimulatorDevice isEqualToString:@"iPhone7,2"] || [currentSimulatorDevice isEqualToString:@"iPhone8,1"] || [currentSimulatorDevice isEqualToString:@"iPhone9,1"] || [currentSimulatorDevice isEqualToString:@"iPhone9,3"] || [currentSimulatorDevice isEqualToString:@"iPhone10,1"] || [currentSimulatorDevice isEqualToString:@"iPhone10,4"])
+
+#define IS_IPHONE_PLUS ([currentDevice isEqualToString:@"iPhone8,2"] || [currentDevice isEqualToString:@"iPhone7,1"] || [currentDevice isEqualToString:@"iPhone9,2"] || [currentDevice isEqualToString:@"iPhone9,4"] || [currentDevice isEqualToString:@"iPhone10,2"] || [currentDevice isEqualToString:@"iPhone10,5"] || [currentSimulatorDevice isEqualToString:@"iPhone8,2"] || [currentSimulatorDevice isEqualToString:@"iPhone7,1"] || [currentSimulatorDevice isEqualToString:@"iPhone9,2"] || [currentSimulatorDevice isEqualToString:@"iPhone9,4"] || [currentSimulatorDevice isEqualToString:@"iPhone10,2"] || [currentSimulatorDevice isEqualToString:@"iPhone10,5"])
+
+#define IS_IPHONE_X ([currentDevice isEqualToString:@"iPhone10,3"] || [currentDevice isEqualToString:@"iPhone10,6"] || [currentSimulatorDevice isEqualToString:@"iPhone10,3"] || [currentSimulatorDevice isEqualToString:@"iPhone10,6"])
 
 #endif

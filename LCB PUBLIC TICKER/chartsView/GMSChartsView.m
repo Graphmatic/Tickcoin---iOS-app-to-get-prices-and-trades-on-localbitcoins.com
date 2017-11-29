@@ -38,7 +38,7 @@
         self.headerChartsImg = [GMSTopBrandImage topImage:3];
         [self.view addSubview:self.headerChartsImg];
         // origine of subviews
-        CGFloat chartViewOrigine = self.headerChartsImg.frame.size.height + 2;
+        CGFloat chartViewOrigine = self.headerChartsImg.frame.size.height;
 
         
         [self.chartsPriceView setFrame:CGRectMake(0,

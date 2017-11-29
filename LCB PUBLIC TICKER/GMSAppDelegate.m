@@ -31,7 +31,6 @@
     UITabBarItem *tabBarItem2 = [tabBar.items objectAtIndex:1];
     UITabBarItem *tabBarItem3 = [tabBar.items objectAtIndex:2];
     UITabBarItem *tabBarItem4 = [tabBar.items objectAtIndex:3];
-//    UITabBarItem *tabBarItem5 = [tabBar.items objectAtIndex:4];
     
     tabBarItem1.selectedImage = [[UIImage imageNamed:@"change"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
     tabBarItem1.image = [[UIImage imageNamed:@"change"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
@@ -49,9 +48,6 @@
     tabBarItem4.image = [[UIImage imageNamed:@"second"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
     tabBarItem4.title = @"asks";
     
-//    tabBarItem5.selectedImage = [[UIImage imageNamed:@"fourth@x2"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-//    tabBarItem5.image = [[UIImage imageNamed:@"fourth@x2"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-//    tabBarItem5.title = @"news";
     }
     [[UITabBar appearance] setBarTintColor:GMSColorBlueGrey];
     [[UITabBar appearance] setTintColor:GMSColorWhite];

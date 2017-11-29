@@ -39,6 +39,7 @@ extern BOOL test;
 @property (strong, atomic) GMSfirstViewTableData *firstViewDatas;
 @property (strong, atomic) NSIndexPath *prevSelRow;
 @property (nonatomic) CGPoint tabViewOrigin;
+@property (nonatomic) CGFloat rowHeight;
 
 - (IBAction)tweetSelectedRow:(id)sender;
 - (void)updateTicker;

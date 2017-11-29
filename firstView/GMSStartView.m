@@ -8,7 +8,7 @@
 #import "GMSStartView.h"
 #import <MessageUI/MessageUI.h>
 #import "GMSUtilitiesFunction.h"
-
+#import <sys/utsname.h>
 
 @interface GMSStartView ()
 {
@@ -19,7 +19,7 @@
 
 @implementation GMSStartView
 
-@synthesize previousDatas ,firstViewDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack;
+@synthesize previousDatas ,firstViewDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
 
 - (NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectContext *context = nil;
@@ -29,9 +29,20 @@
     }
     return context;
 }
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // get device model
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    NSString *currentDevice = [NSString stringWithCString:systemInfo.machine
+                                                 encoding:NSUTF8StringEncoding];
+    NSString *currentSimulatorDevice = [NSString stringWithCString:getenv("SIMULATOR_MODEL_IDENTIFIER")
+                                                          encoding:NSUTF8StringEncoding];
+    
+   
 
     // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
@@ -42,8 +53,8 @@
     [self.view addSubview:self.headerImg];
     
     // Some position helpers
-    CGFloat pickerOrigY = self.headerImg.topBrand.size.height + 2;
-    CGFloat messageBoxOrigY = pickerOrigY + self.picker.frame.size.height + 2;
+    CGFloat pickerOrigY = self.headerImg.topBrand.size.height;
+    CGFloat messageBoxOrigY = pickerOrigY + self.picker.frame.size.height;
     
     // Dynamic messages
     self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
@@ -52,27 +63,77 @@
     if ( !IS_IPAD ) {
         
         // position of Currencies picker
-        [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 120)];
+        if ( IS_IPHONE_4_5 )
+        {
+            [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 120)];
+        }
+        else if ( IS_IPHONE_6_7_8 || IS_IPHONE_X )
+        {
+            [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 160)];
+        }
+        else if ( IS_IPHONE_PLUS )
+        {
+            [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 180)];
+        }
+      
         [self.view addSubview:self.picker];
-        messageBoxOrigY = pickerOrigY + self.picker.frame.size.height + 2;
+        messageBoxOrigY = pickerOrigY + self.picker.frame.size.height;
         
         // position of message box
-        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 50)];
-
-        // postion tableView
-        CGFloat tableViewOrigY = messageBoxOrigY + 50 + 2;
+        CGFloat tableViewOrigY = messageBoxOrigY;
+        if ( IS_IPHONE_4_5 )
+        {
+            [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 50)];
+            // postion tableView
+            tableViewOrigY += 50;
+        }
+        else if ( IS_IPHONE_6_7_8 )
+        {
+            [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 64)];
+            // postion tableView
+            tableViewOrigY += 64;
+        }
+        else if ( IS_IPHONE_PLUS )
+        {
+            [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 80)];
+            // postion tableView
+            tableViewOrigY += 80;
+        }
+        else if ( IS_IPHONE_X )
+        {
+            [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 70)];
+            // postion tableView
+            tableViewOrigY += 70;
+        }
+        if ( IS_IPHONE_X )
+        {
+            NSLog(@"IS_IPHONE_X");
+            // 35 is the room reserved for gesture in iPhone X
+            [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY - 49 - 35) )];
+           
+        }
+        else
+        {
+            NSLog(@"!IS_IPHONE_X");
+            [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY - 49) )];
+        }
         
-        [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY) )];
         [self.view addSubview:self.tableView];
+
+        self.rowHeight = (self.tableView.bounds.size.height / 5);
+        
+        // This will remove extra separators from tableview
+        self.tableView.tableFooterView = [UIView new];
     }
     
     else
     {
-        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, self.headerImg.frame.size.width, 60)];
+        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, self.view.frame.size.width, 64)];
     }
     
     self.messageBoxLabel.text = self.messageBoxMessage.messageBoxString;
-    
+
+
     
     // add social buttons
     [self.socialStack setFrame:self.messageBoxLabel.frame];
@@ -125,6 +186,25 @@
     self.tableView.backgroundColor = GMSColorDarkGrey;
 }
 
+//- (void) viewDidLayoutSubviews
+//{
+//
+//    if (@available(iOS 11, *)) {
+//
+//        NSLayoutConstraint *bottomConstraint   = [NSLayoutConstraint constraintWithItem:self.tableView
+//                                                                              attribute:NSLayoutAttributeBottom
+//                                                                              relatedBy:NSLayoutRelationEqual
+//                                                                                 toItem:self.view.safeAreaLayoutGuide
+//                                                                              attribute:NSLayoutAttributeBottom
+//                                                                             multiplier:1.0
+//                                                                               constant:0];
+//
+//
+//        [self.view addConstraint: bottomConstraint];
+//    }
+//    [self.view setNeedsLayout];
+//
+//}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -254,7 +334,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"CELLS = %@", self.firstViewDatas.cellTitles);
     return [self.firstViewDatas.cellTitles count];
+    
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -285,6 +367,13 @@
         }
     }
     return cell;
+}
+
+// rows height
+- (CGFloat)tableView:(UITableView *)tableView
+heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.rowHeight;
 }
 
 
