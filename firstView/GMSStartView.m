@@ -48,13 +48,17 @@
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
     
+    // debug
+    NSLog(@"W x H : %f x %f", viewWidth, viewHeight);
+    
     //add header
     self.headerImg = [GMSTopBrandImage topImage:0];
     [self.view addSubview:self.headerImg];
     
     // Some position helpers
     CGFloat pickerOrigY = self.headerImg.topBrand.size.height;
-    CGFloat messageBoxOrigY = pickerOrigY + self.picker.frame.size.height;
+    CGFloat pickerHeight = self.picker.frame.size.height;
+    CGFloat messageBoxOrigY = pickerOrigY + pickerHeight;
     
     // Dynamic messages
     self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
@@ -77,7 +81,7 @@
         }
       
         [self.view addSubview:self.picker];
-        messageBoxOrigY = pickerOrigY + self.picker.frame.size.height;
+        messageBoxOrigY = pickerOrigY + pickerHeight;
         
         // position of message box
         CGFloat tableViewOrigY = messageBoxOrigY;
@@ -120,20 +124,18 @@
         
         [self.view addSubview:self.tableView];
 
-        self.rowHeight = (self.tableView.bounds.size.height / 5);
-        
         // This will remove extra separators from tableview
         self.tableView.tableFooterView = [UIView new];
     }
     
     else
     {
-        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, self.view.frame.size.width, 64)];
+        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY + 2, self.tableView.bounds.size.width + self.picker.frame.size.width + 2, 62)];
     }
     
     self.messageBoxLabel.text = self.messageBoxMessage.messageBoxString;
 
-
+    self.rowHeight = (self.tableView.bounds.size.height / 5);
     
     // add social buttons
     [self.socialStack setFrame:self.messageBoxLabel.frame];
@@ -186,25 +188,7 @@
     self.tableView.backgroundColor = GMSColorDarkGrey;
 }
 
-//- (void) viewDidLayoutSubviews
-//{
-//
-//    if (@available(iOS 11, *)) {
-//
-//        NSLayoutConstraint *bottomConstraint   = [NSLayoutConstraint constraintWithItem:self.tableView
-//                                                                              attribute:NSLayoutAttributeBottom
-//                                                                              relatedBy:NSLayoutRelationEqual
-//                                                                                 toItem:self.view.safeAreaLayoutGuide
-//                                                                              attribute:NSLayoutAttributeBottom
-//                                                                             multiplier:1.0
-//                                                                               constant:0];
-//
-//
-//        [self.view addConstraint: bottomConstraint];
-//    }
-//    [self.view setNeedsLayout];
-//
-//}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
