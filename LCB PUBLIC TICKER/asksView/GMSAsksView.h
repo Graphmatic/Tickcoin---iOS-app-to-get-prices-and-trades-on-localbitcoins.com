@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GMSMessageBoxProcessor.h"
 #import "GMSBidsAsksDatas.h"
-
-
-extern NSMutableString *currentCurrency;
+#import "GMSGlobals.h"
 
 @interface GMSAsksView : UIViewController<UITableViewDelegate,UITableViewDataSource>
 {

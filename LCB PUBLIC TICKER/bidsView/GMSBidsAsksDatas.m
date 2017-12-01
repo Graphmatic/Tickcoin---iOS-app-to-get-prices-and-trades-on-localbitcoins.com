@@ -142,11 +142,11 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
             
             // Notify UI that Instance is ready to use
             self.isReady = YES;
-
-            // backup today datas in DB
-            [self.bidsAsksAllCurrencies setObject:responseObject forKey:self.currency];
-            [[NSUserDefaults standardUserDefaults]setObject:self.bidsAsksAllCurrencies forKey:@"bidsAsksListing"];
         });
+//        NSLog(@"curr : %@", self.currency);
+        // backup today datas in DB
+        [self.bidsAsksAllCurrencies setObject:responseObject forKey:self.currency];
+//        [[NSUserDefaults standardUserDefaults]setObject:self.bidsAsksAllCurrencies forKey:@"bidsAsksListing"];
     }];
     
     [builAsksBidsDatas setQueuePriority:NSOperationQueuePriorityHigh];
@@ -211,7 +211,7 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
 
 - (void)deviationFilter:(NSMutableArray *)dataset deviation:(int)deviation :(void(^)(NSMutableArray *filteredDatas))completion
 {
-    self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:currentCurrency];
+    self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData];
     NSString *priceAverageForSelectedCurrency = [self.firstViewDatas.cellValues objectForKey:NSLocalizedString(@"_AVG_24H", @"average 24H")];
     float pa = [priceAverageForSelectedCurrency floatValue];
     

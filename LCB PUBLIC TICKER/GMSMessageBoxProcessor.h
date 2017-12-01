@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-extern int variationSinceLastVisit;
-extern NSMutableString *currentCurrency;
-extern NSMutableString *lastRecordDate;
-extern BOOL firstLaunch;
+#import "GMSGlobals.h"
+
 @interface GMSMessageBoxProcessor : NSObject
 {
          NSString *messageBoxString;
@@ -21,5 +19,8 @@ extern BOOL firstLaunch;
 - (NSArray*)asksViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isDescSorted:(bool)isDescSorted;
 - (NSString*)noConnAlert: (NSError*)error alt:(BOOL)altMessages;
 - (NSString*)dailyMessages:(int)messagesCount connected:(BOOL)connected;
+
 @property (nonatomic, strong)  NSString *messageBoxString;
+@property (strong, atomic) Globals *Globals;
+
 @end

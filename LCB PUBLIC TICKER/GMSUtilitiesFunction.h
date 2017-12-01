@@ -8,13 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSMutableString *currentCurrency;
-extern NSString *const tickerURLstart; //see main.m
-extern NSString *const tickerURLOrderBookEnd; //see main.m
-extern NSString *const graphURLStart;
-extern NSString *const graphURLEnd;
-extern NSDate *graphRequestStart;
 @interface GMSUtilitiesFunction : NSObject
+
 + (NSString*) currencyFormatThat: (NSString *) theStringVal;
 + (int) getVariation: (NSString *)newDayPrice oldDayPrice:(NSString *)newDayPrice;
 + (NSMutableArray*)listingCleaned:(NSMutableArray*)rawArray maxDev:(float)maxDeviation maxPhigh:(float)maxPhigh maxPlow:(float)maxPlow;
@@ -25,4 +20,5 @@ extern NSDate *graphRequestStart;
 + (NSString*)twoDecimalStrFormat:(NSString *)theNumb;
 + (void) evenlySpaceItems : (NSArray *) buttonArray : (UIView *) thisView;
 + (void) popAlert : (NSString *)title : (NSString *)message : (UIViewController *) currentView;
+
 @end

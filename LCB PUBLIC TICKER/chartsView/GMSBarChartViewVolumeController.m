@@ -77,7 +77,8 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (void)initFakeData
 {
-    self.graphDatas = [GMSchartViewData sharedGraphViewTableData:currentCurrency];
+    Globals *glob = [Globals globals];
+    self.graphDatas = [GMSchartViewData sharedGraphViewTableData:[NSMutableString stringWithString:[glob currency]]];
 }
 
 #pragma mark - View Lifecycle
@@ -88,6 +89,9 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     
     CGFloat childViewWidth = self.view.bounds.size.width;
     CGFloat childViewHeight = self.view.bounds.size.height;
+    
+    Globals *glob = [Globals globals];
+
     if ( IS_IPAD )
     {
         GMSVolumeChartPadding = 2.0f;
@@ -99,7 +103,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
                                                                            childViewWidth - GMSVolumeChartPadding,
                                                                            GMSVolumeChartHeaderHeight)];
     
-    self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART" ,  @"Volumes traded - last 24H - %@"), currentCurrency];
+    self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART" ,  @"Volumes traded - last 24H - %@"), [glob currency]];
     self.headerView.titleLabel.backgroundColor = GMSColorBlueGreyDark;
     self.headerView.separatorColor = GMSColorWhite;
     
@@ -230,14 +234,16 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (void)setupVisibleElement
 {
+    Globals *glob = [Globals globals];
+
     if ( self.graphDatas.isReady == YES )
     {
         if ( self.graphDatas.apiQuerySuccess )
         {
-            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
+            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), [glob currency]];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"MM-dd HH:mm"];
-            NSString* startingDate = [dateFormatter stringFromDate:graphRequestStart];
+            NSString* startingDate = [dateFormatter stringFromDate:[glob queryStartDate]];
             footerView.leftLabel.text = startingDate;
             footerView.leftLabel.textColor = [UIColor whiteColor];
             footerView.rightLabel.textColor = [UIColor whiteColor];
@@ -245,7 +251,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
         }
         else
         {
-            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART_OUTDATED" ,  @"Price & Volumes traded - Outdated! - %@"), currentCurrency];
+            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_VOLUME_CURRENCY_CHART_OUTDATED" ,  @"Price & Volumes traded - Outdated! - %@"), [glob currency]];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"MM-dd HH:mm"];
             NSDate *outdatedStaringDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:0]]objectAtIndex:3];
@@ -262,7 +268,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
     }
     else
     {
-        self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), currentCurrency];
+        self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), [glob currency]];
     }
 }
 

@@ -8,11 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "GMSfirstViewTableData.h"
+#import "GMSGlobals.h"
 
 @interface GMSchartViewData : NSObject
-extern BOOL firstLaunch;
-
-extern NSDate *graphRequestStart;
 
 @property  (retain, nonatomic) NSMutableDictionary *thisDayDatas;
 // thisDayDatas datas structure:
@@ -28,7 +26,8 @@ extern NSDate *graphRequestStart;
 @property (readwrite) BOOL apiQuerySuccess;
 @property (readwrite) BOOL isReady;
 
-+ (GMSchartViewData *)sharedGraphViewTableData:(NSMutableString*)currency;
+
++ (GMSchartViewData *)sharedGraphViewTableData:(NSString*)currency;
 - (void)resetSharedInstance;
 - (void)listingBuilder:(id)responseObject;
 - (void)dummyArrayForMissingChart;

@@ -9,6 +9,7 @@
 #import <MessageUI/MessageUI.h>
 #import "GMSUtilitiesFunction.h"
 #import <sys/utsname.h>
+#import "GMSGlobals.h"
 
 @interface GMSStartView ()
 {
@@ -42,8 +43,10 @@
     NSString *currentSimulatorDevice = [NSString stringWithCString:getenv("SIMULATOR_MODEL_IDENTIFIER")
                                                           encoding:NSUTF8StringEncoding];
     
-   
+    Globals *glob = [Globals globals];
 
+    // debug
+    NSLog(@"globals test: currency => %@", [glob currency]);
     // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
@@ -165,18 +168,9 @@
     
     self.socialStack.hidden = YES;
     
-    if(firstLaunch)
-    {
-        NSUInteger pickerDefIndex = 0;
-        [self.picker reloadAllComponents];
-        [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
-    }
-    else
-    {
-        NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
-        [self.picker reloadAllComponents];
-        [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
-    }
+    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:[glob currency]];
+    [self.picker reloadAllComponents];
+    [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
     
     [self.tableView reloadData];
     
@@ -204,14 +198,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"currencySwitching" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"currencyListUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
-    if(firstLaunch)
-    {
-        self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:nil];
-    }
-    else
-    {
-        self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:currentCurrency];
-    }
+    
+    self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData];
     [self updateTicker];
 }
 
@@ -224,10 +212,11 @@
 {
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
-    connected = YES;
     self.messageBoxLabel.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
     
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:urlStart]];
+    Globals *glob = [Globals globals];
+    
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[glob urlStart]]];
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
@@ -243,8 +232,8 @@
          NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
          [dateFormatter setDateStyle:NSDateFormatterLongStyle];
          [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-         lastRecordDate = [[dateFormatter stringFromDate:recdATE]mutableCopy];
-         [[NSUserDefaults standardUserDefaults]setObject:lastRecordDate forKey:@"lastRecordDate"];
+         [glob setLastRecordDate:[[dateFormatter stringFromDate:recdATE]mutableCopy]];
+         [[NSUserDefaults standardUserDefaults]setObject:[glob lastRecordDate] forKey:@"lastRecordDate"];
          if(self.timerMessages)[self.timerMessages invalidate];
          self.timerMessages = nil;
          self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
@@ -253,7 +242,7 @@
                                      failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
          [self.refreshTicker endRefreshing];
-         connected = NO;
+         [glob setNetworkAvailable:NO];
          if(self.timerMessages)[self.timerMessages invalidate];
          self.timerMessages = nil;
          self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartNoConnect:) userInfo:error repeats:YES];
@@ -271,7 +260,8 @@
 //---------------------------------------------------------------------------------------------------------------------------//
 - (void) updatePickerList:(NSNotification *)notification
 {
-    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
+    Globals *glob = [Globals globals];
+    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
 }
@@ -297,10 +287,11 @@
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    Globals *glob = [Globals globals];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
     self.messageBoxLabel.text = nil;
-    currentCurrency = [self.firstViewDatas.currenciesList objectAtIndex:row];
-    self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN" , "%@  -  %@"), lastRecordDate, currentCurrency];
+    [glob setCurrency:[self.firstViewDatas.currenciesList objectAtIndex:row]];
+    self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN" , "%@  -  %@"), [glob lastRecordDate], [glob currency]];
     [self.firstViewDatas currencyChange:[self.firstViewDatas.currenciesList objectAtIndex:row]];
     
 }
@@ -318,7 +309,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"CELLS = %@", self.firstViewDatas.cellTitles);
+    // debug
+    // NSLog(@"CELLS = %@", self.firstViewDatas.cellTitles);
     return [self.firstViewDatas.cellTitles count];
     
 }
@@ -400,7 +392,8 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 //---------------------------------------------------------------------------------------------------------------------------//
 - (void)messageBoxChange:(NSNotification *)notification
 {
-    self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), lastRecordDate, currentCurrency];
+    Globals *glob = [Globals globals];
+    self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), [glob lastRecordDate], [glob currency]];
     
     //start message box carroussel
     if(self.timerMessages)[self.timerMessages invalidate];
@@ -418,8 +411,9 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 }
 -(void)timerStartMulti:(NSTimer*)theTimer
 {
+    Globals *glob = [Globals globals];
     alt = !alt;
-    self.messageBoxLabel.text = [self.messageBoxMessage dailyMessages:alt connected:connected];
+    self.messageBoxLabel.text = [self.messageBoxMessage dailyMessages:alt connected:[glob isNetworkAvailable]];
 }
 
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -652,7 +646,8 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
+    Globals *glob = [Globals globals];
+    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:NO];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
@@ -663,8 +658,9 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
+    Globals *glob = [Globals globals];
     // save current selected currency to db (should have been already done...)
-    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
 }
 
 @end

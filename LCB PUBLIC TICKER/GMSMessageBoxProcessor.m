@@ -14,7 +14,7 @@
 
 @implementation GMSMessageBoxProcessor
 
-@synthesize messageBoxString;
+@synthesize messageBoxString, Globals;
 
 - (id)init
 {
@@ -23,14 +23,9 @@
 		return nil;
 	}
     messageBoxString = [[NSMutableString alloc]init];
-    if(firstLaunch)
-    {
-        messageBoxString = [NSMutableString stringWithFormat:NSLocalizedString(@"_WELCOME_WAIT_FOR_DATAS", @"init...")];
-    }
-    else
-    {
-        messageBoxString = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
-    }
+    
+    messageBoxString = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
+    
     self = [super init];
     return self;
 }
@@ -43,13 +38,13 @@
     }
     else
     {
-        if(firstLaunch)
+        if([self.Globals isNetworkAvailable])
         {
-        self.messageBoxString = [NSMutableString stringWithFormat:NSLocalizedString(@"_THIS_APP_NEED_INTERNET", @"internet connection is required to use this app")];
+            self.messageBoxString = [NSMutableString stringWithFormat:NSLocalizedString(@"_THIS_APP_NEED_INTERNET", @"internet connection is required to use this app")];
         }
         else
         {
-        self.messageBoxString = [NSMutableString stringWithFormat:NSLocalizedString(@"_NO_CONNECT_OUTDATED", @"datas outdated"), lastRecordDate];
+            self.messageBoxString = [NSMutableString stringWithFormat:NSLocalizedString(@"_NO_CONNECT_OUTDATED", @"datas outdated"), [self.Globals lastRecordDate]];
         }
     }
     return self.messageBoxString;
@@ -60,7 +55,7 @@
     switch (messagesCount)
     {
         case 0:
-            self.messageBoxString = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", @"daily price in"), lastRecordDate, currentCurrency];
+            self.messageBoxString = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", @"daily price in"), [self.Globals lastRecordDate], [self.Globals currency]];
         break;
         case 1:
             self.messageBoxString = [NSMutableString  stringWithFormat:NSLocalizedString(@"_SWIPE_DOWN_TO_REFRESH", @"swipe down to refresh")];
@@ -68,7 +63,7 @@
         
             
         default:
-            self.messageBoxString = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", @"daily price in"), currentCurrency];
+            self.messageBoxString = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", @"daily price in"), [self.Globals currency]];
             break;
     }
 
@@ -99,7 +94,7 @@
             }
             break;
         default:
-            self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"Sell ads - %@"), currentCurrency];
+            self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"Sell ads - %@"), [self.Globals currency]];
             break;
         case 2:
             if ( isAscSorted == NO )
@@ -142,7 +137,7 @@
             }
             break;
         default:
-            self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"Sell ads - %@"), currentCurrency];
+            self.messageBoxString = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"Sell ads - %@"), [self.Globals currency]];
             break;
         case 2:
             if ( isDescSorted == NO )

@@ -66,8 +66,9 @@
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
+    Globals *glob = [Globals globals];
     // save current selected currency to db (should have been already done...)
-    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
 }
 
 

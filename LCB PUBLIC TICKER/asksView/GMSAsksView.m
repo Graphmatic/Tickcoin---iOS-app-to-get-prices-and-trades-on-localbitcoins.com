@@ -32,6 +32,8 @@
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = (self.view.bounds.size.height / 100) * 94;
     
+    Globals *glob = [Globals globals];
+
     // add header
     self.headerImg = [GMSTopBrandImage topImage:2];
     [self.view addSubview:self.headerImg];
@@ -109,12 +111,12 @@
     [self.headerTitleLeft setFont:GMSAvenirNextCondensedMedium];
     self.headerTitleLeft.textAlignment = NSTextAlignmentLeft;
     self.headerTitleLeft.textColor = GMSColorBlueGrey;
-    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), currentCurrency];
+    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), [glob currency]];
     self.headerTitleRight = [[UILabel alloc] initWithFrame:frameHeaderR];
     [self.headerTitleRight setFont:GMSAvenirNextCondensedMedium];
     self.headerTitleRight.textAlignment = NSTextAlignmentRight;
     self.headerTitleRight.textColor = GMSColorBlueGrey;
-    self.headerTitleRight.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_RIGHT", @"Price-currency-maxvolume"), currentCurrency];
+    self.headerTitleRight.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_RIGHT", @"Price-currency-maxvolume"), [glob currency]];
     
     [self.tableViewHeader addSubview:self.headerTitleLeft];
     [self.tableViewHeader addSubview:self.headerTitleRight];
@@ -155,11 +157,12 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    Globals *glob = [Globals globals];
     
     // init message processor
     self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
     
-    self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
+    self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), [glob currency]];
     
     if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"asksMaxDeviation"] != nil )
     {
@@ -179,7 +182,7 @@
     
     self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), [NSString stringWithFormat:@"%d%%", self.maxDeviation]];
     
-    self.asksDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:currentCurrency];
+    self.asksDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:[NSMutableString stringWithString:[glob currency]]];
     
     // add observer
     [self.asksDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
@@ -189,7 +192,7 @@
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
     
-    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), currentCurrency];
+    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), [glob currency]];
     
     [self.editMaxDev addTarget:self
                         action:@selector(closeSettingView:)
@@ -253,12 +256,14 @@
     
     if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
     {
+        Globals *glob = [Globals globals];
+
         dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
             // remove spinner if any
             [self.waitingSpin stopAnimating];
             self.sortedDesc = NO;
             // update table headers
-            self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), currentCurrency];
+            self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), [glob currency]];
             // Update misc. visible elements
             if ( ( [self.asksDatas.orderAsks count] == 0 ) && ( self.asksDatas.isDatas == YES ) ) {
                 if(self.timerMessages)[self.timerMessages invalidate];
@@ -465,8 +470,10 @@
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
+    Globals *glob = [Globals globals];
+    
     // save current selected currency to db (should have been already done...)
-    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
     NSDate *recdATE = [NSDate date];
     [[NSUserDefaults standardUserDefaults] setObject:recdATE forKey:@"lastRecordDateOrderBook"];
     if ( self.sliderOn )

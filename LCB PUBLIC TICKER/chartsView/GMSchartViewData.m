@@ -20,16 +20,30 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
 
 @synthesize thisDayDatas, previousPricesAndVolumes, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady;
 
+//+(GMSchartViewData*)sharedGraphViewTableData:(NSMutableString*)currency
+//{
+//    @synchronized([GMSchartViewData class])
+//    {
+//        if ( !_sharedGraphViewTableData || ( ![currency isEqualToString:_sharedGraphViewTableData.currency] ) ) {
+////            [_sharedGraphViewTableData resetSharedInstance];
+//            _sharedGraphViewTableData = [[self alloc] init:currency];
+//        }
+//        return _sharedGraphViewTableData;
+//    }
+//    return nil;
+//}
+
 +(GMSchartViewData*)sharedGraphViewTableData:(NSMutableString*)currency
 {
-    @synchronized([GMSchartViewData class])
-    {
+//    static GMSchartViewData *_sharedGraphViewTableData = nil;
+    static dispatch_once_t onceToken = 0;
+    dispatch_once(&onceToken, ^{
         if ( !_sharedGraphViewTableData || ( ![currency isEqualToString:_sharedGraphViewTableData.currency] ) ) {
+            [_sharedGraphViewTableData resetSharedInstance];
             _sharedGraphViewTableData = [[self alloc] init:currency];
         }
-        return _sharedGraphViewTableData;
-    }
-    return nil;
+    });
+    return _sharedGraphViewTableData;
 }
 
 +(id)alloc
@@ -40,7 +54,6 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
         _sharedGraphViewTableData = [super alloc];
         return _sharedGraphViewTableData;
     }
-    
     return nil;
 }
 
@@ -51,13 +64,13 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
         // debug
         NSLog(@"initializing a ChartViewData");
         // Init self's objects
-        self.isReady = NO;
-        self.cvsHandlerQ = [NSOperationQueue new];
-        self.cvsHandlerQ.maxConcurrentOperationCount=1;
-        self.dateAscSorted = [[NSMutableArray alloc] init];
-        self.thisDayDatas = [[NSMutableDictionary alloc] init];
-        self.previousPricesAndVolumes = [[NSMutableDictionary alloc]init];
-        self.currency = currency;
+        isReady = NO;
+        cvsHandlerQ = [NSOperationQueue new];
+        cvsHandlerQ.maxConcurrentOperationCount=1;
+        dateAscSorted = [[NSMutableArray alloc] init];
+        thisDayDatas = [[NSMutableDictionary alloc] init];
+        previousPricesAndVolumes = [[NSMutableDictionary alloc]init];
+        currency = currency;
         
         // Add Notification observer to be informed of currency switching
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySwitching:) name:@"currencySwitching" object:nil];
@@ -85,7 +98,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
 // the initial XHR query
 - (void)apiQuery
 {
-    self.isReady = NO;
+    isReady = NO;
     NSString *fullURL = [GMSUtilitiesFunction graphUrl];
     NSLog(@"URL : %@", fullURL);
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
@@ -96,12 +109,12 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
          // Build the datas object if response is populated
          if( [responseObject length] > 0 )
          {
-             self.apiQuerySuccess = YES;
-            [self chartListingCleaned:responseObject];
+             apiQuerySuccess = YES;
+            [self listingBuilder:responseObject];
          }
          else
          {
-             self.apiQuerySuccess = NO;
+             apiQuerySuccess = NO;
              // try to get previous recorded datas from DB and check if datas exist for given currency
              chartDatasFromDb(self);
          }
@@ -109,7 +122,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
                                           failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)
      {
          NSLog(@"Query failure");
-         self.apiQuerySuccess = NO;
+         apiQuerySuccess = NO;
          // try to get previous recorded datas from DB and check if datas exist for given currency
          chartDatasFromDb(self);
      }];
@@ -122,7 +135,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     [self apiQuery];
 }
 
-- (void)chartListingCleaned:(id)responseObject
+- (void)listingBuilder:(id)responseObject
 {
     NSInvocationOperation *buildTheChartData = [[NSInvocationOperation alloc]initWithTarget:self
                                                                                    selector:@selector(chartArray:)
@@ -131,12 +144,12 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     [buildTheChartData setCompletionBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             // Notify UI that Instance is ready to use
-            self.isReady = YES;
+            isReady = YES;
             
         });
     }];
     [buildTheChartData setQueuePriority:NSOperationQueuePriorityHigh];
-    [self.cvsHandlerQ addOperation:buildTheChartData];
+    [cvsHandlerQ addOperation:buildTheChartData];
 }
 
 //Reorder and merge chart datas
@@ -161,19 +174,20 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
             // calculation of weighted average : (p x v) + (p x v) + ... / sum(v)
             [self weightedAverage:thisDayDatasTmpSorted:^(NSMutableDictionary *thisDayDatasTmpWeighted ) {
                 // Calculation of visual ranges
-                self.visualRangeForPricesAndVolumes = [GMSchartViewData datasDeltasLoop:thisDayDatasTmpWeighted];
+                visualRangeForPricesAndVolumes = [GMSchartViewData datasDeltasLoop:thisDayDatasTmpWeighted];
                 // fill empty time slots
                 [self zeroEmptyTimeSlots:thisDayDatasTmpWeighted:^(NSMutableDictionary *thisDayDatasTmpFull ) {
                     [thisDayDatasTmp setDictionary:thisDayDatasTmpFull];
                     NSArray *keys = [thisDayDatasTmpFull allKeys];
-                    self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
+                    dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
                     // assign resulting Dictionnary to instance property
-                    self.thisDayDatas = [thisDayDatasTmpFull mutableCopy];
+                    thisDayDatas = [thisDayDatasTmpFull mutableCopy];
                     // debug
 //                     NSLog(@"cooked! : %@", thisDayDatasTmpFull);
                     // Backup datas
-                    [self.previousPricesAndVolumes setObject:[thisDayDatasTmpFull mutableCopy] forKey:currentCurrency];
-                    NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self.previousPricesAndVolumes];
+                    Globals *glob = [Globals globals];
+                    [previousPricesAndVolumes setObject:[thisDayDatasTmpFull mutableCopy] forKey:[glob currency]];
+                    NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:previousPricesAndVolumes];
                     [[NSUserDefaults standardUserDefaults] setObject:thisDayDatasToSave forKey:@"previousPricesAndVolumes"];
                 }];
             }];
@@ -332,7 +346,8 @@ static void chartDatasFromDb(GMSchartViewData *object) {
     {
         NSTimeInterval secondsPerHour = 60 * 60;
         NSDate *nextHour  = [[NSDate alloc] init];
-        nextHour = [graphRequestStart dateByAddingTimeInterval: secondsPerHour];
+        Globals *glob = [Globals globals];
+        nextHour = [[glob queryStartDate] dateByAddingTimeInterval: secondsPerHour];
 
         for (int o = 0; o < 24; o++)
         {
@@ -362,10 +377,11 @@ static void chartDatasFromDb(GMSchartViewData *object) {
     
     dispatch_async(chartPrepareQueue, ^{
         
+        Globals *glob = [Globals globals];
         NSMutableDictionary *dummyOne = [[NSMutableDictionary alloc]init];
         NSTimeInterval secondsPerHour = 60 * 60;
         NSDate *nextHour  = [[NSDate alloc] init];
-        nextHour = [graphRequestStart dateByAddingTimeInterval: secondsPerHour];
+        nextHour = [[glob queryStartDate] dateByAddingTimeInterval: secondsPerHour];
         for (int o = 0; o < 24; o++)
         {
             NSNumber *zeroVal =[[NSNumber alloc]initWithInt:0];
@@ -379,13 +395,13 @@ static void chartDatasFromDb(GMSchartViewData *object) {
             nextHour = [nextHour dateByAddingTimeInterval: secondsPerHour];
         }
         NSArray *keys = [dummyOne allKeys];
-        self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
-        self.thisDayDatas = [dummyOne mutableCopy];
-        [self.previousPricesAndVolumes setObject:self.thisDayDatas forKey:currentCurrency];
+        dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
+        thisDayDatas = [dummyOne mutableCopy];
+        [previousPricesAndVolumes setObject:thisDayDatas forKey:[glob currency]];
         // Notify UI
         dispatch_async(dispatch_get_main_queue(), ^{
             // Notify UI that Instance is ready to use
-            self.isReady = YES;
+            isReady = YES;
             
         });
     });

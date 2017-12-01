@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GMSfirstViewTableData.h"
-
-extern NSMutableString *currentCurrency;
+#import "GMSGlobals.h"
 
 @interface GMSBidsAsksDatas : NSObject
 

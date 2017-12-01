@@ -13,29 +13,33 @@
 
 @synthesize cellValues, cellTitles, currenciesList, ticker, recordDate;
 
-+(id)sharedFirstViewTableData:(NSMutableString*)currency
+
++(id)sharedFirstViewTableData
 {
-    
     static GMSfirstViewTableData *sharedGMSfirstViewTableData = nil;
     static dispatch_once_t onceToken = 0;
     dispatch_once(&onceToken, ^{
-        sharedGMSfirstViewTableData = [[self alloc] init:firstLaunch currency:currency];
-      
+        sharedGMSfirstViewTableData = [[self alloc] init];
     });
     return sharedGMSfirstViewTableData;
 }
 
-- (id)init:(BOOL)firstlaunch currency:(NSMutableString*)currency
+- (id)init
 {
     if (self = [super init])
     {
         dispatch_queue_t serialQueue = dispatch_queue_create("com.graphmatic.mustBeSerial", DISPATCH_QUEUE_SERIAL);
         dispatch_sync(serialQueue, ^{
-            self.ticker = [[NSMutableDictionary alloc]init];
-            self.cellValues = [[NSMutableDictionary alloc] init];
-            self.cellTitles = [[NSMutableArray alloc] init];
+            Globals *glob = [Globals globals];
+            
+            ticker = [[NSMutableDictionary alloc]init];
+            cellValues = [[NSMutableDictionary alloc] init];
+            cellTitles = [[NSMutableArray alloc] init];
             currenciesList = [[NSMutableArray alloc] init];
-            if(firstLaunch)
+            
+            NSUserDefaults *prevTicker = [NSUserDefaults standardUserDefaults];
+            // test if datas have been recorded
+            if([[[prevTicker dictionaryRepresentation] allKeys] containsObject:@"currency"])
             {
                 //load default local json (filled with keys and null values)
                 NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tickerAllCurDefault" ofType:@"json"]]];
@@ -44,7 +48,7 @@
                 [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
                  {
                      NSLog(@"local request ok");
-                     self.ticker = responseObject;
+                     ticker = responseObject;
                      [self initTicker];
                  }
                  failure:^(AFHTTPRequestOperation *operation, NSError *error)
@@ -58,10 +62,10 @@
                 NSUserDefaults *prevTicker = [NSUserDefaults standardUserDefaults];
                 if([[[prevTicker dictionaryRepresentation] allKeys] containsObject:@"theTicker"])
                 {
-                NSData *tmp = [[NSUserDefaults standardUserDefaults]objectForKey:@"theTicker"];
-                self.ticker   = [[NSKeyedUnarchiver unarchiveObjectWithData:tmp]mutableCopy];
-                currentCurrency = [[NSUserDefaults standardUserDefaults] valueForKey:@"currentCurrency"];
-                lastRecordDate = [[NSUserDefaults standardUserDefaults] valueForKey:@"recordDate"];
+                    NSData *tmp = [[NSUserDefaults standardUserDefaults]objectForKey:@"theTicker"];
+                    ticker = [[NSKeyedUnarchiver unarchiveObjectWithData:tmp]mutableCopy];
+                    [glob setCurrency:[[NSUserDefaults standardUserDefaults] valueForKey:@"currency"]];
+                    [glob setLastRecordDate:[[NSUserDefaults standardUserDefaults] valueForKey:@"recordDate"]];
                 }
                 else
                 {
@@ -72,7 +76,7 @@
                     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
                      {
                          NSLog(@"local request ok");
-                         self.ticker = responseObject;
+                         ticker = responseObject;
                          [self initTicker];
                      }
                        failure:^(AFHTTPRequestOperation *operation, NSError *error)
@@ -83,9 +87,9 @@
                 
 
                 }
-                self.cellValues = [self cellValFromTicker:self.ticker currency:currency];
-                self.cellTitles = [self titlesFromCellVal:cellValues];
-                self.currenciesList = [[[self.ticker allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]mutableCopy];
+                cellValues = [self cellValFromTicker:ticker currency:[NSMutableString stringWithString:[glob currency]]];
+                cellTitles = [self titlesFromCellVal:cellValues];
+                currenciesList = [[[ticker allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]mutableCopy];
                
             }
         });
@@ -95,9 +99,10 @@
 }
 -(void)initTicker  //first boot
 {
-    self.currenciesList = [[[self.ticker allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]mutableCopy];
-    self.cellValues = [self cellValFromTicker:self.ticker currency:currentCurrency];
-    self.cellTitles = [self titlesFromCellVal:self.cellValues];
+    Globals *glob = [Globals globals];
+    currenciesList = [[[ticker allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]mutableCopy];
+    cellValues = [self cellValFromTicker:ticker currency:[NSMutableString stringWithString:[glob currency]]];
+    cellTitles = [self titlesFromCellVal:cellValues];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self sendNotifToViewController:@"currencyListUpdate"];
         [self sendNotifToViewController:@"currencySwitching"];
@@ -109,31 +114,32 @@
     // debug
     NSLog(@"@Currency switching: change to %@", currency);
     
-    self.cellValues = [self cellValFromTicker:self.ticker currency:currency];
-    self.cellTitles = [self titlesFromCellVal:self.cellValues];
+    Globals *glob = [Globals globals];
+    
+    cellValues = [self cellValFromTicker:ticker currency:currency];
+    cellTitles = [self titlesFromCellVal:cellValues];
     
     // save to DB
-    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
     // send Notif' to propagate change
     [self currencyChangeNotify:@"currencySwitching" newCurrency:currency];
 }
 
 -(void)update:(NSMutableDictionary*)theNewTicker
 {
-    self.ticker = theNewTicker;
-    self.currenciesList = [[[theNewTicker allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]mutableCopy];
-    self.cellValues = [self cellValFromTicker:self.ticker currency:currentCurrency];
-    self.cellTitles = [self titlesFromCellVal:self.cellValues];
+    Globals *glob = [Globals globals];
+    
+    ticker = theNewTicker;
+    currenciesList = [[[theNewTicker allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]mutableCopy];
+    cellValues = [self cellValFromTicker:ticker currency:[NSMutableString stringWithString:[glob currency]]];
+    cellTitles = [self titlesFromCellVal:cellValues];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self sendNotifToViewController:@"currencyListUpdate"];
-        [self currencyChangeNotify:@"currencySwitching" newCurrency:currentCurrency];
+        [self currencyChangeNotify:@"currencySwitching" newCurrency:[NSMutableString stringWithString:[glob currency]]];
     });
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self saveTicker];
-        if (firstLaunch){
-            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"firstLaunch"];
-        }
     });
 }
 
@@ -224,11 +230,12 @@
 
 - (void)saveTicker
 {
+    Globals *glob = [Globals globals];
     // dict to nsdata package
-    NSData *theTicker = [NSKeyedArchiver archivedDataWithRootObject:self.ticker];
+    NSData *theTicker = [NSKeyedArchiver archivedDataWithRootObject:ticker];
     // store
-     [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
-     [[NSUserDefaults standardUserDefaults] setObject:lastRecordDate forKey:@"lastRecordDate"];
+     [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
+     [[NSUserDefaults standardUserDefaults] setObject:[glob lastRecordDate] forKey:@"lastRecordDate"];
      [[NSUserDefaults standardUserDefaults] setObject:theTicker forKey:@"theTicker"];
 
     NSLog(@"ticker datas saved");

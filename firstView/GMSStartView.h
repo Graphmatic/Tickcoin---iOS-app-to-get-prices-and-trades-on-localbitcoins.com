@@ -10,14 +10,9 @@
 #import "GMSMessageBoxProcessor.h"
 #import "GMSfirstViewTableData.h"
 #import <MessageUI/MessageUI.h>
-#import "GMSMessageBox.h"
+#import "GMSmessageBox.h"
+#import "GMSGlobals.h"
 
-extern NSString *const urlStart;
-extern NSMutableString *lastRecordDate;
-extern BOOL firstLaunch;
-extern NSMutableString *currentCurrency;
-extern BOOL connected;
-extern BOOL test;
 @interface GMSStartView : UIViewController <UITableViewDelegate,UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, MFMailComposeViewControllerDelegate , MFMessageComposeViewControllerDelegate>
 {
     __weak IBOutlet UIPickerView *picker;
@@ -28,7 +23,7 @@ extern BOOL test;
 @property (strong, atomic) GMSTopBrandImage *headerImg;
 @property (nonatomic, weak) NSTimer *timerMessages;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
-@property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
+@property (strong, atomic) GMSMessageBoxProcessor *messageBoxMessage;
 @property (weak, nonatomic) IBOutlet UILabel *messageBoxLabel;
 @property (weak, nonatomic) IBOutlet UIView *socialStack;
 @property (weak, nonatomic) IBOutlet UIButton *tweetIt;
@@ -40,6 +35,7 @@ extern BOOL test;
 @property (strong, atomic) NSIndexPath *prevSelRow;
 @property (nonatomic) CGPoint tabViewOrigin;
 @property (nonatomic) CGFloat rowHeight;
+
 
 - (IBAction)tweetSelectedRow:(id)sender;
 - (void)updateTicker;

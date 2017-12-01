@@ -21,6 +21,8 @@
 		283C4F031FA6364A005A4F3F /* GMSAsksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4F011FA6364A005A4F3F /* GMSAsksView.m */; };
 		283C4F041FA6364A005A4F3F /* GMSAsksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4F011FA6364A005A4F3F /* GMSAsksView.m */; };
 		2855A3BD1F9F6E6100BA3398 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F055653318E6DD9300481688 /* Main.storyboard */; };
+		2881C09E1FD0651B00034AC2 /* GMSGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 2881C09D1FD0651B00034AC2 /* GMSGlobals.m */; };
+		2881C09F1FD0651B00034AC2 /* GMSGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 2881C09D1FD0651B00034AC2 /* GMSGlobals.m */; };
 		F00A61A318EB694400C35A47 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A218EB694400C35A47 /* Twitter.framework */; };
 		F00A61A518EB6B8500C35A47 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A418EB6B8500C35A47 /* Social.framework */; };
 		F00B2143191C05D1006D3B6F /* EmptySegue.m in Sources */ = {isa = PBXBuildFile; fileRef = F00B2142191C05D1006D3B6F /* EmptySegue.m */; };
@@ -131,6 +133,8 @@
 		283C4EFC1FA634E0005A4F3F /* GMSBidsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBidsView.m; sourceTree = "<group>"; };
 		283C4F011FA6364A005A4F3F /* GMSAsksView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSAsksView.m; sourceTree = "<group>"; };
 		283C4F021FA6364A005A4F3F /* GMSAsksView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSAsksView.h; sourceTree = "<group>"; };
+		2881C09C1FD026D500034AC2 /* GMSGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSGlobals.h; sourceTree = "<group>"; };
+		2881C09D1FD0651B00034AC2 /* GMSGlobals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMSGlobals.m; sourceTree = "<group>"; };
 		28BAB03E1F9DFAB3008F9358 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F00A61A218EB694400C35A47 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F00A61A418EB6B8500C35A47 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -457,6 +461,8 @@
 		F055652718E6DD9300481688 /* LCB PUBLIC TICKER */ = {
 			isa = PBXGroup;
 			children = (
+				2881C09C1FD026D500034AC2 /* GMSGlobals.h */,
+				2881C09D1FD0651B00034AC2 /* GMSGlobals.m */,
 				283C4F001FA635C0005A4F3F /* asksView */,
 				283C4EFA1FA634B2005A4F3F /* bidsView */,
 				283C4EF31FA62F65005A4F3F /* chartsView */,
@@ -757,6 +763,7 @@
 				F07640EE1929E6B400DA6616 /* GMSChartTableCell.m in Sources */,
 				F012459218E72085002FAADA /* AFURLSessionManager.m in Sources */,
 				28387DFD1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m in Sources */,
+				2881C09E1FD0651B00034AC2 /* GMSGlobals.m in Sources */,
 				F055653218E6DD9300481688 /* GMSAppDelegate.m in Sources */,
 				F012458D18E72085002FAADA /* AFNetworkReachabilityManager.m in Sources */,
 				F01245A518E7208F002FAADA /* AFNetworkActivityIndicatorManager.m in Sources */,
@@ -810,6 +817,7 @@
 			files = (
 				F0B5651818E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */,
 				F065FE8C18E7B226005B0376 /* GMSlabelFromJson.m in Sources */,
+				2881C09F1FD0651B00034AC2 /* GMSGlobals.m in Sources */,
 				F055655018E6DD9300481688 /* LCB_PUBLIC_TICKERTests.m in Sources */,
 				2821DF1C1FA749BA003913E6 /* GMSChartsView.m in Sources */,
 				283C4EFF1FA63541005A4F3F /* GMSBidsAsksDatas.m in Sources */,

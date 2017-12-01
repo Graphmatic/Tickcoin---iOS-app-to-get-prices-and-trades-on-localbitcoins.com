@@ -9,16 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "GMSMessageBoxProcessor.h"
 #import "GMSBidsAsksDatas.h"
-
-extern BOOL test;
-extern NSMutableString *currentCurrency;
+#import "GMSGlobals.h"
 
 @interface GMSBidsView : UIViewController<UITableViewDelegate,UITableViewDataSource>
 {
 
 }
 
-//@property (strong, nonatomic) GMSMessageBox *messageBox;
 @property (strong, atomic) GMSTopBrandImage *headerImg;
 @property (strong, nonatomic)UIActivityIndicatorView *waitingSpin;
 @property (nonatomic, weak) NSTimer *timerMessages;

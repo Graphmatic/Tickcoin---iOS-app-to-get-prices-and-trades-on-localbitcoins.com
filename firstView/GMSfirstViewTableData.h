@@ -6,13 +6,11 @@
 //  Copyright (c) 2014 frup. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-extern BOOL firstLaunch;
-extern BOOL connected;
-extern NSMutableString *lastRecordDate;
+#import "GMSGlobals.h"
 
 @interface GMSfirstViewTableData : NSObject
 
-+ (id)sharedFirstViewTableData:(NSMutableString*)currency;
++ (id)sharedFirstViewTableData;
 - (void)currencyChange:(NSMutableString*)currency;
 - (void)update:(NSMutableDictionary*)theNewTicker;
 - (NSMutableDictionary*)cellValFromTicker:(NSMutableDictionary*)theTicker currency:(NSMutableString*)currency;
@@ -25,4 +23,6 @@ extern NSMutableString *lastRecordDate;
 @property ( atomic, retain )  NSMutableArray *cellTitles;
 @property ( atomic, retain )  NSMutableArray *currenciesList;
 @property ( atomic, retain )  NSDate *recordDate;
+
+
 @end

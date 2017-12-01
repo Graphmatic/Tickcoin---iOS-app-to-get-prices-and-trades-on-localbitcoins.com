@@ -8,10 +8,11 @@
 
 #import "GMSAppDelegate.h"
 #import "GMSUtilitiesFunction.h"
+
+
 @implementation GMSAppDelegate
+
 @synthesize persistantDatas;
-
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -19,101 +20,91 @@
     int cacheSizeDisk = 8*1024*1024;
     NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:cacheSizeMemory diskCapacity:cacheSizeDisk diskPath:@"nsurlcache"];
     [NSURLCache setSharedURLCache:sharedCache];
-    test = NO;
-    startingApp = YES;
+
     // Override point for customization after application launch.
     self.window.backgroundColor = GMSColorWhite;
     if(!IS_IPAD)
     {
-    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
-    UITabBar *tabBar = tabBarController.tabBar;
-    UITabBarItem *tabBarItem1 = [tabBar.items objectAtIndex:0];
-    UITabBarItem *tabBarItem2 = [tabBar.items objectAtIndex:1];
-    UITabBarItem *tabBarItem3 = [tabBar.items objectAtIndex:2];
-    UITabBarItem *tabBarItem4 = [tabBar.items objectAtIndex:3];
-    
-    tabBarItem1.selectedImage = [[UIImage imageNamed:@"change"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-    tabBarItem1.image = [[UIImage imageNamed:@"change"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-    tabBarItem1.title = @"exchange";
-    
-    tabBarItem2.selectedImage = [[UIImage imageNamed:@"charts"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-    tabBarItem2.image = [[UIImage imageNamed:@"charts"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-    tabBarItem2.title = @"charts";
-    
-    tabBarItem3.selectedImage = [[UIImage imageNamed:@"second"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-    tabBarItem3.image = [[UIImage imageNamed:@"second"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-    tabBarItem3.title = @"bids";
-    
-    tabBarItem4.selectedImage = [[UIImage imageNamed:@"second"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-    tabBarItem4.image = [[UIImage imageNamed:@"second"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
-    tabBarItem4.title = @"asks";
-    
+        // setup tabbar
+        UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+        UITabBar *tabBar = tabBarController.tabBar;
+        UITabBarItem *tabBarItem1 = [tabBar.items objectAtIndex:0];
+        UITabBarItem *tabBarItem2 = [tabBar.items objectAtIndex:1];
+        UITabBarItem *tabBarItem3 = [tabBar.items objectAtIndex:2];
+        UITabBarItem *tabBarItem4 = [tabBar.items objectAtIndex:3];
+        
+        tabBarItem1.selectedImage = [[UIImage imageNamed:@"change"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
+        tabBarItem1.image = [[UIImage imageNamed:@"change"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
+        tabBarItem1.title = @"exchange";
+        
+        tabBarItem2.selectedImage = [[UIImage imageNamed:@"charts"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
+        tabBarItem2.image = [[UIImage imageNamed:@"charts"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
+        tabBarItem2.title = @"charts";
+        
+        tabBarItem3.selectedImage = [[UIImage imageNamed:@"second"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
+        tabBarItem3.image = [[UIImage imageNamed:@"second"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
+        tabBarItem3.title = @"bids";
+        
+        tabBarItem4.selectedImage = [[UIImage imageNamed:@"second"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
+        tabBarItem4.image = [[UIImage imageNamed:@"second"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate ];
+        tabBarItem4.title = @"asks";
     }
     [[UITabBar appearance] setBarTintColor:GMSColorBlueGrey];
     [[UITabBar appearance] setTintColor:GMSColorWhite];
+    
+    Globals *glob = [Globals globals];
+    
+    // Network
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
-    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-    if([[[def dictionaryRepresentation] allKeys] containsObject:@"firstLaunch"])
+    // Monitoring connection availability
+    [[AFNetworkReachabilityManager sharedManager]setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status)
+    {
+        if (status == AFNetworkReachabilityStatusReachableViaWWAN || status == AFNetworkReachabilityStatusReachableViaWiFi)
+        {
+            NSLog(@"is connection");
+            [glob setNetworkAvailable:YES];
+        }
+        else
+        {
+            NSLog(@"is NO connection");
+            [glob setNetworkAvailable:NO];
+        }
+    }];
+    
+    NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
+    if([[[storage dictionaryRepresentation] allKeys] containsObject:@"currency"])
     {
         NSLog(@"not the first launch");
-        firstLaunch = NO;
-        currentCurrency = [def objectForKey:@"currentCurrency"];
+        [glob setCurrency:[storage objectForKey:@"currency"]];
+        if([[[storage dictionaryRepresentation] allKeys] containsObject:@"lastRecordDate"])
+        {
+            [glob setLastRecordDate:[storage objectForKey:@"lastRecordDate"]];
+        }
     }
     else
     {
-        NSLog(@"first launch");
-        firstLaunch = YES;
+        
+        // setup my affiliate Tag
         NSString *affilTag = [NSString stringWithFormat:@"?ch=bms"];
         [[NSUserDefaults standardUserDefaults] setObject:affilTag forKey:@"affiliateTag"];
-        currentCurrency = [[NSMutableString alloc]init];
-        currentCurrency = [NSMutableString stringWithFormat:@"USD"];
+        // setup a default currency
+        [glob setCurrency:[NSString stringWithFormat:@"USD"]];
+       
+        // backup it up!
+        [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
+         NSLog(@"first launch: default: %@", [glob currency]);
     }
-    if([[[def dictionaryRepresentation] allKeys] containsObject:@"firstLaunchChart"])
-    {
-        NSLog(@"not the first launch chart");
-        firstLaunchChart = NO;
-    }
-    else
-    {
-        NSLog(@"first launch chart");
-        firstLaunchChart = YES;
-    }
-    if([[[def dictionaryRepresentation] allKeys] containsObject:@"firstLaunchBids"])
-    {
-        NSLog(@"not the first launch bids");
-        firstLaunchBids = NO;
-        
-    }
-    else
-    {
-        NSLog(@"first launch bids");
-        firstLaunchBids = YES;
-    }
-    if([[[def dictionaryRepresentation] allKeys] containsObject:@"firstLaunchAsks"])
-    {
-        NSLog(@"not the first launch asks");
-        firstLaunchAsks = NO;
-        
-    }
-    else
-    {
-        NSLog(@"first launch asks");
-        firstLaunchAsks = YES;
-    }
-    graphRequestStart = [[NSDate alloc]init];
-    graphRequestStart = [GMSUtilitiesFunction roundDateToHour:graphRequestStart];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd MMM, yyyy HH:mm"];
-    lastRecordDate = (NSMutableString*)[formatter stringFromDate:graphRequestStart];
-    
+
+    NSDate *queryStartDate = [[NSDate alloc]init];
+    queryStartDate = [GMSUtilitiesFunction roundDateToHour:queryStartDate];
+    [glob setQueryStartDate:queryStartDate];
+
     return YES;
 }
 
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-  
     return YES;
 }
 
@@ -128,7 +119,7 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
- //   [[GMSCoreDataContext mainContext] save];
+    [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
