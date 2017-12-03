@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GMSfirstViewTableData.h"
+#import "tickerDatas.h"
 #import "GMSGlobals.h"
 
 @interface GMSAppDelegate : UIResponder <UIApplicationDelegate>

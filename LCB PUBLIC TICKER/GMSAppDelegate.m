@@ -72,14 +72,14 @@
     }];
     
     NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
-    if([[[storage dictionaryRepresentation] allKeys] containsObject:@"currency"])
+    if([[[storage dictionaryRepresentation] allKeys] containsObject:@"currency"] && [storage objectForKey:@"currency"] != nil )
     {
         NSLog(@"not the first launch");
         [glob setCurrency:[storage objectForKey:@"currency"]];
-        if([[[storage dictionaryRepresentation] allKeys] containsObject:@"lastRecordDate"])
-        {
-            [glob setLastRecordDate:[storage objectForKey:@"lastRecordDate"]];
-        }
+//        if([[[storage dictionaryRepresentation] allKeys] containsObject:@"lastRecordDate"])
+//        {
+//            [glob setLastRecordDate:[storage objectForKey:@"lastRecordDate"]];
+//        }
     }
     else
     {
@@ -89,10 +89,10 @@
         [[NSUserDefaults standardUserDefaults] setObject:affilTag forKey:@"affiliateTag"];
         // setup a default currency
         [glob setCurrency:[NSString stringWithFormat:@"USD"]];
-       
-        // backup it up!
-        [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
-         NSLog(@"first launch: default: %@", [glob currency]);
+//
+//        // backup it up!
+//        [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
+//         NSLog(@"first launch: default: %@", [glob currency]);
     }
 
     NSDate *queryStartDate = [[NSDate alloc]init];

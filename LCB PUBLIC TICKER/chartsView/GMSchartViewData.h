@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GMSfirstViewTableData.h"
+#import "tickerDatas.h"
 #import "GMSGlobals.h"
 
 @interface GMSchartViewData : NSObject

@@ -7,7 +7,7 @@
 //
 
 #import "GMSBidsAsksDatas.h"
-#import "GMSfirstViewTableData.h"
+#import "tickerDatas.h"
 
 @interface GMSBidsAsksDatas ()
 {
@@ -82,7 +82,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
             self.asksMaxDeviation = 201;
         }
         // Add Notification observer to be informed of currency switching
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencySwitching:) name:@"currencySwitching" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullUpdate:) name:@"tickerRefresh" object:nil];
         
         // start web query
         [self apiQuery];
@@ -211,7 +211,7 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
 
 - (void)deviationFilter:(NSMutableArray *)dataset deviation:(int)deviation :(void(^)(NSMutableArray *filteredDatas))completion
 {
-    self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData];
+    self.firstViewDatas = [TickerDatas tickerDatas];
     NSString *priceAverageForSelectedCurrency = [self.firstViewDatas.cellValues objectForKey:NSLocalizedString(@"_AVG_24H", @"average 24H")];
     float pa = [priceAverageForSelectedCurrency floatValue];
     
@@ -226,8 +226,9 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
     completion(result);
 }
 
-- (void)currencySwitching:(NSNotification*)theNotif
+- (void)fullUpdate:(NSNotification*)theNotif
 {
+    
     NSDictionary *rxNotifDatas = theNotif.userInfo;
     [self resetSharedInstance];
     _sharedBidsAsksDatas = [self init:[rxNotifDatas objectForKey:@"newCurrency"]];

@@ -20,7 +20,7 @@
 
 @implementation GMSStartView
 
-@synthesize previousDatas ,firstViewDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
+@synthesize previousDatas ,tickerDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
 
 - (NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectContext *context = nil;
@@ -44,9 +44,9 @@
                                                           encoding:NSUTF8StringEncoding];
     
     Globals *glob = [Globals globals];
-
+    
     // debug
-    NSLog(@"globals test: currency => %@", [glob currency]);
+    NSLog(@"DidLoad globals test: currency => %@", [glob currency]);
     // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
@@ -60,8 +60,8 @@
     
     // Some position helpers
     CGFloat pickerOrigY = self.headerImg.topBrand.size.height;
-    CGFloat pickerHeight = self.picker.frame.size.height;
-    CGFloat messageBoxOrigY = pickerOrigY + pickerHeight;
+    CGFloat pickerHeight;
+    CGFloat messageBoxOrigY;
     
     // Dynamic messages
     self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
@@ -82,8 +82,10 @@
         {
             [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 180)];
         }
-      
+        
         [self.view addSubview:self.picker];
+        
+        pickerHeight = self.picker.frame.size.height;
         messageBoxOrigY = pickerOrigY + pickerHeight;
         
         // position of message box
@@ -117,7 +119,6 @@
             NSLog(@"IS_IPHONE_X");
             // 35 is the room reserved for gesture in iPhone X
             [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY - 49 - 35) )];
-           
         }
         else
         {
@@ -125,19 +126,21 @@
             [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY - 49) )];
         }
         
+        // debug
+        NSLog(@"tableViewOrigY : %f", tableViewOrigY);
         [self.view addSubview:self.tableView];
-
+        
         // This will remove extra separators from tableview
         self.tableView.tableFooterView = [UIView new];
     }
-    
     else
     {
+        messageBoxOrigY = pickerOrigY + self.picker.frame.size.height;
         [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY + 2, self.tableView.bounds.size.width + self.picker.frame.size.width + 2, 62)];
     }
     
     self.messageBoxLabel.text = self.messageBoxMessage.messageBoxString;
-
+    
     self.rowHeight = (self.tableView.bounds.size.height / 5);
     
     // add social buttons
@@ -168,7 +171,7 @@
     
     self.socialStack.hidden = YES;
     
-    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:[glob currency]];
+    NSUInteger pickerDefIndex = [self.tickerDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
     
@@ -180,6 +183,7 @@
     [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshTicker];
     self.tableView.backgroundColor = GMSColorDarkGrey;
+    [self.refreshTicker beginRefreshing];
 }
 
 
@@ -190,17 +194,25 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    Globals *glob = [Globals globals];
+    
+    // debug
+    NSLog(@"globals test: currency => %@", [glob currency]);
+    
     // Register for notification. (placed in viewDidLoad(), notifs are not re-activated after views switching.)
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"currencySwitching" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"currencyListUpdate" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshDisplayedDatas:) name:@"tickerRefresh" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"updatePickerList" object:nil];
+    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
     
-    self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData];
-    [self updateTicker];
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    self.messageBoxLabel.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
+
+    self.tickerDatas = [TickerDatas tickerDatas];
 }
 
 //
@@ -208,50 +220,55 @@
 //                                                    //datas handler//
 //---------------------------------------------------------------------------------------------------------------------------//
 //parse JSON datas from LCB
-- (void)updateTicker
-{
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
-    self.messageBoxLabel.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
-    
-    Globals *glob = [Globals globals];
-    
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[glob urlStart]]];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-     {
-         
-         [self.refreshTicker endRefreshing];
-         dispatch_queue_t parser = dispatch_queue_create("parsecvs", DISPATCH_QUEUE_SERIAL);
-         dispatch_async(parser, ^{
-             [self.firstViewDatas update:responseObject];
-         });
-         
-         NSDate *recdATE = [[NSDate alloc]init];
-         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
-         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-         [glob setLastRecordDate:[[dateFormatter stringFromDate:recdATE]mutableCopy]];
-         [[NSUserDefaults standardUserDefaults]setObject:[glob lastRecordDate] forKey:@"lastRecordDate"];
-         if(self.timerMessages)[self.timerMessages invalidate];
-         self.timerMessages = nil;
-         self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-         
-     }
-                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
-     {
-         [self.refreshTicker endRefreshing];
-         [glob setNetworkAvailable:NO];
-         if(self.timerMessages)[self.timerMessages invalidate];
-         self.timerMessages = nil;
-         self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartNoConnect:) userInfo:error repeats:YES];
-     }];
-    [operation start];
-}
+//- (void)updateTicker
+//{
+//    if(self.timerMessages)[self.timerMessages invalidate];
+//    self.timerMessages = nil;
+//    self.messageBoxLabel.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
+//
+//    Globals *glob = [Globals globals];
+//
+//    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[glob urlStart]]];
+//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+//    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+//     {
+//
+//         [self.refreshTicker endRefreshing];
+//         dispatch_queue_t parser = dispatch_queue_create("parsecvs", DISPATCH_QUEUE_SERIAL);
+//         dispatch_async(parser, ^{
+//             [self.tickerDatas normalizeForView:responseObject];
+//         });
+//
+//         NSDate *recdATE = [[NSDate alloc]init];
+//         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+//         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//         [glob setLastRecordDate:[[dateFormatter stringFromDate:recdATE]mutableCopy]];
+//         [[NSUserDefaults standardUserDefaults]setObject:[glob lastRecordDate] forKey:@"lastRecordDate"];
+//         if(self.timerMessages)[self.timerMessages invalidate];
+//         self.timerMessages = nil;
+//         self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+//
+//     }
+//                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
+//     {
+//         [self.refreshTicker endRefreshing];
+//         [glob setNetworkAvailable:NO];
+//         if(self.timerMessages)[self.timerMessages invalidate];
+//         self.timerMessages = nil;
+//         self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartNoConnect:) userInfo:error repeats:YES];
+//     }];
+//    [operation start];
+//}
 
-- (void)prepareDatas:(NSNotification *)notification
+- (void)refreshDisplayedDatas:(NSNotification *)notification
 {
+    // debug
+    Globals *glob = [Globals globals];
+
+    NSLog(@"refreshing tableView view ");
+    [self.refreshTicker endRefreshing];
     [self.tableView reloadData];
 }
 
@@ -260,10 +277,13 @@
 //---------------------------------------------------------------------------------------------------------------------------//
 - (void) updatePickerList:(NSNotification *)notification
 {
+    NSLog(@"refreshing picker list: %@", self.tickerDatas.cellValues);
+
     Globals *glob = [Globals globals];
-    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:[glob currency]];
+    NSUInteger pickerDefIndex = [self.tickerDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
+    [self.tickerDatas currencyChange:[self.tickerDatas.currenciesList objectAtIndex:pickerDefIndex]];
 }
 
 - (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -273,14 +293,14 @@
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    return self.firstViewDatas.currenciesList.count;
+    return self.tickerDatas.currenciesList.count;
 }
 
 - (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     NSMutableParagraphStyle *centeredStyle = [[NSMutableParagraphStyle alloc] init];
     centeredStyle.alignment = NSTextAlignmentCenter;
-    NSString *pickerTitle = [self.firstViewDatas.currenciesList objectAtIndex:row];
+    NSString *pickerTitle = [self.tickerDatas.currenciesList objectAtIndex:row];
     NSAttributedString *pickerTitleColor = [[NSAttributedString alloc] initWithString:pickerTitle attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSParagraphStyleAttributeName:centeredStyle}];
     return pickerTitleColor;
 }
@@ -290,9 +310,9 @@
     Globals *glob = [Globals globals];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
     self.messageBoxLabel.text = nil;
-    [glob setCurrency:[self.firstViewDatas.currenciesList objectAtIndex:row]];
+    [glob setCurrency:[self.tickerDatas.currenciesList objectAtIndex:row]];
     self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN" , "%@  -  %@"), [glob lastRecordDate], [glob currency]];
-    [self.firstViewDatas currencyChange:[self.firstViewDatas.currenciesList objectAtIndex:row]];
+    [self.tickerDatas currencyChange:[self.tickerDatas.currenciesList objectAtIndex:row]];
     
 }
 
@@ -311,15 +331,15 @@
 {
     // debug
     // NSLog(@"CELLS = %@", self.firstViewDatas.cellTitles);
-    return [self.firstViewDatas.cellTitles count];
+    return [self.tickerDatas.cellTitles count];
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //local var to hold value
-    NSString *cellVal = [self.firstViewDatas.cellValues objectForKey:[self.firstViewDatas.cellTitles objectAtIndex:indexPath.row]];
+    NSString *cellVal = [self.tickerDatas.cellValues objectForKey:[self.tickerDatas.cellTitles objectAtIndex:indexPath.row]];
     //get title for the cell
-    NSString *key = [self.firstViewDatas.cellTitles objectAtIndex:indexPath.row];
+    NSString *key = [self.tickerDatas.cellTitles objectAtIndex:indexPath.row];
     static NSString *CellIdentifier = @"Item";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_background_sel.png"]];
@@ -346,15 +366,12 @@
 }
 
 // rows height
-- (CGFloat)tableView:(UITableView *)tableView
-heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return self.rowHeight;
 }
 
-
-
-//row selected : show share buttons
+//row selected : shows share buttons
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.prevSelRow isEqual:indexPath]) {
@@ -381,8 +398,8 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.textLabel.textColor = [UIColor whiteColor];
-
-     self.socialStack.hidden = YES;
+    
+    self.socialStack.hidden = YES;
     [self messageBoxChange:nil];
     self.prevSelRow = nil;
 }
@@ -511,6 +528,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     }
     
 }
+
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // email //
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -642,12 +660,18 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
+    Globals *glob = [Globals globals];
+    // save current selected currency to db (should have been already done...)
+    [self.tickerDatas saveTicker];
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
+    
+    [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     Globals *glob = [Globals globals];
-    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:[glob currency]];
+    NSUInteger pickerDefIndex = [self.tickerDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:NO];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
@@ -660,7 +684,9 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Globals *glob = [Globals globals];
     // save current selected currency to db (should have been already done...)
+    [self.tickerDatas saveTicker];
     [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 @end

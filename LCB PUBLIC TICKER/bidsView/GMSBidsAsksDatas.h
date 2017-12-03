@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GMSfirstViewTableData.h"
+#import "tickerDatas.h"
 #import "GMSGlobals.h"
 
 @interface GMSBidsAsksDatas : NSObject
@@ -19,7 +19,7 @@
 @property (retain, atomic) NSMutableArray *orderAsks;
 @property (retain, nonatomic) NSMutableDictionary *bidsAsksAllCurrencies;
 @property (retain, nonatomic) NSMutableDictionary *previousBidsAsksListing;
-@property (strong, atomic) GMSfirstViewTableData *firstViewDatas;
+@property (strong, atomic) TickerDatas *firstViewDatas;
 @property NSOperationQueue *datasBuilderOp;
 @property int bidsMaxDeviation;
 @property int asksMaxDeviation;

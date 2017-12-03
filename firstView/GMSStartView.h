@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GMSMessageBoxProcessor.h"
-#import "GMSfirstViewTableData.h"
+#import "tickerDatas.h"
 #import <MessageUI/MessageUI.h>
 #import "GMSmessageBox.h"
 #import "GMSGlobals.h"
@@ -31,7 +31,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *emailIt;
 @property (weak, nonatomic) IBOutlet UIButton *messageIt;
 @property (weak, nonatomic) NSUserDefaults *previousDatas;
-@property (strong, atomic) GMSfirstViewTableData *firstViewDatas;
+@property (strong, atomic) TickerDatas *tickerDatas;
 @property (strong, atomic) NSIndexPath *prevSelRow;
 @property (nonatomic) CGPoint tabViewOrigin;
 @property (nonatomic) CGFloat rowHeight;
@@ -39,4 +39,5 @@
 
 - (IBAction)tweetSelectedRow:(id)sender;
 - (void)updateTicker;
+
 @end
