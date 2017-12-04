@@ -175,15 +175,9 @@
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
     
-    [self.tableView reloadData];
-    
-    //init refreshing touch item
-    self.refreshTicker = [[UIRefreshControl alloc] init];
-    self.refreshTicker.tintColor = GMSColorDarkGrey;
-    [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:self.refreshTicker];
     self.tableView.backgroundColor = GMSColorDarkGrey;
-    [self.refreshTicker beginRefreshing];
+    [self.tableView reloadData];
+
 }
 
 
@@ -211,62 +205,28 @@
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.messageBoxLabel.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
+    
+    // trigger UIrefresh
+    //init refreshing touch item
+    self.refreshTicker = [[UIRefreshControl alloc] init];
+    self.refreshTicker.tintColor = GMSColorDarkGrey;
+    [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refreshTicker];
+    [self.refreshTicker beginRefreshing];
+    CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
+    [self.tableView setContentOffset:newOffset animated:YES];
 
     self.tickerDatas = [TickerDatas tickerDatas];
 }
 
-//
-//---------------------------------------------------------------------------------------------------------------------------//
-//                                                    //datas handler//
-//---------------------------------------------------------------------------------------------------------------------------//
-//parse JSON datas from LCB
-//- (void)updateTicker
-//{
-//    if(self.timerMessages)[self.timerMessages invalidate];
-//    self.timerMessages = nil;
-//    self.messageBoxLabel.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
-//
-//    Globals *glob = [Globals globals];
-//
-//    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[glob urlStart]]];
-//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-//    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-//     {
-//
-//         [self.refreshTicker endRefreshing];
-//         dispatch_queue_t parser = dispatch_queue_create("parsecvs", DISPATCH_QUEUE_SERIAL);
-//         dispatch_async(parser, ^{
-//             [self.tickerDatas normalizeForView:responseObject];
-//         });
-//
-//         NSDate *recdATE = [[NSDate alloc]init];
-//         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
-//         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-//         [glob setLastRecordDate:[[dateFormatter stringFromDate:recdATE]mutableCopy]];
-//         [[NSUserDefaults standardUserDefaults]setObject:[glob lastRecordDate] forKey:@"lastRecordDate"];
-//         if(self.timerMessages)[self.timerMessages invalidate];
-//         self.timerMessages = nil;
-//         self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-//
-//     }
-//                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
-//     {
-//         [self.refreshTicker endRefreshing];
-//         [glob setNetworkAvailable:NO];
-//         if(self.timerMessages)[self.timerMessages invalidate];
-//         self.timerMessages = nil;
-//         self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartNoConnect:) userInfo:error repeats:YES];
-//     }];
-//    [operation start];
-//}
+- (void)updateTicker
+{
+    NSLog(@"updateTicker ");
+    [self.tickerDatas apiQuery];
+}
 
 - (void)refreshDisplayedDatas:(NSNotification *)notification
 {
-    // debug
-    Globals *glob = [Globals globals];
-
     NSLog(@"refreshing tableView view ");
     [self.refreshTicker endRefreshing];
     [self.tableView reloadData];

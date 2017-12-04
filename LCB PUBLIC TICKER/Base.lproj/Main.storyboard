@@ -111,7 +111,7 @@
                                 <color key="textColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleAspectFill" fixedFrame="YES" bounces="NO" alwaysBounceVertical="YES" scrollEnabled="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="1Mj-da-W8K">
+                            <tableView clipsSubviews="YES" contentMode="scaleAspectFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="1Mj-da-W8K">
                                 <rect key="frame" x="0.0" y="290" width="375" height="328"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
