@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GMSMessageBoxProcessor.h"
+#import "GMSMessageHandler.h"
 #import "tickerDatas.h"
 #import <MessageUI/MessageUI.h>
 #import "GMSmessageBox.h"
@@ -23,8 +23,8 @@
 @property (strong, atomic) GMSTopBrandImage *headerImg;
 @property (nonatomic, weak) NSTimer *timerMessages;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
-@property (strong, atomic) GMSMessageBoxProcessor *messageBoxMessage;
-@property (weak, nonatomic) IBOutlet UILabel *messageBoxLabel;
+@property (strong, atomic) GMSMessageHandler *infoMessages;
+@property (weak, nonatomic) IBOutlet UILabel *infoMessagesLabel;
 @property (weak, nonatomic) IBOutlet UIView *socialStack;
 @property (weak, nonatomic) IBOutlet UIButton *tweetIt;
 @property (weak, nonatomic) IBOutlet UIButton *faceBook;
@@ -39,5 +39,6 @@
 
 - (IBAction)tweetSelectedRow:(id)sender;
 - (void)updateTicker;
-
+- (void)noConnection:(NSNotification *)notification;
+- (void)messageRefresh:(NSNotification *)notification;
 @end

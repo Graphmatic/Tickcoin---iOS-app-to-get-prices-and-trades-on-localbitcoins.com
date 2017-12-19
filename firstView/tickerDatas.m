@@ -28,15 +28,12 @@
 {
     if (self = [super init])
     {
-        
-        
         ticker = [[NSMutableDictionary alloc]init];
         cellValues = [[NSMutableDictionary alloc] init];
         cellTitles = [[NSMutableArray alloc] init];
         currenciesList = [[NSMutableArray alloc] init];
         
         [self apiQuery];
-        
     }
     return self;
 }
@@ -44,17 +41,17 @@
 - (void) apiQuery
 {
     Globals *glob = [Globals globals];
-    
+    dispatch_queue_t parser = dispatch_queue_create("parsecvs", DISPATCH_QUEUE_SERIAL);
+
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[glob urlStart]]];
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
      {
-         dispatch_queue_t parser = dispatch_queue_create("parsecvs", DISPATCH_QUEUE_SERIAL);
          dispatch_async(parser, ^{
              [self triggerViewRefresh:responseObject];
          });
-         [glob setNetworkAvailable:YES];
+         glob.networkAvailable = YES;
          NSDate *recdATE = [[NSDate alloc]init];
          NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
          [dateFormatter setDateStyle:NSDateFormatterLongStyle];
@@ -64,7 +61,7 @@
      }
                                      failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
-         [glob setNetworkAvailable:NO];
+         glob.networkAvailable = NO;
          
          NSUserDefaults *localStorage = [NSUserDefaults standardUserDefaults];
          // check if we have saved data from past
@@ -80,19 +77,31 @@
              {
                  [glob setLastRecordDate:[[NSUserDefaults standardUserDefaults] valueForKey:@"recordDate"]];
              }
+             glob.oldTickerDatas = YES;
+             NSLog(@"NO NETWORK - OLD TICKER FOUND");
+             dispatch_async(parser, ^{
+                 [self triggerViewRefresh:ticker];
+             });
          }
          else
          {
+             NSLog(@"NO NETWORK - OLD TICKER NOT FOUND");
+             glob.oldTickerDatas = NO;
              // load dummy json from local (filled with keys and null values)
              NSURLRequest *localQuery = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tickerAllCurDefault" ofType:@"json"]]];
              AFHTTPRequestOperation *localOperation = [[AFHTTPRequestOperation alloc] initWithRequest:localQuery];
-             operation.responseSerializer = [AFJSONResponseSerializer serializer];
-             [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *localOperation, id responseObject)
+             localOperation.responseSerializer = [AFJSONResponseSerializer serializer];
+             [localOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *localOperation, id responseObject)
               {
-                  NSLog(@"local request ok");
+                  NSLog(@"NO NETWORK - OLD TICKER NOT FOUND - BEFORE DISPATCH");
+
                   dispatch_queue_t parser = dispatch_queue_create("parsecvs", DISPATCH_QUEUE_SERIAL);
                   dispatch_async(parser, ^{
                       [self triggerViewRefresh:responseObject];
+                  });
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                      NSDictionary *userInfo = [NSDictionary dictionaryWithObject:error forKey:@"error"];
+                      [self sendNotifToViewController:@"connectionError" datas:userInfo];
                   });
               }
                                               failure:^(AFHTTPRequestOperation *localOperation, NSError *error)
@@ -101,7 +110,6 @@
               }];
              [localOperation start];
          }
-         
      }];
     [operation start];
 }
@@ -123,6 +131,7 @@
 -(void)triggerViewRefresh:(NSMutableDictionary*)theNewTicker
 {
 
+    NSLog(@"ticker triggered ViewRefresh");
     NSOperationQueue *normalizeRawDatasQueue = [[NSOperationQueue alloc]init];
     
     NSInvocationOperation *normalizeRawDatas = [[NSInvocationOperation alloc]initWithTarget:self
@@ -132,24 +141,27 @@
     [normalizeRawDatas setCompletionBlock:^{
         if ( theNewTicker != nil )
         {
-            // refresh currencies displayed in picker
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // debug
-                NSLog(@"ticker send notif to view;" );
-                [self sendNotifToViewController:@"updatePickerList"];
-            });
             // debug
 //            NSLog(@"ticker is new : %@", theNewTicker);
             ticker = theNewTicker;
+            // refresh currencies displayed in picker
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // debug
+                NSLog(@"ticker UPDATE");
+                [self sendNotifToViewController:@"updatePickerList" datas:nil];
+            });
+
+           
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             // debug
-            NSLog(@"ticker (not new) send notif to view");
-            [self sendNotifToViewController:@"tickerRefresh"];
+            NSLog(@"ticker REFRESH");
+            [self sendNotifToViewController:@"tickerRefresh" datas:nil];
         });
+        [self saveTicker];
     }];
     
-    [normalizeRawDatas setQueuePriority:NSOperationQueuePriorityHigh];
+    [normalizeRawDatas setQueuePriority:NSOperationQueuePriorityVeryHigh];
     [normalizeRawDatasQueue addOperation:normalizeRawDatas];
 
 }
@@ -232,7 +244,7 @@
 }
 
 // generic
-- (void)sendNotifToViewController:(NSString*)theNotif
+- (void)sendNotifToViewController:(NSString*)theNotif datas:(NSDictionary*)datas
 {
     if ( [theNotif isEqualToString:@"tickerRefresh"] || [theNotif isEqualToString:@"updatePickerList"] )
     {
@@ -240,6 +252,14 @@
             postNotificationName:theNotif
             object:nil
             userInfo:nil];
+    }
+    
+    if ( [theNotif isEqualToString:@"connectionError"] )
+    {
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:theNotif
+         object:nil
+         userInfo:datas];
     }
 }
 
@@ -256,14 +276,17 @@
 - (void)saveTicker
 {
     Globals *glob = [Globals globals];
-    // dict to nsdata package
-    NSData *tickerToSave = [NSKeyedArchiver archivedDataWithRootObject:ticker];
-    // store
-    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
-    [[NSUserDefaults standardUserDefaults] setObject:[glob lastRecordDate] forKey:@"lastRecordDate"];
-    [[NSUserDefaults standardUserDefaults] setObject:tickerToSave forKey:@"ticker"];
-    
-    NSLog(@"ticker datas saved");
+    if ( [glob isOldTickerDatas] )  // if isOldTickerDatas == NO, app is showing the dummy empty json
+    {
+        // dict to nsdata package
+        NSData *tickerToSave = [NSKeyedArchiver archivedDataWithRootObject:ticker];
+        // store
+        [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
+        [[NSUserDefaults standardUserDefaults] setObject:[glob lastRecordDate] forKey:@"lastRecordDate"];
+        [[NSUserDefaults standardUserDefaults] setObject:tickerToSave forKey:@"ticker"];
+        glob.oldTickerDatas = YES;
+        NSLog(@"ticker datas saved");
+    }
 }
 @end
 

@@ -20,7 +20,7 @@
 
 @implementation GMSStartView
 
-@synthesize previousDatas ,tickerDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
+@synthesize previousDatas ,tickerDatas,  infoMessagesLabel, infoMessages, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
 
 - (NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectContext *context = nil;
@@ -64,7 +64,7 @@
     CGFloat messageBoxOrigY;
     
     // Dynamic messages
-    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
+    self.infoMessages = [[GMSMessageHandler alloc]init];
     
     // if not an iPad
     if ( !IS_IPAD ) {
@@ -92,25 +92,25 @@
         CGFloat tableViewOrigY = messageBoxOrigY;
         if ( IS_IPHONE_4_5 )
         {
-            [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 50)];
+            [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 50)];
             // postion tableView
             tableViewOrigY += 50;
         }
         else if ( IS_IPHONE_6_7_8 )
         {
-            [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 64)];
+            [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 64)];
             // postion tableView
             tableViewOrigY += 64;
         }
         else if ( IS_IPHONE_PLUS )
         {
-            [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 80)];
+            [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 80)];
             // postion tableView
             tableViewOrigY += 80;
         }
         else if ( IS_IPHONE_X )
         {
-            [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 70)];
+            [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 70)];
             // postion tableView
             tableViewOrigY += 70;
         }
@@ -136,15 +136,15 @@
     else
     {
         messageBoxOrigY = pickerOrigY + self.picker.frame.size.height;
-        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY + 2, self.tableView.bounds.size.width + self.picker.frame.size.width + 2, 62)];
+        [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY + 2, self.tableView.bounds.size.width + self.picker.frame.size.width + 2, 62)];
     }
     
-    self.messageBoxLabel.text = self.messageBoxMessage.messageBoxString;
+    self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
     
     self.rowHeight = (self.tableView.bounds.size.height / 5);
     
     // add social buttons
-    [self.socialStack setFrame:self.messageBoxLabel.frame];
+    [self.socialStack setFrame:self.infoMessagesLabel.frame];
     //resize buttons
     if ( !IS_IPAD ) {
         self.tweetIt.imageEdgeInsets = UIEdgeInsetsMake(45, 45, 45, 45);
@@ -198,16 +198,23 @@
                                              selector:@selector(applicationDidEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
+    // monitor change on ticker
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshDisplayedDatas:) name:@"tickerRefresh" object:nil];
+    // monitor currency list change
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"updatePickerList" object:nil];
+    // monitor connection error
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noConnection:) name:@"connectionError" object:nil];
+
     //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
     
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
-    self.messageBoxLabel.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
+    self.infoMessages = [GMSMessageHandler messageHandler:0];
     
+    self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(infoRefresh:) name:@"infoRefresh" object:nil];
+
     // trigger UIrefresh
-    //init refreshing touch item
+    // init refreshing touch item
     self.refreshTicker = [[UIRefreshControl alloc] init];
     self.refreshTicker.tintColor = GMSColorDarkGrey;
     [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
@@ -227,9 +234,14 @@
 
 - (void)refreshDisplayedDatas:(NSNotification *)notification
 {
+    Globals *glob = [Globals globals];
     NSLog(@"refreshing tableView view ");
     [self.refreshTicker endRefreshing];
     [self.tableView reloadData];
+    if ( [glob isNetworkAvailable] )
+    {
+        [self.infoMessages dailyMessages];
+    }
 }
 
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -269,9 +281,9 @@
 {
     Globals *glob = [Globals globals];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
-    self.messageBoxLabel.text = nil;
+    self.infoMessagesLabel.text = nil;
     [glob setCurrency:[self.tickerDatas.currenciesList objectAtIndex:row]];
-    self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN" , "%@  -  %@"), [glob lastRecordDate], [glob currency]];
+    self.infoMessagesLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN" , "%@  -  %@"), [glob lastRecordDate], [glob currency]];
     [self.tickerDatas currencyChange:[self.tickerDatas.currenciesList objectAtIndex:row]];
     
 }
@@ -347,7 +359,7 @@
         cell.textLabel.textColor = GMSColorOrange;
         if(self.timerMessages)[self.timerMessages invalidate];
         self.timerMessages = nil;
-        self.messageBoxLabel.text = Nil;
+        self.infoMessagesLabel.text = Nil;
         self.socialStack.hidden = NO;
         self.prevSelRow = indexPath;
     }
@@ -360,38 +372,45 @@
     cell.textLabel.textColor = [UIColor whiteColor];
     
     self.socialStack.hidden = YES;
-    [self messageBoxChange:nil];
+    [self infoRefresh:nil];
     self.prevSelRow = nil;
 }
 
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    //messages handler//
 //---------------------------------------------------------------------------------------------------------------------------//
-- (void)messageBoxChange:(NSNotification *)notification
+- (void)noConnection:(NSNotification *)notification
 {
-    Globals *glob = [Globals globals];
-    self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), [glob lastRecordDate], [glob currency]];
-    
-    //start message box carroussel
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
-    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-    
+    self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
 }
-- (void)timerStartNoConnect:(NSTimer *)theTimer
+
+- (void)infoRefresh:(NSNotification *)notification
 {
-    alt = !alt;
-    NSError *err = [theTimer userInfo];
-    
-    //  [self.messageBoxLabel setFont:[UIFont systemFontOfSize:35]];
-    self.messageBoxLabel.text = [self.messageBoxMessage noConnAlert:err alt:alt];
+    NSLog(@"infoRefresh!");
+//    Globals *glob = [Globals globals];
+    self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
+//    self.infoMessagesLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), [glob lastRecordDate], [glob currency]];
+//
+//    //start message box carroussel
+//    if(self.timerMessages)[self.timerMessages invalidate];
+//    self.timerMessages = nil;
+//    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+//
 }
--(void)timerStartMulti:(NSTimer*)theTimer
-{
-    Globals *glob = [Globals globals];
-    alt = !alt;
-    self.messageBoxLabel.text = [self.messageBoxMessage dailyMessages:alt connected:[glob isNetworkAvailable]];
-}
+//- (void)timerStartNoConnect:(NSTimer *)theTimer
+//{
+//    alt = !alt;
+//    NSError *err = [theTimer userInfo];
+//
+//    //  [self.messageBoxLabel setFont:[UIFont systemFontOfSize:35]];
+//    self.infoMessagesLabel.text = [self.infoMessages noConnection:err alt:alt];
+//}
+//-(void)timerStartMulti:(NSTimer*)theTimer
+//{
+//    Globals *glob = [Globals globals];
+//    alt = !alt;
+//    self.infoMessagesLabel.text = [self.infoMessages dailyMessages:alt connected:[glob isNetworkAvailable]];
+//}
 
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // facebook //
@@ -462,11 +481,11 @@
                 switch(result) {
                         //  This means the user cancelled without sending the Tweet
                     case SLComposeViewControllerResultCancelled:
-                        self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENDING_CANCELLED", @"Tweet canceled")];
+                        self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENDING_CANCELLED", @"Tweet canceled")];
                         break;
                         //  This means the user hit 'Send'
                     case SLComposeViewControllerResultDone:
-                        self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENT", @"Tweet sent")];
+                        self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENT", @"Tweet sent")];
                         
                         break;
                 }
@@ -539,19 +558,19 @@
     switch (result)
     {
         case MFMailComposeResultCancelled:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENDING_CANCELLED", @"Mail sending canceled")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENDING_CANCELLED", @"Mail sending canceled")];
             break;
         case MFMailComposeResultSaved:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SAVED", @"Mail saved")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SAVED", @"Mail saved")];
             break;
         case MFMailComposeResultSent:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENT", @"Mail sent")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENT", @"Mail sent")];
             break;
         case MFMailComposeResultFailed:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SEND_FAIL", @"Mail sending failed")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SEND_FAIL", @"Mail sending failed")];
             break;
         default:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_NOT_SENT_DEFAULT", @"Mail not sent")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_NOT_SENT_DEFAULT", @"Mail not sent")];
             break;
     }
 }
@@ -600,16 +619,16 @@
     switch (result)
     {
         case MessageComposeResultCancelled:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENDING_CANCELLED", @"SMS sending canceled")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENDING_CANCELLED", @"SMS sending canceled")];
             break;
         case MessageComposeResultSent:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENT", @"SMS sent")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENT", @"SMS sent")];
             break;
         case MessageComposeResultFailed:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SEND_FAIL", @"SMS sending failed")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SEND_FAIL", @"SMS sending failed")];
             break;
         default:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_NOT_SENT_DEFAULT", @"SMS not sent")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_NOT_SENT_DEFAULT", @"SMS not sent")];
             break;
     }
 }
@@ -650,4 +669,3 @@
 }
 
 @end
-

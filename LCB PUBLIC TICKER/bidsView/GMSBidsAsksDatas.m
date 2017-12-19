@@ -139,11 +139,10 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
     
     [builAsksBidsDatas setCompletionBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             // Notify UI that Instance is ready to use
             self.isReady = YES;
         });
-//        NSLog(@"curr : %@", self.currency);
+
         // backup today datas in DB
         [self.bidsAsksAllCurrencies setObject:responseObject forKey:self.currency];
 //        [[NSUserDefaults standardUserDefaults]setObject:self.bidsAsksAllCurrencies forKey:@"bidsAsksListing"];
