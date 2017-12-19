@@ -19,7 +19,7 @@
 //- (NSMutableString*)dailyMessages:(int)messagesCount connected:(BOOL)connected;
 - (NSArray*)bidsViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isAscSorted:(bool)isAscSorted;
 - (NSArray*)asksViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isDescSorted:(bool)isDescSorted;
-- (void)noConnection: (NSError*)error;
+- (void)noConnection:(NSNotification *)notification;
 - (void)dailyMessages;
 //- (void)restartTic;
 //- (void)stopTic;
@@ -34,6 +34,7 @@
 @property (weak) NSTimer *tic;
 @property (weak) NSTimer *switchTic;
 @property BOOL alt;
+@property (nonatomic, strong) NSError *connectionError;
 
 
 @end

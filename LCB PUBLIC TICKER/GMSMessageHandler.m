@@ -14,7 +14,7 @@
 
 @implementation GMSMessageHandler
 
-@synthesize infoMessagesStr, tic, switchTic, nextInfoMessageStr, alt;
+@synthesize infoMessagesStr, tic, switchTic, nextInfoMessageStr, alt, connectionError;
 
 + (id)messageHandler:(int)view
 {
@@ -30,7 +30,8 @@
 {
     if (self = [super init])
     {
-        infoMessagesStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
+        Globals *glob = [[Globals alloc]init];
+        self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
         // Cancel a preexisting timer.
         if( self.tic != nil )
         {
@@ -65,6 +66,7 @@
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noConnection:) name:@"connectionError" object:nil];
 
+        self.connectionError = nil;
         [self waitWhileLoading];
     }
     return self;
@@ -109,44 +111,54 @@
 {
 //    NSLog(@"MESSAGE SWAP");
     Globals *glob = [[Globals alloc]init];
-    if (self.alt)
+    if ( [glob isNetworkAvailable] )
     {
-        self.nextInfoMessageStr = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", @"daily price in"), [glob lastRecordDate], [glob currency]];
+        if ( self.alt )
+        {
+            self.nextInfoMessageStr = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", @"daily price in"), [glob lastRecordDate], [glob currency]];
+        }
+        else
+        {
+            self.nextInfoMessageStr = [NSMutableString  stringWithFormat:NSLocalizedString(@"_SWIPE_DOWN_TO_REFRESH", @"swipe down to refresh")];
+        }
     }
     else
     {
-        self.nextInfoMessageStr = [NSMutableString  stringWithFormat:NSLocalizedString(@"_SWIPE_DOWN_TO_REFRESH", @"swipe down to refresh")];
+        if ( self.alt )
+        {
+            if ( self.connectionError != nil )
+            {
+                self.nextInfoMessageStr = self.connectionError.localizedDescription;
+            }
+            else
+            {
+                self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_THIS_APP_NEED_INTERNET", @"internet connection is required to use this app")];
+            }
+        }
+        else
+        {
+            if( ![glob isNetworkAvailable] && ![glob isOldTickerDatas] )  // no internet connection and no datas previously saved
+            {
+                self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_THIS_APP_NEED_INTERNET", @"internet connection is required to use this app")];
+            }
+            else if( ![glob isNetworkAvailable] && [glob isOldTickerDatas] ) // no internet connection but previously saved datas
+            {
+                self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_NO_CONNECT_OUTDATED", @"datas outdated"), [glob lastRecordDate]];
+            }
+            else if ( [glob isNetworkAvailable] ) //
+            {
+                self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_NO_CONNECT_OUTDATED", @"datas outdated"), [glob lastRecordDate]];
+            }
+        }
     }
     self.alt = !self.alt;
 
-//    [self refresh];
 }
 
 // no internet connection warning
-- (void)noConnection: (NSError*)error
+- (void)noConnection:(NSNotification *)notification
 {
-    Globals *glob = [Globals globals];
-    
-    if ( self.alt )
-    {
-        self.nextInfoMessageStr = (NSMutableString*) error.localizedDescription;
-    }
-    else
-    {
-        if( ![glob isNetworkAvailable] && ![glob isOldTickerDatas] )  // no internet connection and no datas previously saved
-        {
-            self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_THIS_APP_NEED_INTERNET", @"internet connection is required to use this app")];
-        }
-        else if( ![glob isNetworkAvailable] && [glob isOldTickerDatas] ) // no internet connection but previously saved datas
-        {
-            self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_NO_CONNECT_OUTDATED", @"datas outdated"), [glob lastRecordDate]];
-        }
-        else if ( [glob isNetworkAvailable] ) //
-        {
-            self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_NO_CONNECT_OUTDATED", @"datas outdated"), [glob lastRecordDate]];
-        }
-    }
-    self.alt = !self.alt;
+    self.connectionError = [notification.userInfo objectForKey:@"error"];
 }
 
 //message box
