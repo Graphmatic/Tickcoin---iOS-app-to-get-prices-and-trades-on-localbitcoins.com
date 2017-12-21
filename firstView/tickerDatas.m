@@ -48,10 +48,13 @@
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
      {
+         NSLog(@"SETTING NETWORK FLAG");
+         glob.networkAvailable = YES;
+         NSLog([glob networkAvailable] ? @"Yes" : @"No");
          dispatch_async(parser, ^{
              [self triggerViewRefresh:responseObject];
          });
-         glob.networkAvailable = YES;
+         
          NSDate *recdATE = [[NSDate alloc]init];
          NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
          [dateFormatter setDateStyle:NSDateFormatterLongStyle];

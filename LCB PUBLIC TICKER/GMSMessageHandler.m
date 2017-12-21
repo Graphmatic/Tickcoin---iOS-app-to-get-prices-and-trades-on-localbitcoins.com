@@ -30,7 +30,7 @@
 {
     if (self = [super init])
     {
-        Globals *glob = [[Globals alloc]init];
+        Globals *glob = [Globals globals];
         self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
         // Cancel a preexisting timer.
         if( self.tic != nil )
@@ -109,10 +109,15 @@
 
 - (void)swapFirstViewMessage
 {
-//    NSLog(@"MESSAGE SWAP");
-    Globals *glob = [[Globals alloc]init];
-    if ( [glob isNetworkAvailable] )
+    
+    Globals *glob = [Globals globals];
+
+    NSLog([glob networkAvailable] ? @"Yes" : @"No");
+//    NSLog(@"glob : %@", [glob networkAvailable]);
+
+    if ( [glob isNetworkAvailable] == YES )
     {
+        NSLog(@"IS NETWORK");
         if ( self.alt )
         {
             self.nextInfoMessageStr = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", @"daily price in"), [glob lastRecordDate], [glob currency]];
@@ -124,6 +129,8 @@
     }
     else
     {
+        NSLog(@"IS not NETWORK");
+
         if ( self.alt )
         {
             if ( self.connectionError != nil )
@@ -164,7 +171,7 @@
 //message box
 - (void)dailyMessages
 {
-    Globals *glob = [[Globals alloc]init];
+    Globals *glob = [Globals globals];
     if (self.alt)
     {
         self.nextInfoMessageStr = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", @"daily price in"), [glob lastRecordDate], [glob currency]];
@@ -180,7 +187,7 @@
 }
 - (NSArray*)bidsViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isAscSorted:(bool)isAscSorted
 {
-    Globals *glob = [[Globals alloc]init];
+    Globals *glob = [Globals globals];
 
     switch (messagesCount)
     {
@@ -225,7 +232,7 @@
 }
 - (NSArray*)asksViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isDescSorted:(bool)isDescSorted
 {
-    Globals *glob = [[Globals alloc]init];
+    Globals *glob = [Globals globals];
 
     switch (messagesCount)
     {
