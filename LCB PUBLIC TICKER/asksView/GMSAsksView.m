@@ -160,7 +160,7 @@
     Globals *glob = [Globals globals];
     
     // init message processor
-    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
+    self.messageBoxMessage = [[GMSMessageHandler alloc]init];
     
     self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), [glob currency]];
     
@@ -222,7 +222,7 @@
         [self.tableView reloadData];
     }
     
-    self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
+    self.dynamicMessage.text = self.messageBoxMessage.infoMessagesStr;
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
@@ -289,12 +289,12 @@
 
 
 // no internet connection warning
--(void)timerStartNoConnect:(NSTimer *)theTimer
-{
-    alt = !alt;
-    NSError *err = [theTimer userInfo];
-    [self.messageBoxMessage noConnAlert:err alt:alt];
-}
+//-(void)timerStartNoConnect:(NSTimer *)theTimer
+//{
+//    alt = !alt;
+//    NSError *err = [theTimer userInfo];
+//    [self.messageBoxMessage noConnection:err alt:alt];
+//}
 //message box
 
 -(void)timerStartMulti:(NSTimer*)theTimer

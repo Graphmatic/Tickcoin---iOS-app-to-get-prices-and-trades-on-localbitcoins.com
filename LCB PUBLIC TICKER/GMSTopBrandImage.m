@@ -92,13 +92,30 @@
                 
                     break;
                 case 1:
+                    
                     self.topBrand = [UIImage imageNamed:@"header_bids"];
                     break;
                 case 2:
                     self.topBrand = [UIImage imageNamed:@"header_asks"];
                     break;
                 case 3:
-                    self.topBrand = [UIImage imageNamed:@"header_charts"];
+                    if ( IS_IPHONE_6_7_8 )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_charts_750"];
+                    }
+                    else if ( IS_IPHONE_PLUS )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_charts_1242"];
+                    }
+                    else if ( IS_IPHONE_X )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_charts_1125"];
+                    }
+                    else   // ( IS_IPHONE_4_5 )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_charts"];
+                    }
+                   
                     break;
                 default:
                     self.topBrand = [UIImage imageNamed:@"LCB_headerImg.png"];

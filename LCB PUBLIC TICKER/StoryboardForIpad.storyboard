@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" colorMatched="YES" initialViewController="m7O-XL-WIN">
-    <device id="ipad9_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -151,7 +147,7 @@
                     <connections>
                         <outlet property="emailIt" destination="Z5p-zM-Adc" id="hj5-Oa-IUk"/>
                         <outlet property="faceBook" destination="J8L-Zl-XXb" id="PYk-Ee-Zoc"/>
-                        <outlet property="messageBoxLabel" destination="nIf-qt-uiz" id="N6v-bJ-aFq"/>
+                        <outlet property="infoMessagesLabel" destination="nIf-qt-uiz" id="N6v-bJ-aFq"/>
                         <outlet property="messageIt" destination="6P0-md-CRE" id="mJ2-Pt-IoJ"/>
                         <outlet property="picker" destination="Umv-xQ-D9W" id="aQo-OV-9Kc"/>
                         <outlet property="socialStack" destination="tbV-g1-Xzt" id="SpU-fa-SJm"/>

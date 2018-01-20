@@ -14,7 +14,7 @@
 
 @implementation Globals : NSObject
 
-@synthesize currency, lastRecordDate, lastRecordDateOrderBook, queryStartDate, networkAvailable;
+@synthesize currency, lastRecordDate, lastRecordDateOrderBook, queryStartDate, networkAvailable, oldTickerDatas;
 
 
 +(id)globals
@@ -36,37 +36,43 @@
         lastRecordDateOrderBook = [[NSDate alloc] init];
         queryStartDate = [[NSDate alloc] init];
         networkAvailable = NO;
+        oldTickerDatas = NO;
     }
     return self;
 }
 
 
-// return network status
+//// return network status
 - (BOOL)isNetworkAvailable
-{
-    if ( (int)networkAvailable == 1 )
-    {
-        return YES;
-    }
-    return NO;
-}
-// set network status flag
-- (void) setNetworkAvailable:(BOOL)status
-{
-    if ( status )
-    {
-        networkAvailable = [NSNumber numberWithInt:1];
-    }
-    else
-    {
-        networkAvailable = [NSNumber numberWithInt:0];
-    }
-}
-
-- (BOOL) networkAvailable
 {
     return networkAvailable;
 }
+//// set network status flag
+//- (void) setNetworkAvailable:(BOOL)status
+//{
+//    networkAvailable = status;
+//}
+//
+//- (BOOL) networkAvailable
+//{
+//    return networkAvailable;
+//}
+//
+// return true if a ticker have been previously recorded
+- (BOOL) isOldTickerDatas
+{
+    return oldTickerDatas;
+}
+//// set network status flag
+//- (void) setOldTickerDatas:(BOOL)status
+//{
+//    oldTickerDatas = status;
+//}
+//
+//- (BOOL) oldTickerDatas
+//{
+//    return oldTickerDatas;
+//}
 
 // return selected currency
 - (NSString*) currency

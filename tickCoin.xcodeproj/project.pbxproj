@@ -83,8 +83,8 @@
 		F07641041929E7A700DA6616 /* GMSChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07641001929E7A700DA6616 /* GMSChartView.m */; };
 		F07AF6CA18FD85140091D05F /* GMSBidsAsksDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = F07AF6C918FD85140091D05F /* GMSBidsAsksDatas.m */; };
 		F083FAE31974372E0072F02B /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F083FAE21974372E0072F02B /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		F0B5651718E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */; };
-		F0B5651818E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */; };
+		F0B5651718E9C15A00709F6D /* GMSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageHandler.m */; };
+		F0B5651818E9C15A00709F6D /* GMSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageHandler.m */; };
 		F0BC384918F95BA20071F8F4 /* Tickers.m in Sources */ = {isa = PBXBuildFile; fileRef = F0BC384818F95BA20071F8F4 /* Tickers.m */; };
 		F0C01E4D191BEC8200A45B9B /* StoryboardForIpad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0C01E4C191BEC8200A45B9B /* StoryboardForIpad.storyboard */; };
 		F0C70E4B18E88CF000992AA2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0C70E4E18E88CF000992AA2 /* Localizable.strings */; };
@@ -241,8 +241,8 @@
 		F07AF6C818FD85140091D05F /* GMSBidsAsksDatas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSBidsAsksDatas.h; sourceTree = "<group>"; };
 		F07AF6C918FD85140091D05F /* GMSBidsAsksDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBidsAsksDatas.m; sourceTree = "<group>"; };
 		F083FAE21974372E0072F02B /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		F0B5651518E9C15A00709F6D /* GMSMessageBoxProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSMessageBoxProcessor.h; sourceTree = "<group>"; };
-		F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSMessageBoxProcessor.m; sourceTree = "<group>"; };
+		F0B5651518E9C15A00709F6D /* GMSMessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSMessageHandler.h; sourceTree = "<group>"; };
+		F0B5651618E9C15A00709F6D /* GMSMessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSMessageHandler.m; sourceTree = "<group>"; };
 		F0BC384718F95BA20071F8F4 /* Tickers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tickers.h; sourceTree = "<group>"; };
 		F0BC384818F95BA20071F8F4 /* Tickers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tickers.m; sourceTree = "<group>"; };
 		F0C01E4C191BEC8200A45B9B /* StoryboardForIpad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StoryboardForIpad.storyboard; sourceTree = "<group>"; };
@@ -474,9 +474,9 @@
 				F065FE8018E73DEB005B0376 /* Img_Singletons */,
 				F07AF6C418FD76390091D05F /* landingView */,
 				F0BC384718F95BA20071F8F4 /* Tickers.h */,
+				F0B5651518E9C15A00709F6D /* GMSMessageHandler.h */,
 				F0BC384818F95BA20071F8F4 /* Tickers.m */,
-				F0B5651518E9C15A00709F6D /* GMSMessageBoxProcessor.h */,
-				F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */,
+				F0B5651618E9C15A00709F6D /* GMSMessageHandler.m */,
 				F065FE7718E72DA5005B0376 /* GMSConstant.h */,
 				F055653018E6DD9300481688 /* GMSAppDelegate.h */,
 				F055653118E6DD9300481688 /* GMSAppDelegate.m */,
@@ -777,7 +777,7 @@
 				F012459018E72085002FAADA /* AFURLRequestSerialization.m in Sources */,
 				F00B2143191C05D1006D3B6F /* EmptySegue.m in Sources */,
 				F01245A818E7208F002FAADA /* UIButton+AFNetworking.m in Sources */,
-				F0B5651718E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */,
+				F0B5651718E9C15A00709F6D /* GMSMessageHandler.m in Sources */,
 				F01245A918E7208F002FAADA /* UIImageView+AFNetworking.m in Sources */,
 				F03FB22C18E84F8500A65036 /* GMSUtilitiesFunction.m in Sources */,
 				F07AF6CA18FD85140091D05F /* GMSBidsAsksDatas.m in Sources */,
@@ -815,7 +815,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0B5651818E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */,
+				F0B5651818E9C15A00709F6D /* GMSMessageHandler.m in Sources */,
 				F065FE8C18E7B226005B0376 /* GMSlabelFromJson.m in Sources */,
 				2881C09F1FD0651B00034AC2 /* GMSGlobals.m in Sources */,
 				F055655018E6DD9300481688 /* LCB_PUBLIC_TICKERTests.m in Sources */,

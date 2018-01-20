@@ -17,7 +17,8 @@
 - (NSDate*) lastRecordDateOrderBook;
 - (NSDate*) queryStartDate;
 - (BOOL) isNetworkAvailable;
-- (void) setNetworkAvailable:(BOOL)status;
+- (BOOL) isOldTickerDatas;
+
 - (void) setCurrency:(NSString*)newCurrency;
 - (void) setQueryStartDate:(NSDate*)newDate;
 - (void) setLastRecordDate:(NSDate*)newDate;
@@ -36,5 +37,6 @@
 @property (retain, atomic) NSDate *lastRecordDateOrderBook;
 @property (retain, atomic) NSDate *queryStartDate;
 @property (atomic) BOOL networkAvailable;
+@property ( atomic ) BOOL oldTickerDatas;
 
 @end

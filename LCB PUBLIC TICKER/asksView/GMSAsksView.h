@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GMSMessageBoxProcessor.h"
+#import "GMSMessageHandler.h"
 #import "GMSBidsAsksDatas.h"
 #import "GMSGlobals.h"
 
@@ -20,7 +20,7 @@
 @property (strong, nonatomic)UIActivityIndicatorView *waitingSpin;
 @property (nonatomic, weak) NSTimer *timerMessages;
 @property (weak, nonatomic) IBOutlet UIView *tableViewHeader;
-@property (strong, nonatomic) GMSMessageBoxProcessor *messageBoxMessage;
+@property (strong, nonatomic) GMSMessageHandler *messageBoxMessage;
 @property (weak, nonatomic) IBOutlet UILabel *dynamicMessage;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (retain, nonatomic) IBOutlet UILabel *sliderInfoTxt;
