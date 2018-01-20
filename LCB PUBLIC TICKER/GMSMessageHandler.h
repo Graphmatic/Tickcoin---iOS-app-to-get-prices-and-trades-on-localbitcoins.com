@@ -15,15 +15,13 @@
     NSString *nextInfoMessageStr;
 }
 + (id)messageHandler:(int)view;
++ (void)reset;
 - (void)waitWhileLoading;
-//- (NSMutableString*)dailyMessages:(int)messagesCount connected:(BOOL)connected;
 - (NSArray*)bidsViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isAscSorted:(bool)isAscSorted;
 - (NSArray*)asksViewMessages:(int)messagesCount connected:(BOOL)connected maxDeviation:(float)maxDev isDescSorted:(bool)isDescSorted;
 - (void)noConnection:(NSNotification *)notification;
 - (void)dailyMessages;
-//- (void)restartTic;
 - (void)stopTic;
-- (void)reset;
 - (void)refresh;
 - (void)swapFirstViewMessage;
 
