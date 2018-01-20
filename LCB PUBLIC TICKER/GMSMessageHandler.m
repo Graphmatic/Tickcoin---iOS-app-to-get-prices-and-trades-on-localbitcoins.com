@@ -107,6 +107,18 @@
     }
 }
 
+- (void)stopTic
+{
+    if( self.tic != nil )
+    {
+        [self.tic invalidate];
+    }
+    if( self.switchTic != nil )
+    {
+        [self.switchTic invalidate];
+    }
+}
+
 - (void)swapFirstViewMessage
 {
     
