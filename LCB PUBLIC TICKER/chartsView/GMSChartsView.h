@@ -8,13 +8,15 @@
 
 #ifndef GMSChartsView_h
 #define GMSChartsView_h
-
+#import "GMSGlobals.h"
 
 #endif /* GMSChartsView_h */
+
 
 @interface GMSChartsView :  UIViewController
 
 @property (strong, atomic) GMSTopBrandImage *headerChartsImg;
 @property (weak, nonatomic) IBOutlet UIView *chartsPriceView;
 @property (weak, nonatomic) IBOutlet UIView *chartsVolumeView;
+
 @end

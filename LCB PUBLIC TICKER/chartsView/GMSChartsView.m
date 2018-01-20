@@ -28,8 +28,7 @@
 
     self.view.backgroundColor = GMSColorBlueGrey;
     
-    
-    // backup parent view size
+    // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
 
@@ -39,7 +38,7 @@
         self.headerChartsImg = [GMSTopBrandImage topImage:3];
         [self.view addSubview:self.headerChartsImg];
         // origine of subviews
-        CGFloat chartViewOrigine = self.headerChartsImg.frame.size.height + 2;
+        CGFloat chartViewOrigine = self.headerChartsImg.frame.size.height;
 
         
         [self.chartsPriceView setFrame:CGRectMake(0,
@@ -62,6 +61,14 @@
         [self.view addSubview:self.chartsVolumeView];
     }
    
+}
+
+
+- (void) applicationDidEnterBackground:(NSNotification*)notification
+{
+    Globals *glob = [Globals globals];
+    // save current selected currency to db (should have been already done...)
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
 }
 
 

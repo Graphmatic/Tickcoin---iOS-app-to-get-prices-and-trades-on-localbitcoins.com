@@ -17,7 +17,7 @@
 
 #define kGMSColorBarChartControllerBackground UIColorFromHex(0x313131)
 #define kGMSColorBarChartBackground [UIColor whiteColor]
-#define kGMSColorBarChartBarBlue [UIColor colorWithRed:0 green:0.333 blue:0.502 alpha:1.0]
+#define kGMSColorBarChartBarBlue GMSCol //[UIColor colorWithRed:0 green:0.333 blue:0.502 alpha:1.0]
 #define kGMSColorBarChartBarGreen [UIColor colorWithRed:0.957 green:0.443 blue:0.082 alpha:1.0]
 #define kGMSColorBarChartHeaderSeparatorColor UIColorFromHex(0x686868)
 

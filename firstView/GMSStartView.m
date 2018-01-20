@@ -8,18 +8,19 @@
 #import "GMSStartView.h"
 #import <MessageUI/MessageUI.h>
 #import "GMSUtilitiesFunction.h"
-
+#import <sys/utsname.h>
+#import "GMSGlobals.h"
 
 @interface GMSStartView ()
 {
-    
     int messagesCount;
     BOOL alt;
-    
 }
 @end
+
 @implementation GMSStartView
-@synthesize previousDatas ,firstViewDatas,  messageBoxLabel, messageBoxMessage, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack;
+
+@synthesize previousDatas ,tickerDatas,  infoMessagesLabel, infoMessages, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
 
 - (NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectContext *context = nil;
@@ -29,52 +30,121 @@
     }
     return context;
 }
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // backup parent view size
+    // get device model
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    NSString *currentDevice = [NSString stringWithCString:systemInfo.machine
+                                                 encoding:NSUTF8StringEncoding];
+    NSString *currentSimulatorDevice = [NSString stringWithCString:getenv("SIMULATOR_MODEL_IDENTIFIER")
+                                                          encoding:NSUTF8StringEncoding];
+    
+    Globals *glob = [Globals globals];
+    
+    // debug
+    NSLog(@"DidLoad globals test: currency => %@", [glob currency]);
+    // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = self.view.bounds.size.height;
+    
+    // debug
+    NSLog(@"W x H : %f x %f", viewWidth, viewHeight);
     
     //add header
     self.headerImg = [GMSTopBrandImage topImage:0];
     [self.view addSubview:self.headerImg];
     
     // Some position helpers
-    CGFloat pickerOrigY = self.headerImg.topBrand.size.height + 2;
-    CGFloat messageBoxOrigY = pickerOrigY + self.picker.frame.size.height + 2;
+    CGFloat pickerOrigY = self.headerImg.topBrand.size.height;
+    CGFloat pickerHeight;
+    CGFloat messageBoxOrigY;
     
     // Dynamic messages
-    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
+    self.infoMessages = [[GMSMessageHandler alloc]init];
     
     // if not an iPad
     if ( !IS_IPAD ) {
         
         // position of Currencies picker
-        [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 120)];
+        if ( IS_IPHONE_4_5 )
+        {
+            [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 120)];
+        }
+        else if ( IS_IPHONE_6_7_8 || IS_IPHONE_X )
+        {
+            [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 160)];
+        }
+        else if ( IS_IPHONE_PLUS )
+        {
+            [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 180)];
+        }
+        
         [self.view addSubview:self.picker];
-        messageBoxOrigY = pickerOrigY + self.picker.frame.size.height + 2;
+        
+        pickerHeight = self.picker.frame.size.height;
+        messageBoxOrigY = pickerOrigY + pickerHeight;
         
         // position of message box
-        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 50)];
-
-        // postion tableView
-        CGFloat tableViewOrigY = messageBoxOrigY + 50 + 2;
+        CGFloat tableViewOrigY = messageBoxOrigY;
+        if ( IS_IPHONE_4_5 )
+        {
+            [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 50)];
+            // postion tableView
+            tableViewOrigY += 50;
+        }
+        else if ( IS_IPHONE_6_7_8 )
+        {
+            [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 64)];
+            // postion tableView
+            tableViewOrigY += 64;
+        }
+        else if ( IS_IPHONE_PLUS )
+        {
+            [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 80)];
+            // postion tableView
+            tableViewOrigY += 80;
+        }
+        else if ( IS_IPHONE_X )
+        {
+            [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 70)];
+            // postion tableView
+            tableViewOrigY += 70;
+        }
+        if ( IS_IPHONE_X )
+        {
+            NSLog(@"IS_IPHONE_X");
+            // 35 is the room reserved for gesture in iPhone X
+            [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY - 49 - 35) )];
+        }
+        else
+        {
+            NSLog(@"!IS_IPHONE_X");
+            [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY - 49) )];
+        }
         
-        [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY) )];
+        // debug
+        NSLog(@"tableViewOrigY : %f", tableViewOrigY);
         [self.view addSubview:self.tableView];
+        
+        // This will remove extra separators from tableview
+        self.tableView.tableFooterView = [UIView new];
+    }
+    else
+    {
+        messageBoxOrigY = pickerOrigY + self.picker.frame.size.height;
+        [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY + 2, self.tableView.bounds.size.width + self.picker.frame.size.width + 2, 62)];
     }
     
-    else {
-        [self.messageBoxLabel setFrame:CGRectMake(0, messageBoxOrigY, self.headerImg.frame.size.width, 60)];
-    }
+    self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
     
-    self.messageBoxLabel.text = self.messageBoxMessage.messageBoxString;
-    
+    self.rowHeight = (self.tableView.bounds.size.height / 5);
     
     // add social buttons
-    [self.socialStack setFrame:self.messageBoxLabel.frame];
+    [self.socialStack setFrame:self.infoMessagesLabel.frame];
     //resize buttons
     if ( !IS_IPAD ) {
         self.tweetIt.imageEdgeInsets = UIEdgeInsetsMake(45, 45, 45, 45);
@@ -95,46 +165,23 @@
     [self.socialStack addSubview:self.emailIt];
     
     // constraint to spread buttons accros its superview
-    [GMSUtilitiesFunction evenlySpaceTheseButtonsInThisView:@[self.tweetIt, self.messageIt, self.faceBook, self.emailIt] :self.socialStack];
-    
+    [GMSUtilitiesFunction evenlySpaceItems:@[self.tweetIt, self.messageIt, self.faceBook, self.emailIt] :self.socialStack];
     
     [self.view addSubview:self.socialStack];
     
     self.socialStack.hidden = YES;
     
-    if(firstLaunch)
-    {
-        self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:nil];
-        NSUInteger pickerDefIndex = 0;
-        [self.picker reloadAllComponents];
-        [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
-    }
-    else
-    {
-        self.firstViewDatas = [GMSfirstViewTableData sharedFirstViewTableData:currentCurrency];
-        NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
-        [self.picker reloadAllComponents];
-        [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
-    }
-    
-    [self.tableView reloadData];
-    
-    
-    
-    //init refreshing touch item
-    self.refreshTicker = [[UIRefreshControl alloc] init];
-    self.refreshTicker.tintColor = GMSColorCoolBlue;
-    [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:self.refreshTicker];
-    self.tableView.backgroundColor = GMSColorCoolBlue;
+    [self.refreshTicker endRefreshing];
 
+    NSUInteger pickerDefIndex = [self.tickerDatas.currenciesList indexOfObject:[glob currency]];
+    [self.picker reloadAllComponents];
+    [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
     
-    if (!test)
-    {
-        [self updateTicker];
-    }
-    
+    self.tableView.backgroundColor = GMSColorDarkGrey;
+    [self.tableView reloadData];
+
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -143,66 +190,64 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    Globals *glob = [Globals globals];
+    
+
+    // debug
+    NSLog(@"globals test: currency => %@", [glob currency]);
+    
     // Register for notification. (placed in viewDidLoad(), notifs are not re-activated after views switching.)
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"currencySwitching" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"currencyListUpdate" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
+    // monitor change on ticker
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshDisplayedDatas:) name:@"tickerRefresh" object:nil];
+    // monitor currency list change
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePickerList:) name:@"updatePickerList" object:nil];
+    // monitor connection error
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noConnection:) name:@"connectionError" object:nil];
+
+    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
+    
+    self.infoMessages = [GMSMessageHandler messageHandler:0];
+    
+    self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(infoRefresh:) name:@"infoRefresh" object:nil];
+
+    // trigger UIrefresh
+    // init refreshing touch item
+    self.refreshTicker = [[UIRefreshControl alloc] init];
+    self.refreshTicker.tintColor = GMSColorDarkGrey;
+    [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refreshTicker];
+    [self.refreshTicker beginRefreshing];
+    CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
+    [self.tableView setContentOffset:newOffset animated:YES];
+
+    self.tickerDatas = [TickerDatas tickerDatas];
+    
+    [self.refreshTicker endRefreshing];
+
 }
 
-//
-//---------------------------------------------------------------------------------------------------------------------------//
-//                                                    //datas handler//
-//---------------------------------------------------------------------------------------------------------------------------//
-//parse JSON datas from LCB
 - (void)updateTicker
 {
-    
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
-    connected = YES;
-    self.messageBoxLabel.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
-    
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:urlStart]];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-     {
-         
-         [self.refreshTicker endRefreshing];
-         dispatch_queue_t parser = dispatch_queue_create("parsecvs", DISPATCH_QUEUE_SERIAL);
-         dispatch_async(parser, ^{
-             [self.firstViewDatas update:responseObject];
-         });
-         
-         NSDate *recdATE = [[NSDate alloc]init];
-         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
-         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-         lastRecordDate = [[dateFormatter stringFromDate:recdATE]mutableCopy];
-         //   [[NSUserDefaults standardUserDefaults]setObject:lastRecordDate forKey:@"lastRecordDate"];
-         if(self.timerMessages)[self.timerMessages invalidate];
-         self.timerMessages = nil;
-         self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-         
-     }
-                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
-     {
-         [self.refreshTicker endRefreshing];
-         connected = NO;
-         if(self.timerMessages)[self.timerMessages invalidate];
-         self.timerMessages = nil;
-         self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartNoConnect:) userInfo:error repeats:YES];
-     }];
-    [operation start];
+    NSLog(@"updateTicker ");
+    [self.tickerDatas apiQuery];
 }
 
-- (void)prepareDatas:(NSNotification *)notification
+- (void)refreshDisplayedDatas:(NSNotification *)notification
 {
+    Globals *glob = [Globals globals];
+    NSLog(@"refreshing tableView view ");
+    [self.refreshTicker endRefreshing];
     [self.tableView reloadData];
+    if ( [glob isNetworkAvailable] )
+    {
+        [self.infoMessages dailyMessages];
+    }
 }
 
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -210,9 +255,13 @@
 //---------------------------------------------------------------------------------------------------------------------------//
 - (void) updatePickerList:(NSNotification *)notification
 {
-    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
+    NSLog(@"refreshing picker list: %@", self.tickerDatas.cellValues);
+
+    Globals *glob = [Globals globals];
+    NSUInteger pickerDefIndex = [self.tickerDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
+    [self.tickerDatas currencyChange:[self.tickerDatas.currenciesList objectAtIndex:pickerDefIndex]];
 }
 
 - (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -222,25 +271,26 @@
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    return self.firstViewDatas.currenciesList.count;
+    return self.tickerDatas.currenciesList.count;
 }
 
 - (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     NSMutableParagraphStyle *centeredStyle = [[NSMutableParagraphStyle alloc] init];
     centeredStyle.alignment = NSTextAlignmentCenter;
-    NSString *pickerTitle = [self.firstViewDatas.currenciesList objectAtIndex:row];
+    NSString *pickerTitle = [self.tickerDatas.currenciesList objectAtIndex:row];
     NSAttributedString *pickerTitleColor = [[NSAttributedString alloc] initWithString:pickerTitle attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSParagraphStyleAttributeName:centeredStyle}];
     return pickerTitleColor;
 }
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    Globals *glob = [Globals globals];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
-    self.messageBoxLabel.text = nil;
-    currentCurrency = [self.firstViewDatas.currenciesList objectAtIndex:row];
-    self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN" , "%@  -  %@"), lastRecordDate, currentCurrency];
-    [self.firstViewDatas currencyChange:[self.firstViewDatas.currenciesList objectAtIndex:row]];
+    self.infoMessagesLabel.text = nil;
+    [glob setCurrency:[self.tickerDatas.currenciesList objectAtIndex:row]];
+    self.infoMessagesLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN" , "%@  -  %@"), [glob lastRecordDate], [glob currency]];
+    [self.tickerDatas currencyChange:[self.tickerDatas.currenciesList objectAtIndex:row]];
     
 }
 
@@ -257,18 +307,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return  [self.firstViewDatas.cellTitles count];
+    // debug
+    // NSLog(@"CELLS = %@", self.firstViewDatas.cellTitles);
+    return [self.tickerDatas.cellTitles count];
+    
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //local var to hold value
-    NSString *cellVal = [self.firstViewDatas.cellValues objectForKey:[self.firstViewDatas.cellTitles objectAtIndex:indexPath.row]];
+    NSString *cellVal = [self.tickerDatas.cellValues objectForKey:[self.tickerDatas.cellTitles objectAtIndex:indexPath.row]];
     //get title for the cell
-    NSString *key = [self.firstViewDatas.cellTitles objectAtIndex:indexPath.row];
+    NSString *key = [self.tickerDatas.cellTitles objectAtIndex:indexPath.row];
     static NSString *CellIdentifier = @"Item";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_background_sel.png"]];
-    cell.backgroundColor = GMSColorCoolBlue;
+    cell.backgroundColor = GMSColorDarkGrey;
     
     //populate cell
     cell.textLabel.text = key;
@@ -289,7 +342,14 @@
     }
     return cell;
 }
-//row selected : show share buttons
+
+// rows height
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.rowHeight;
+}
+
+//row selected : shows share buttons
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.prevSelRow isEqual:indexPath]) {
@@ -305,7 +365,7 @@
         cell.textLabel.textColor = GMSColorOrange;
         if(self.timerMessages)[self.timerMessages invalidate];
         self.timerMessages = nil;
-        self.messageBoxLabel.text = Nil;
+        self.infoMessagesLabel.text = Nil;
         self.socialStack.hidden = NO;
         self.prevSelRow = indexPath;
     }
@@ -316,37 +376,47 @@
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.textLabel.textColor = [UIColor whiteColor];
-
-     self.socialStack.hidden = YES;
-    [self messageBoxChange:nil];
+    
+    self.socialStack.hidden = YES;
+    [self infoRefresh:nil];
     self.prevSelRow = nil;
 }
+
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    //messages handler//
 //---------------------------------------------------------------------------------------------------------------------------//
-- (void)messageBoxChange:(NSNotification *)notification
+- (void)noConnection:(NSNotification *)notification
 {
-    self.messageBoxLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), lastRecordDate, currentCurrency];
-    
-    //start message box carroussel
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
-    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-    
+    self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
 }
-- (void)timerStartNoConnect:(NSTimer *)theTimer
+
+- (void)infoRefresh:(NSNotification *)notification
 {
-    alt = !alt;
-    NSError *err = [theTimer userInfo];
-    
-    //  [self.messageBoxLabel setFont:[UIFont systemFontOfSize:35]];
-    self.messageBoxLabel.text = [self.messageBoxMessage noConnAlert:err alt:alt];
+    NSLog(@"infoRefresh!");
+//    Globals *glob = [Globals globals];
+    self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
+//    self.infoMessagesLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), [glob lastRecordDate], [glob currency]];
+//
+//    //start message box carroussel
+//    if(self.timerMessages)[self.timerMessages invalidate];
+//    self.timerMessages = nil;
+//    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+//
 }
--(void)timerStartMulti:(NSTimer*)theTimer
-{
-    alt = !alt;
-    self.messageBoxLabel.text = [self.messageBoxMessage dailyMessages:alt connected:connected];
-}
+//- (void)timerStartNoConnect:(NSTimer *)theTimer
+//{
+//    alt = !alt;
+//    NSError *err = [theTimer userInfo];
+//
+//    //  [self.messageBoxLabel setFont:[UIFont systemFontOfSize:35]];
+//    self.infoMessagesLabel.text = [self.infoMessages noConnection:err alt:alt];
+//}
+//-(void)timerStartMulti:(NSTimer*)theTimer
+//{
+//    Globals *glob = [Globals globals];
+//    alt = !alt;
+//    self.infoMessagesLabel.text = [self.infoMessages dailyMessages:alt connected:[glob isNetworkAvailable]];
+//}
 
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // facebook //
@@ -417,11 +487,11 @@
                 switch(result) {
                         //  This means the user cancelled without sending the Tweet
                     case SLComposeViewControllerResultCancelled:
-                        self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENDING_CANCELLED", @"Tweet canceled")];
+                        self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENDING_CANCELLED", @"Tweet canceled")];
                         break;
                         //  This means the user hit 'Send'
                     case SLComposeViewControllerResultDone:
-                        self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENT", @"Tweet sent")];
+                        self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_TWEET_SENT", @"Tweet sent")];
                         
                         break;
                 }
@@ -443,6 +513,7 @@
     }
     
 }
+
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // email //
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -493,19 +564,19 @@
     switch (result)
     {
         case MFMailComposeResultCancelled:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENDING_CANCELLED", @"Mail sending canceled")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENDING_CANCELLED", @"Mail sending canceled")];
             break;
         case MFMailComposeResultSaved:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SAVED", @"Mail saved")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SAVED", @"Mail saved")];
             break;
         case MFMailComposeResultSent:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENT", @"Mail sent")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SENT", @"Mail sent")];
             break;
         case MFMailComposeResultFailed:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SEND_FAIL", @"Mail sending failed")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_SEND_FAIL", @"Mail sending failed")];
             break;
         default:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_NOT_SENT_DEFAULT", @"Mail not sent")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_MAIL_NOT_SENT_DEFAULT", @"Mail not sent")];
             break;
     }
 }
@@ -554,16 +625,16 @@
     switch (result)
     {
         case MessageComposeResultCancelled:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENDING_CANCELLED", @"SMS sending canceled")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENDING_CANCELLED", @"SMS sending canceled")];
             break;
         case MessageComposeResultSent:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENT", @"SMS sent")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SENT", @"SMS sent")];
             break;
         case MessageComposeResultFailed:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SEND_FAIL", @"SMS sending failed")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_SEND_FAIL", @"SMS sending failed")];
             break;
         default:
-            self.messageBoxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_NOT_SENT_DEFAULT", @"SMS not sent")];
+            self.infoMessagesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_SMS_NOT_SENT_DEFAULT", @"SMS not sent")];
             break;
     }
 }
@@ -574,11 +645,18 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
+    Globals *glob = [Globals globals];
+    // save current selected currency to db (should have been already done...)
+    [self.tickerDatas saveTicker];
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
+    
+    [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    NSUInteger pickerDefIndex = [self.firstViewDatas.currenciesList indexOfObject:currentCurrency];
+    Globals *glob = [Globals globals];
+    NSUInteger pickerDefIndex = [self.tickerDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:NO];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
@@ -589,9 +667,11 @@
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
+    Globals *glob = [Globals globals];
     // save current selected currency to db (should have been already done...)
-    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
+    [self.tickerDatas saveTicker];
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 @end
-

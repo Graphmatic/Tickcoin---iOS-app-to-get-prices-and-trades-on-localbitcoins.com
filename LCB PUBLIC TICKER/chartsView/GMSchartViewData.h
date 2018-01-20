@@ -7,13 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GMSfirstViewTableData.h"
+#import "tickerDatas.h"
+#import "GMSGlobals.h"
 
 @interface GMSchartViewData : NSObject
-extern BOOL firstLaunch;
-extern BOOL connected;
-extern BOOL lockChart;
-extern NSDate *graphRequestStart;
 
 @property  (retain, nonatomic) NSMutableDictionary *thisDayDatas;
 // thisDayDatas datas structure:
@@ -29,13 +26,14 @@ extern NSDate *graphRequestStart;
 @property (readwrite) BOOL apiQuerySuccess;
 @property (readwrite) BOOL isReady;
 
-+ (GMSchartViewData *)sharedGraphViewTableData:(NSMutableString*)currency;
+
++ (GMSchartViewData *)sharedGraphViewTableData:(NSString*)currency;
 - (void)resetSharedInstance;
-- (void)chartArray:(id)responseObject;
-- (void)chartListingCleaned:(id)responseObject;
+- (void)listingBuilder:(id)responseObject;
 - (void)dummyArrayForMissingChart;
 - (void)apiQuery;
 - (void)refreshFromWeb;
 
 + (NSMutableDictionary*)datasDeltasLoop: (NSMutableDictionary*)todayDatas;
+
 @end
