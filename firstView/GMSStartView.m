@@ -171,6 +171,8 @@
     
     self.socialStack.hidden = YES;
     
+    [self.refreshTicker endRefreshing];
+
     NSUInteger pickerDefIndex = [self.tickerDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
@@ -190,6 +192,7 @@
 {
     Globals *glob = [Globals globals];
     
+
     // debug
     NSLog(@"globals test: currency => %@", [glob currency]);
     
@@ -224,6 +227,9 @@
     [self.tableView setContentOffset:newOffset animated:YES];
 
     self.tickerDatas = [TickerDatas tickerDatas];
+    
+    [self.refreshTicker endRefreshing];
+
 }
 
 - (void)updateTicker
