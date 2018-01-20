@@ -171,15 +171,20 @@
     
     self.socialStack.hidden = YES;
     
-    [self.refreshTicker endRefreshing];
-
     NSUInteger pickerDefIndex = [self.tickerDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
     
     self.tableView.backgroundColor = GMSColorDarkGrey;
     [self.tableView reloadData];
-
+    // trigger UIrefresh
+    // init refreshing touch item
+    self.refreshTicker = [[UIRefreshControl alloc] init];
+    self.refreshTicker.tintColor = GMSColorDarkGrey;
+    [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
+    CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
+    [self.tableView setContentOffset:newOffset animated:YES];
+    
 }
 
 
@@ -192,7 +197,6 @@
 {
     Globals *glob = [Globals globals];
     
-
     // debug
     NSLog(@"globals test: currency => %@", [glob currency]);
     
@@ -211,24 +215,18 @@
     //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
     
     self.infoMessages = [GMSMessageHandler messageHandler:0];
-    
+
     self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(infoRefresh:) name:@"infoRefresh" object:nil];
 
-    // trigger UIrefresh
-    // init refreshing touch item
-    self.refreshTicker = [[UIRefreshControl alloc] init];
-    self.refreshTicker.tintColor = GMSColorDarkGrey;
-    [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
+    
     [self.tableView addSubview:self.refreshTicker];
-    [self.refreshTicker beginRefreshing];
-    CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
-    [self.tableView setContentOffset:newOffset animated:YES];
+    
 
     self.tickerDatas = [TickerDatas tickerDatas];
     
-    [self.refreshTicker endRefreshing];
+
 
 }
 
@@ -635,6 +633,10 @@
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:NO];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    // stop messangeHandler loop timers
+    [self.infoMessages stopTic];
+    [GMSMessageHandler reset];
+//    self.refreshTicker = nil;
 }
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification
