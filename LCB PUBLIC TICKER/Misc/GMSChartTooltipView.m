@@ -186,12 +186,14 @@ CGFloat const GMSChartTooltipViewDefaultHeight = 280.0f;
     self.isTrade = isTrade;
     if( isTrade )
     {
-        
+        Globals *glob = [Globals globals];
+
         // debug
         // NSLog(@"array tooltip : %@", datasCollection);
+        
         NSLocale *locale = [NSLocale currentLocale];
         NSString *unit = [locale displayNameForKey:NSLocaleCurrencySymbol
-                                             value:currentCurrency];
+                                             value:[glob currency]];
         self.currency.text = unit;
         
         self.dateTime.text = [NSDateFormatter localizedStringFromDate:[datasCollection objectAtIndex:3] dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
@@ -214,39 +216,42 @@ CGFloat const GMSChartTooltipViewDefaultHeight = 280.0f;
         self.lowTitle.text = lowTitleTxt;
         self.highTitle.text = highTitleTxt;
         
-        NSArray *lh = [datasCollection objectAtIndex:4];
-        
-        value = [[lh objectAtIndex:0]floatValue];
-        NSString *lp = [GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]];
-        self.lowPrice.text = [lp stringByAppendingString:unit];
-        
-        value = [[lh objectAtIndex:1]floatValue];
-        NSString *lpv = [@"(" stringByAppendingString:[NSString stringWithFormat:@"%f", value]];
-        self.lowPriceVol.text = [lpv stringByAppendingString:@"Btc)"];
-        
-        value = [[lh objectAtIndex:2]floatValue];
-        NSString *hp = [GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]];
-        self.highPrice.text = [hp stringByAppendingString:unit];
-        
-        value = [[lh objectAtIndex:3]floatValue];
-        NSString *hpv = [@"(" stringByAppendingString:[NSString stringWithFormat:@"%f", value]];
-        self.highPriceVol.text = [hpv stringByAppendingString:@"Btc)"];
-        
-        value = [[lh objectAtIndex:4]floatValue];
-        NSString *lv = [NSString stringWithFormat:@"%f", value];
-        self.lowVolume.text = [lv stringByAppendingString:@"Btc"];
-        
-        value = [[lh objectAtIndex:5]floatValue];
-        NSString *lvp = [@"(" stringByAppendingString:[GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]]];
-        self.lowVolprice.text = [lvp stringByAppendingString:[unit stringByAppendingString:@")"]];
-        
-        value = [[lh objectAtIndex:6]floatValue];
-        NSString *hv = [NSString stringWithFormat:@"%f", value];
-        self.highVol.text = [hv stringByAppendingString:@"Btc"];
+        if ( [datasCollection objectAtIndex:4] != nil )
+        {
+            NSArray *lh = [datasCollection objectAtIndex:4];
+            
+            value = [[lh objectAtIndex:0]floatValue];
+            NSString *lp = [GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]];
+            self.lowPrice.text = [lp stringByAppendingString:unit];
+            
+            value = [[lh objectAtIndex:1]floatValue];
+            NSString *lpv = [@"(" stringByAppendingString:[NSString stringWithFormat:@"%f", value]];
+            self.lowPriceVol.text = [lpv stringByAppendingString:@"Btc)"];
+            
+            value = [[lh objectAtIndex:2]floatValue];
+            NSString *hp = [GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]];
+            self.highPrice.text = [hp stringByAppendingString:unit];
+            
+            value = [[lh objectAtIndex:3]floatValue];
+            NSString *hpv = [@"(" stringByAppendingString:[NSString stringWithFormat:@"%f", value]];
+            self.highPriceVol.text = [hpv stringByAppendingString:@"Btc)"];
+            
+            value = [[lh objectAtIndex:4]floatValue];
+            NSString *lv = [NSString stringWithFormat:@"%f", value];
+            self.lowVolume.text = [lv stringByAppendingString:@"Btc"];
+            
+            value = [[lh objectAtIndex:5]floatValue];
+            NSString *lvp = [@"(" stringByAppendingString:[GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]]];
+            self.lowVolprice.text = [lvp stringByAppendingString:[unit stringByAppendingString:@")"]];
+            
+            value = [[lh objectAtIndex:6]floatValue];
+            NSString *hv = [NSString stringWithFormat:@"%f", value];
+            self.highVol.text = [hv stringByAppendingString:@"Btc"];
 
-        value = [[lh objectAtIndex:7]floatValue];
-        NSString *hvp = [@"(" stringByAppendingString:[GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]]];
-        self.highVolPrice.text = [[hvp stringByAppendingString:unit] stringByAppendingString:@")"];
+            value = [[lh objectAtIndex:7]floatValue];
+            NSString *hvp = [@"(" stringByAppendingString:[GMSUtilitiesFunction twoDecimalStrFormat:[NSString stringWithFormat:@"%f", value]]];
+            self.highVolPrice.text = [[hvp stringByAppendingString:unit] stringByAppendingString:@")"];
+        }
     }
 
     // ping UI
@@ -258,8 +263,8 @@ CGFloat const GMSChartTooltipViewDefaultHeight = 280.0f;
 {
     if ( self.isTrade )
     {
-
         self.hidden = NO;
+        
         CGFloat viewWidth = self.bounds.size.width;
         CGFloat halfW = ceilf(viewWidth / 2);
         CGFloat viewHeight = self.bounds.size.height;
@@ -268,9 +273,9 @@ CGFloat const GMSChartTooltipViewDefaultHeight = 280.0f;
         CGFloat subH = ceilf( (viewHeight - currencyH ) / 5 );
         
         // FLT_MAX here simply means no constraint in height
-        CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
-        CGSize highLow = [self frameForText:self.highPrice.text sizeWithFont:self.highPrice.font constrainedToSize:CGSizeMake(maximumLabelSize.height,self.highPrice.font.lineHeight) lineBreakMode:self.highPrice.lineBreakMode ];
-        float highLowH = ceilf(highLow.height);
+        // CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+        // CGSize highLow = [self frameForText:self.highPrice.text sizeWithFont:self.highPrice.font constrainedToSize:CGSizeMake(maximumLabelSize.height,self.highPrice.font.lineHeight) lineBreakMode:self.highPrice.lineBreakMode ];
+        // float highLowH = ceilf(highLow.height);
         
         self.currency.frame = CGRectMake(0, 0, viewWidth, currencyH);
         self.dateTime.frame = CGRectMake(0, currencyH + 1, viewWidth, dateH);
@@ -302,7 +307,7 @@ CGFloat const GMSChartTooltipViewDefaultHeight = 280.0f;
         self.lowVolprice.frame = CGRectMake(0, lowHighVolP, halfW, slot);
         self.highVolPrice.frame = CGRectMake(halfW, lowHighVolP, halfW, slot);
         
-        CGFloat allElementsHeight = (currencyH * 2) + (dateH * 2) + (subH * 2) + (highLowH * 2) + 5;
+//        CGFloat allElementsHeight = (currencyH * 2) + (dateH * 2) + (subH * 2) + (highLowH * 2) + 5;
 
         [self drawRect:CGRectMake(0, 0, GMSChartTooltipViewDefaultWidth, GMSChartTooltipViewDefaultHeight)];
     }

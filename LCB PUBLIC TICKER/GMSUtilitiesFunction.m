@@ -7,8 +7,10 @@
 //
 
 #import "GMSUtilitiesFunction.h"
+#import "GMSGlobals.h"
 
 @implementation GMSUtilitiesFunction
+
 
 //format with currency symbol
 + (NSString*) currencyFormatThat:(NSString *)theStringVal
@@ -19,7 +21,8 @@
     numFormatterCur.locale = [NSLocale currentLocale];
     //currency formatting
     [numFormatterCur setNumberStyle:NSNumberFormatterCurrencyStyle];
-    [numFormatterCur setCurrencyCode:currentCurrency];
+    Globals *glob = [Globals globals];
+    [numFormatterCur setCurrencyCode:[glob currency]];
     [numFormatterCur setMaximumFractionDigits:2];
     NSString* stringCurrencyFormat = [numFormatterCur stringFromNumber:toNumber];
     return stringCurrencyFormat;
@@ -107,29 +110,31 @@
 //build orderBookUrl
 + (NSString*)orderBookUrl
 {
-    NSMutableString* startURL = [[NSMutableString alloc] initWithString:[tickerURLstart stringByAppendingString:currentCurrency]];
-    NSString *fullURL = [[NSString alloc] initWithString:[startURL stringByAppendingString:tickerURLOrderBookEnd]];
+    Globals *glob = [Globals globals];
+    NSMutableString* startURL = [[NSMutableString alloc] initWithString:[[glob tickerURLstart] stringByAppendingString:[glob currency]]];
+    NSString *fullURL = [[NSString alloc] initWithString:[startURL stringByAppendingString:[glob orderBookURLend]]];
     return fullURL;
 }
 //build url for chart
 + (NSString*)graphUrl
 {
+    Globals *glob = [Globals globals];
     NSTimeInterval secondsPerDay = 24 * 60 * 60;
     NSDate *today = [[NSDate alloc] init];
-    graphRequestStart = [today dateByAddingTimeInterval: -secondsPerDay];
-    graphRequestStart = [self roundDateToHour:graphRequestStart];
-    NSTimeInterval since = ([graphRequestStart timeIntervalSince1970]);
+    [glob setQueryStartDate:[today dateByAddingTimeInterval: -secondsPerDay]];
+    [glob setQueryStartDate:[self roundDateToHour:[glob queryStartDate]]];
+    NSTimeInterval since = ([[glob queryStartDate] timeIntervalSince1970]);
     
     NSInteger sinceInt = since;
     NSString *sinceString = [[NSString alloc]init];
     sinceString = [NSString stringWithFormat:@"%ld", (long)sinceInt ];
     
-   
-
-    NSMutableString* startURL = [[NSMutableString alloc] initWithString:[graphURLStart stringByAppendingString:currentCurrency]];
-    NSString *tmpUrl = [[NSString alloc] initWithString:[startURL stringByAppendingString:graphURLEnd]];
+    NSMutableString* startURL = [[NSMutableString alloc] initWithString:[[glob graphURLStart] stringByAppendingString:[glob currency]]];
+    NSString *tmpUrl = [[NSString alloc] initWithString:[startURL stringByAppendingString:[glob graphURLEnd]]];
     NSString *fullURL = [[NSString alloc] initWithString:[tmpUrl stringByAppendingString:sinceString]];
-//    NSLog(@"charts api query: %@", fullURL);
+    
+    // debug
+    // NSLog(@"charts api query: %@", fullURL);
     return fullURL;
 }
 
@@ -163,7 +168,7 @@
 // use that to spread button equally in their parent view
 // Source : https://stackoverflow.com/questions/18706444/simplest-way-to-evenly-distribute-uibuttons-horizontally-across-width-of-view-co
 
-+ (void) evenlySpaceTheseButtonsInThisView : (NSArray *) buttonArray : (UIView *) thisView {
++ (void) evenlySpaceItems : (NSArray *) buttonArray : (UIView *) thisView {
     int widthOfAllButtons = 0;
     for (int i = 0; i < buttonArray.count; i++) {
         UIButton *thisButton = [buttonArray objectAtIndex:i];

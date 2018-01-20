@@ -22,6 +22,7 @@
 "_WAIT_FOR_DATAS" = "chargement des données...";
 "_INVALID_DATAS" = "erreur";
 "_NO_CONNECT_OUTDATED" = "mode hors-ligne! dernière synchro: %@";
+"_NO_CONNECT_SERVER_UNAVAILABLE" = "Le serveur distant ne réponds pas";
 "_DAILY_PRICE_VARIATION" = "variation depuis dernier refresh:";
 "_DAILY_PRICE_VARIATION_DOWN" = "en baisse de %@";
 "_DAILY_PRICE_VARIATION_NON"  = "prix inchangé";

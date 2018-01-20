@@ -1,5 +1,5 @@
 //
-//  GMSAsksView.m
+//  GMSBidsView.m
 //  LCB PUBLIC TICKER
 //
 //  Created by frup on 29/03/2014.
@@ -7,333 +7,347 @@
 //
 
 #import "GMSAsksView.h"
-#import "GMSSecondViewTableData.h"
+#import "GMSBidsAsksDatas.h"
 
 @interface GMSAsksView ()
 {
-    NSMutableArray *ordersAsks;
-    float maxDeviation;
     BOOL alt;
-    BOOL settingOn;
-    NSString *lastRecordDate;
+    BOOL connected;
     int messagesCount;
-    BOOL doubleTapLabel;
-    BOOL graphs;
     UIButton *done;
+    
 }
 @end
 
 @implementation GMSAsksView
 
-@synthesize timerMessages, editMaxDev, settingSquare, secondViewDatas, sliderVal, sliderValName, thirdViewMessage, messageBox, headerView, headerTitleLeft, firstViewC;
+@synthesize timerMessages, editMaxDev, asksDatas, sliderVal, sliderOn, sliderInfoTxt, dynamicMessage, tableViewHeader, headerTitleLeft, headerTitleRight, maxDeviation, waitingSpin, sortedDesc;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidEnterBackground:)
-                                                 name:UIApplicationDidEnterBackgroundNotification
-                                               object:nil];
-    [self.view setBackgroundColor:GMSColorOrange];
-    if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-    {
-        [self.tableView setBackgroundColor:GMSColorBlue];
-        settingOn = NO;
-        //init swipe right that show maxDeviation slider
-        UISwipeGestureRecognizer *displaySettings = [[UISwipeGestureRecognizer alloc]initWithTarget:self
-                                                                                             action:@selector(displayMaxDeviationSlider:)];
-        displaySettings.direction = UISwipeGestureRecognizerDirectionRight;
-        [self.view addGestureRecognizer:displaySettings];
-    }
-    else
-    {
-        [self.tableView setBackgroundColor:[UIColor blackColor]];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateTickerThirdView:)
-                                                     name:@"currencySwitching"
-                                                   object:nil];
-        self.sliderVal.hidden =YES;
-        settingOn = YES;
-        [self showOverlaySetting];
-    }
     
+    // layout
+    // get parent view size
+    CGFloat viewWidth = self.view.bounds.size.width;
+    CGFloat viewHeight = (self.view.bounds.size.height / 100) * 94;
+    
+    Globals *glob = [Globals globals];
 
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
-    messagesCount = 0;
-    graphs = NO;
-    //add messageBox
-    self.messageBox = [GMSMessageBox init:46.0];
-    [self.view addSubview:self.messageBox];
-    //load message for messageBox
-    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
-    [self.messageBox addSubview:self.thirdViewMessage];
-    self.thirdViewMessage.text = self.messageBoxMessage.messageBoxString;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareDatas:) name:@"changeAsksNow" object:nil];
-    if(firstLaunchAsks)
-    {
-        self->maxDeviation = 30;
-        self.sliderVal.text = [NSString stringWithFormat:@"%d%%",(int)self->maxDeviation];
-        self.editMaxDev.value = (int)self->maxDeviation;
-        self.sliderValName.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
-        self.secondViewDatas = [GMSSecondViewTableData sharedSecondViewTableData:firstLaunchAsks currency:nil];
-        [self.tableView reloadData];
-    }
-    else
-    {
-        self->maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"maxDeviationBids"]floatValue];
-        self.editMaxDev.value = (int)self->maxDeviation;
-        self.sliderVal.text = [NSString stringWithFormat:@"%d%%",(int)self->maxDeviation];
-        self.sliderValName.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
-        self.secondViewDatas = [GMSSecondViewTableData sharedSecondViewTableData:firstLaunchAsks currency:currentCurrency];
-    }
-    //add header
+    // add header
     self.headerImg = [GMSTopBrandImage topImage:2];
     [self.view addSubview:self.headerImg];
+    
+    // Some position helpers
+    CGFloat messageBoxOrigY = self.headerImg.topBrand.size.height + 2;
+    CGFloat ipadLayoutWidth = self.headerImg.topBrand.size.width - 4;
+    
+    // add empty room for dynamic messages
+    CGFloat messageBoxHeight = 64.0;
+    
+    // add dynamic label in messageBox
+    if ( !IS_IPAD )
+    {
+        self.dynamicMessage.frame = CGRectMake(0, messageBoxOrigY, viewWidth, messageBoxHeight - 4);
+    }
+    else
+    {
+        self.dynamicMessage.frame = CGRectMake(2, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
+    }
+    self.dynamicMessage.backgroundColor = [UIColor clearColor];
+    self.dynamicMessage.textColor = GMSColorBlueGreyDark;
+    [self.view addSubview:self.dynamicMessage];
+    
+    // Frame position for setting slider view
+    if ( !IS_IPAD )
+    {
+        self.settingSquare.frame = CGRectMake(0, messageBoxOrigY, viewWidth, messageBoxHeight - 4);
+    }
+    else
+    {
+        self.settingSquare.frame = CGRectMake(2, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
+    }
+    self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
+    self.settingSquare.alpha = 0.80;
+    self.settingSquare.hidden = YES;
+    
+    // tableview pseudo header (an UIView..)
+    CGFloat tableViewHeaderOriginY = messageBoxOrigY + messageBoxHeight;
+    if ( !IS_IPAD )
+    {
+        self.tableViewHeader.frame = CGRectMake(0, tableViewHeaderOriginY -7, viewWidth, 24);
+    }
+    else
+    {
+        self.tableViewHeader.frame = CGRectMake(2, tableViewHeaderOriginY -7, ipadLayoutWidth, 24);
+    }
+    
+    [self.tableViewHeader setBackgroundColor: GMSColorBlueGreyDark];
+    // left and right label in tableView header
+    CGRect frameHeaderL;
+    if ( !IS_IPAD )
+    {
+        frameHeaderL = CGRectMake(0, 0, viewWidth, 24);
+    }
+    else
+    {
+        frameHeaderL = CGRectMake(2, 0, ipadLayoutWidth, 24);
+    }
+    CGRect frameHeaderR = frameHeaderL;
+    CGFloat fhWidth;
+    if ( !IS_IPAD )
+    {
+        fhWidth = viewWidth - frameHeaderL.origin.x;
+    }
+    else
+    {
+        fhWidth = ipadLayoutWidth - frameHeaderL.origin.x;
+    }
+    frameHeaderL.origin.x = 5;
+    frameHeaderL.size.width = fhWidth;
+    frameHeaderR.origin.x = -5;
+    frameHeaderR.size.width = fhWidth;
+    self.headerTitleLeft = [[UILabel alloc] initWithFrame:frameHeaderL];
+    [self.headerTitleLeft setFont:GMSAvenirNextCondensedMedium];
+    self.headerTitleLeft.textAlignment = NSTextAlignmentLeft;
+    self.headerTitleLeft.textColor = GMSColorBlueGrey;
+    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), [glob currency]];
+    self.headerTitleRight = [[UILabel alloc] initWithFrame:frameHeaderR];
+    [self.headerTitleRight setFont:GMSAvenirNextCondensedMedium];
+    self.headerTitleRight.textAlignment = NSTextAlignmentRight;
+    self.headerTitleRight.textColor = GMSColorBlueGrey;
+    self.headerTitleRight.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_RIGHT", @"Price-currency-maxvolume"), [glob currency]];
+    
+    [self.tableViewHeader addSubview:self.headerTitleLeft];
+    [self.tableViewHeader addSubview:self.headerTitleRight];
+    [self.view addSubview:self.tableViewHeader];
+    
+    // add tableView
+    CGFloat tableViewOrigY = tableViewHeaderOriginY + 19;
+    if ( !IS_IPAD )
+    {
+        [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY) )];
+    }
+    else
+    {
+        [self.tableView setFrame:CGRectMake(2, tableViewOrigY, ipadLayoutWidth, (viewHeight - tableViewOrigY) )];
+    }
+    
+    [self.tableView setBackgroundColor: GMSColorDarkGrey];
+    // no footer
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.view addSubview:self.tableView];
+    
+    
+    
     //add double tap to reassort tableView ascending/descending
     UITapGestureRecognizer *tapToChangeOrder = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToChangeArrOrder:)];
     [self.tableView addGestureRecognizer:tapToChangeOrder];
     tapToChangeOrder.numberOfTapsRequired=2;
-    //constraints
-    [NSLayoutConstraint constraintWithItem:self.thirdViewMessage attribute:NSLayoutAttributeCenterX
-                                 relatedBy:NSLayoutRelationEqual toItem:self.messageBox
-                                 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:+0.0];
-    [NSLayoutConstraint constraintWithItem:self.thirdViewMessage attribute:NSLayoutAttributeCenterY
-                                 relatedBy:NSLayoutRelationEqual toItem:self.messageBox
-                                 attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:+0.0];
-        //tableview header
-    CGRect frameHeader = CGRectMake(0, (self.thirdViewMessage.frame.origin.y + self.thirdViewMessage.frame.size.height + 1), self.view.bounds.size.width, 30);
-    self.headerView.frame = frameHeader;
-    [self.headerView setBackgroundColor:[UIColor whiteColor]];
-    CGRect frameHeaderL = CGRectMake(0, 0, self.tableView.bounds.size.width, 30);
-    CGRect frameHeaderR = frameHeaderL;
-    frameHeaderL.origin.x = 5;
-    frameHeaderL.size.width = self.tableView.bounds.size.width - frameHeaderL.origin.x;
-    frameHeaderR.origin.x = -5;
-    frameHeaderR.size.width = self.tableView.bounds.size.width - frameHeaderL.origin.x;
-    self.headerTitleLeft = [[UILabel alloc] initWithFrame:frameHeaderL];
-    [self.headerTitleLeft setFont:[UIFont fontWithName:@"Avenir-BookOblique" size:14]];
-    self.headerTitleLeft.textAlignment = NSTextAlignmentLeft;
-    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), currentCurrency];
-    UILabel *headerTitleRight = [[UILabel alloc] initWithFrame:frameHeaderR];
-    [headerTitleRight setFont:[UIFont fontWithName:@"Avenir-BookOblique" size:14]];
-    headerTitleRight.textAlignment = NSTextAlignmentRight;
-    headerTitleRight.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_RIGHT", @"Price-currency-maxvolume"), currentCurrency];
-    //neat to prev. el
-    if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-    {
-    [NSLayoutConstraint constraintWithItem:self.headerView attribute:NSLayoutAttributeTop
-                                 relatedBy:NSLayoutRelationEqual toItem:self.messageBox
-                                 attribute:NSLayoutAttributeBottom multiplier:1.0 constant:+1.0];
-    }
-    [self.view addSubview:self.headerView];
-    [self.headerView addSubview:self.headerTitleLeft];
-   [self.headerView addSubview:headerTitleRight];
-  
-    self.thirdViewMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_BUY_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
-    if (!test)
-    {
-         [self updateTickerThirdView:nil];
-    }
-  
-    //  [self.graphView reloadData];
+    
+    //init swipe to right that shows maxDeviation slider
+    UISwipeGestureRecognizer *displaySettings = [[UISwipeGestureRecognizer alloc]initWithTarget:self
+                                                                                         action:@selector(displayMaxDeviationSlider:)];
+    displaySettings.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:displaySettings];
+    
+    // various init
+    messagesCount = 0;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    self.thirdViewMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_BUY_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
-    if ([self.secondViewDatas.orderAsksAllCurrency objectForKey:currentCurrency] == nil)
+    Globals *glob = [Globals globals];
+    
+    // init message processor
+    self.messageBoxMessage = [[GMSMessageHandler alloc]init];
+    
+    self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), [glob currency]];
+    
+    if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"asksMaxDeviation"] != nil )
     {
-        [self updateTickerThirdView:nil];
+        self.maxDeviation = [[[NSUserDefaults standardUserDefaults]objectForKey:@"asksMaxDeviation"]intValue];
     }
     else
     {
-        dispatch_queue_t parserQu = dispatch_queue_create("parserQ", NULL);
-        dispatch_async(parserQu, ^{
-            [self.secondViewDatas update:self->maxDeviation type:@"asks"];
-        });
+        self.maxDeviation = self.editMaxDev.value = 201;
     }
-   self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), currentCurrency];
+    if (self.maxDeviation == 201) {
+        self.sliderVal.text = [NSString stringWithFormat:@"ALL"];
+    }
+    else
+    {
+        self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
+    }
+    
+    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), [NSString stringWithFormat:@"%d%%", self.maxDeviation]];
+    
+    self.asksDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:[NSMutableString stringWithString:[glob currency]]];
+    
+    // add observer
+    [self.asksDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    // notif listener
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidEnterBackground:)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    
+    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), [glob currency]];
+    
     [self.editMaxDev addTarget:self
-                  action:@selector(closeSettingView:)
-        forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+                        action:@selector(closeSettingView:)
+              forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+    
+    
+    
+    if ( !self.asksDatas.isReady )
+    {
+        self.waitingSpin = [[UIActivityIndicatorView alloc]
+                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        if ( !IS_IPAD )
+        {
+            self.waitingSpin.center = CGPointMake(160, 240);
+        }
+        else
+        {
+            self.waitingSpin.center = CGPointMake(self.tableView.frame.origin.x + (self.tableView.frame.size.width / 2), self.tableView.frame.origin.y + (self.tableView.frame.size.height / 2));
+        }
+        self.waitingSpin.hidesWhenStopped = YES;
+        [self.view addSubview:self.waitingSpin];
+        [self.waitingSpin startAnimating];
+    }
+    else
+    {
+        [self.waitingSpin stopAnimating];
+        [self.tableView reloadData];
+    }
+    
+    self.dynamicMessage.text = self.messageBoxMessage.infoMessagesStr;
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+    
 }
+
 //tableView
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *tableHeaderBG=[[UIView alloc]initWithFrame:CGRectMake(0,0,320,3)];
-    tableHeaderBG.backgroundColor =  GMSColorOrange;
-    return tableHeaderBG;
-}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return  [self.secondViewDatas.orderAsks count];
+    return  [self.asksDatas.orderAsks count];
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSNumber *cellVal;
-    NSString *key = [[self.secondViewDatas.orderAsks objectAtIndex:indexPath.row]objectAtIndex:0];
+    NSString *key = [[self.asksDatas.orderAsks objectAtIndex:indexPath.row]objectAtIndex:0];
     static NSString *CellIdentifier = @"Item2";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.backgroundColor = GMSColorDarkGrey;
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_background_sel.png"]];
-     if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-    {
-    cell.backgroundColor = GMSColorBlue;
-    }
+    cell.textLabel.font = GMSAvenirNextCondensedMedium;
     cell.textLabel.text = key;
-    cellVal = [[self.secondViewDatas.orderAsks objectAtIndex:indexPath.row]objectAtIndex:1];
-    if(cellVal != NULL)
-    {
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", cellVal];
-    }
-    else
-    {
-        cell.detailTextLabel.text = [NSString stringWithFormat: NSLocalizedString(@"_NO_DATAS", @"no data")];
-    }
+    cellVal = [[self.asksDatas.orderAsks objectAtIndex:indexPath.row]objectAtIndex:1];
+    cell.detailTextLabel.font = GMSAvenirNextCondensedMedium;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", cellVal];
+    
     return cell;
 }
 
-
-
-- (void)updateTickerThirdView:(NSNotification *)notification
-{
-    if (!test)
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    
+    if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
     {
-    //SEND REQUEST
-    self.thirdViewMessage.text = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
+        Globals *glob = [Globals globals];
 
-    NSString *fullURL = [GMSUtilitiesFunction orderBookUrl];
-    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
-    AFHTTPRequestOperation *operationOrdersBook = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operationOrdersBook.responseSerializer = [AFJSONResponseSerializer serializer];
-    [operationOrdersBook setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationOrdersBook, id responseObjectOB)
-     {
-         dispatch_queue_t parserQuThree = dispatch_queue_create("parserQuThree", NULL);
-         dispatch_async(parserQuThree, ^{
-             [self.secondViewDatas updateFromWeb:self->maxDeviation json:responseObjectOB type:@"asks"];
-         });
-
-         if(timerMessages)[timerMessages invalidate];
-         timerMessages = nil;
-         connected = YES;
-         if (firstLaunchAsks)
-         {
-           [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"firstLaunchAsks"];
-         }
-         self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-     }
-    failure:^(AFHTTPRequestOperation *operationOrdersBook, NSError *error) {
-                                                   NSLog(@"%@", error.localizedDescription);
-        connected = NO;
-        if(self.timerMessages)[self.timerMessages invalidate];
-        self.timerMessages = nil;
-        self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartNoConnect:) userInfo:error repeats:YES];
-                                                   
-                                               }];
-    [operationOrdersBook start];
+        dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
+            // remove spinner if any
+            [self.waitingSpin stopAnimating];
+            self.sortedDesc = NO;
+            // update table headers
+            self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), [glob currency]];
+            // Update misc. visible elements
+            if ( ( [self.asksDatas.orderAsks count] == 0 ) && ( self.asksDatas.isDatas == YES ) ) {
+                if(self.timerMessages)[self.timerMessages invalidate];
+                self.timerMessages = nil;
+                self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_FILTER_NULL", @"no order in this range, please edit display filter")];
+                if(self.timerMessages)[self.timerMessages invalidate];
+                self.timerMessages = nil;
+                self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+            }
+            else
+            {
+                if ( self.asksDatas.isDatas ==  NO )
+                {
+                    if(self.timerMessages)[self.timerMessages invalidate];
+                    self.timerMessages = nil;
+                    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
+                }
+            }
+            [self.tableView reloadData];
+        });
     }
 }
-- (void)prepareDatas:(NSNotification *)notification
-{
-   
-    if ([self.secondViewDatas.orderAsks count] == 0) {
-        if(self.timerMessages)[self.timerMessages invalidate];
-        self.timerMessages = nil;
-        self.thirdViewMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_EDIT_FILTER_NULL", @"no order in this range, please edit display filter")];
-    }
-    else
-    {
-        if(self.timerMessages)[self.timerMessages invalidate];
-        self.timerMessages = nil;
-        self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-    }
-     [self.tableView reloadData];
-}
+
 
 // no internet connection warning
--(void)timerStartNoConnect:(NSTimer *)theTimer
-{
-    alt = !alt;
-    NSError *err = [theTimer userInfo];
-    [self.messageBoxMessage noConnAlert:err alt:alt];
-}
+//-(void)timerStartNoConnect:(NSTimer *)theTimer
+//{
+//    alt = !alt;
+//    NSError *err = [theTimer userInfo];
+//    [self.messageBoxMessage noConnection:err alt:alt];
+//}
 //message box
 
 -(void)timerStartMulti:(NSTimer*)theTimer
 {
-    if(messagesCount == 4){messagesCount = 0;}
-    NSArray *callBack = [self.messageBoxMessage asksViewMessages:messagesCount connected:connected maxDeviation:self->maxDeviation doubleTap:doubleTapLabel];
+    if(messagesCount == 3){messagesCount = 0;}
+    NSArray *callBack = [self.messageBoxMessage asksViewMessages:messagesCount connected:connected maxDeviation:self.maxDeviation isDescSorted:self.sortedDesc];
     messagesCount = [[callBack objectAtIndex:0]intValue];
-    self.thirdViewMessage.text = [callBack objectAtIndex:1];
+    self.dynamicMessage.text = [callBack objectAtIndex:1];
 }
 
 //double tap to change order
--(void) tapToChangeArrOrder:(UIGestureRecognizer*) recognizer {
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
-    self.thirdViewMessage.text = nil;
-    NSArray* reverseOrder = [[self.secondViewDatas.orderAsks reverseObjectEnumerator] allObjects];
-    self.secondViewDatas.orderAsks = (NSMutableArray*)reverseOrder;
-    if(doubleTapLabel == YES)
-    {
-        doubleTapLabel = NO;
-    }
-    else{
-        doubleTapLabel = YES;
-    }
-    [self prepareDatas:nil];
-}
--(void) displayMaxDeviationSlider:(UIGestureRecognizer*) recognizer
+- (void)tapToChangeArrOrder:(UIGestureRecognizer*) recognizer
 {
-    if (settingOn == NO)
+    NSArray* reverseOrder = [[self.asksDatas.orderAsks reverseObjectEnumerator] allObjects];
+    self.asksDatas.orderAsks = (NSMutableArray*)reverseOrder;
+    self.sortedDesc = !self.sortedDesc;
+    [self.tableView reloadData];
+}
+
+- (void) displayMaxDeviationSlider:(UIGestureRecognizer*) recognizer
+{
+    if (self.sliderOn == NO)
     {
         [self showOverlaySetting];
     }
 }
--(void)showOverlaySetting
+- (void)showOverlaySetting
 {
-     if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-    {
-    settingOn = YES;
-    [self.settingSquare setBackgroundColor:[UIColor blackColor]];
-    self.settingSquare.alpha = 0.8;
-    }
-    else
-    {
-    [self.settingSquare setBackgroundColor:[UIColor whiteColor]];
-    }
-    self.settingSquare.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.settingSquare.layer.borderWidth = 0.7f;
+    self.sliderOn = YES;
+    self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
+    self.settingSquare.alpha = 0.80;
+    self.settingSquare.layer.borderColor = (__bridge CGColorRef _Nullable)(GMSColorBlueGrey);
+    self.settingSquare.layer.borderWidth = 0.8f;
     
     self.settingSquare.hidden = YES;
     self.editMaxDev = [[UISlider alloc]init];
     CGRect posSlider = editMaxDev.frame;
-     if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-    {
-        posSlider.size.width = 270;
-        posSlider.origin.y=21;
-        posSlider.origin.x= 8;
-    }
-    else
-    {
-        posSlider.size.width = 230;
-        posSlider.origin.y=21;
-        posSlider.origin.x= 10;
-    }
-    self.editMaxDev.frame= posSlider;
+    CGRect okButtonFrame;
+
+    posSlider.size.width = ( self.settingSquare.frame.size.width / 100 ) * 70;
+    posSlider.origin.y = ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height ) / 2;
+    posSlider.origin.x = ( self.settingSquare.frame.size.width / 100 ) * 10;
+    okButtonFrame = CGRectMake( ( self.settingSquare.frame.size.width / 100 ) * 80, ( self.settingSquare.frame.size.height - self.editMaxDev.frame.size.height) / 2 , self.editMaxDev.frame.size.height, self.editMaxDev.frame.size.height);
+
+    self.editMaxDev.frame = posSlider;
     self.editMaxDev.thumbTintColor = [UIColor whiteColor];
     self.editMaxDev.minimumValue = 1;
     self.editMaxDev.maximumValue = 201;
-    self.editMaxDev.value = (int)self->maxDeviation;
+    self.editMaxDev.value = self.maxDeviation;
     self.editMaxDev.continuous = YES;
-     if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-    {
+
     self.editMaxDev.minimumTrackTintColor = [UIColor whiteColor];
-    }
-    else
-    {
-        self.editMaxDev.minimumTrackTintColor = [UIColor darkGrayColor];
-    }
+
     [self.editMaxDev addTarget:self
                         action:@selector(sliderMoving:)
               forControlEvents:UIControlEventValueChanged];
@@ -342,96 +356,139 @@
                         action:@selector(sliderMovingUpdateLabel:)
               forControlEvents:UIControlEventValueChanged];
     //label
-    if (self->maxDeviation == 201) {
+    if (self.maxDeviation == 201) {
         self.sliderVal.text = [NSString stringWithFormat:@"ALL"];
     }
     else
     {
-        self.sliderVal.text = [NSString stringWithFormat:@"%d%%",(int)self->maxDeviation];
+        self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
     }
-   
-    self.sliderValName.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
-     if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-    {
-        self.sliderValName.textColor=[UIColor whiteColor];
-    }
-    else
-    {
-        self.sliderValName.textColor=[UIColor darkGrayColor];
-    }
-    [self.sliderValName setFont:[UIFont fontWithName:@"Gill Sans" size:14]];
-    self.sliderValName.textAlignment = NSTextAlignmentCenter;
+    CGRect tbFrame = self.tableView.frame;
+    self.sliderVal.frame = CGRectMake(0, tbFrame.origin.y - 49, tbFrame.size.width, tbFrame.size.height);
     
-    //OK button - iPhone only
+    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
+
+    self.sliderInfoTxt.textColor=[UIColor whiteColor];
+
+    self.sliderInfoTxt.frame = self.tableViewHeader.frame;
+    self.sliderInfoTxt.backgroundColor = GMSColorBlueGreyDark;
     
-     if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-    {
-        self->done = [UIButton buttonWithType:UIButtonTypeSystem];
-        self->done.tintColor = [UIColor whiteColor];
-        [self->done addTarget:self
-                       action:@selector(closeSettingView:)
-             forControlEvents:UIControlEventTouchUpInside];
-        [self->done setTitle:@"OK" forState:UIControlStateNormal];
-        [[self->done titleLabel] setFont:[UIFont fontWithName:@"Avenir-BookOblique" size:16]];
-        self->done.frame = CGRectMake(278.0, 21.0, 40.0, 30.0);
-    }
-    self.thirdViewMessage.text = nil;
-    [self.settingSquare addSubview:self.sliderValName];
-    [self.settingSquare addSubview:self.sliderVal];
+    
+    [self.sliderInfoTxt setFont:[UIFont fontWithName:@"Gill Sans" size:14]];
+    self.sliderInfoTxt.textAlignment = NSTextAlignmentCenter;
+    
+    self->done = [UIButton buttonWithType:UIButtonTypeSystem];
+    self->done.tintColor = [UIColor whiteColor];
+    [self->done addTarget:self
+                   action:@selector(closeSettingView:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [self->done setTitle:@"OK" forState:UIControlStateNormal];
+    [[self->done titleLabel] setFont:[UIFont fontWithName:@"Avenir-BookOblique" size:16]];
+    self->done.frame = okButtonFrame;
+
+    self.dynamicMessage.text = nil;
+    self.sliderVal.hidden = NO;
+    [self.view addSubview:self.sliderInfoTxt];
+    [self.view addSubview:self.sliderVal];
     [self.settingSquare addSubview:self.editMaxDev];
     [self.settingSquare addSubview:self->done];
     [self.view addSubview:self.settingSquare];
     self.settingSquare.hidden = NO;
+    
 }
 
 - (IBAction)sliderMoving:(id)sender
 {
-    self.sliderVal.hidden = NO;
-    self.sliderValName.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
-    self->maxDeviation = lround(self.editMaxDev.value);
+    self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), self.sliderVal.text];
+    self.maxDeviation = (int)lround(self.editMaxDev.value);
 }
+
 - (IBAction)sliderMovingUpdateLabel:(id)sender
 {
-    if(self->maxDeviation == 201)
+    if(self.maxDeviation == 201)
     {
         self.sliderVal.text = @"ALL";
     }
     else
     {
-        self.sliderVal.text = [NSString stringWithFormat:@"%d%%",(int)self->maxDeviation];
+        self.sliderVal.text = [NSString stringWithFormat:@"%d%%", self.maxDeviation];
     }
     
 }
+
 - (IBAction)closeSettingView:(id)sender
 {
-[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:self->maxDeviation] forKey:@"maxDeviationAsks"];
-     if ( (!UI_USER_INTERFACE_IDIOM()) == UIUserInterfaceIdiomPad )
-    {
-   [UIView animateWithDuration:0.5f
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"asksMaxDeviation"];
+    //    if ( !IS_IPAD )
+    //    {
+    [UIView animateWithDuration:0.5f
                      animations:^{self.settingSquare.alpha = 0.0;}
                      completion:^(BOOL finished){
-                         [self.sliderValName removeFromSuperview];
+                         self.sortedDesc = NO;
+                         [self.sliderInfoTxt removeFromSuperview];
                          [self.editMaxDev removeFromSuperview];
                          [self->done removeFromSuperview];
                          self.settingSquare.hidden = YES;
-                          settingOn = NO;   }];
-    }
-    self.sliderVal.hidden =YES;
-    [self.secondViewDatas update:self->maxDeviation type:@"asks"];
+                         self.sliderOn = NO;  }];
+    //    }
+    self.sliderVal.hidden = YES;
+    [self.asksDatas changeDeviation:self.maxDeviation orderType:@"asks"];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
+
+- (void) viewDidUnload
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    self.sortedDesc = NO;
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if(self.timerMessages)[self.timerMessages invalidate];
+    self.timerMessages = nil;
+    if ( self.sliderOn )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"asksMaxDeviation"];
+        [self.sliderInfoTxt removeFromSuperview];
+        [self.editMaxDev removeFromSuperview];
+        [self->done removeFromSuperview];
+        self.settingSquare.hidden = YES;
+        self.sliderVal.hidden = YES;
+        self.sliderOn = NO;
+        // remove spinner if any
+        [self.waitingSpin stopAnimating];
+    }
+    self.sortedDesc = NO;
+}
+
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:self->maxDeviation] forKey:@"maxDeviationAsks"];
-    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
-    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"firstLaunchAsks"];
-    [[NSUserDefaults standardUserDefaults] setObject:self.secondViewDatas.orderAsksAllCurrency forKey:currentCurrency];
+    Globals *glob = [Globals globals];
     
+    // save current selected currency to db (should have been already done...)
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
     NSDate *recdATE = [NSDate date];
-    [[NSUserDefaults standardUserDefaults]setObject:recdATE forKey:@"lastRecordDateOrderBook"];
+    [[NSUserDefaults standardUserDefaults] setObject:recdATE forKey:@"lastRecordDateOrderBook"];
+    if ( self.sliderOn )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.maxDeviation] forKey:@"asksMaxDeviation"];
+        [self.sliderInfoTxt removeFromSuperview];
+        [self.editMaxDev removeFromSuperview];
+        [self->done removeFromSuperview];
+        self.settingSquare.hidden = YES;
+        self.sliderVal.hidden = YES;
+        self.sliderOn = NO;
+    }
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
+    self.sortedDesc = NO;
 }
 
 @end
