@@ -20,7 +20,7 @@
 
 @implementation GMSStartView
 
-@synthesize previousDatas ,tickerDatas,  infoMessagesLabel, infoMessages, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
+@synthesize previousDatas ,tickerDatas,  infoMessagesLabel, infoMessages, headerImg, refreshTicker, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
 
 - (NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectContext *context = nil;
@@ -363,8 +363,6 @@
         prevCell.textLabel.textColor = [UIColor whiteColor];
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         cell.textLabel.textColor = GMSColorOrange;
-        if(self.timerMessages)[self.timerMessages invalidate];
-        self.timerMessages = nil;
         self.infoMessagesLabel.text = Nil;
         self.socialStack.hidden = NO;
         self.prevSelRow = indexPath;
@@ -393,30 +391,8 @@
 - (void)infoRefresh:(NSNotification *)notification
 {
     NSLog(@"infoRefresh!");
-//    Globals *glob = [Globals globals];
     self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
-//    self.infoMessagesLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), [glob lastRecordDate], [glob currency]];
-//
-//    //start message box carroussel
-//    if(self.timerMessages)[self.timerMessages invalidate];
-//    self.timerMessages = nil;
-//    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-//
 }
-//- (void)timerStartNoConnect:(NSTimer *)theTimer
-//{
-//    alt = !alt;
-//    NSError *err = [theTimer userInfo];
-//
-//    //  [self.messageBoxLabel setFont:[UIFont systemFontOfSize:35]];
-//    self.infoMessagesLabel.text = [self.infoMessages noConnection:err alt:alt];
-//}
-//-(void)timerStartMulti:(NSTimer*)theTimer
-//{
-//    Globals *glob = [Globals globals];
-//    alt = !alt;
-//    self.infoMessagesLabel.text = [self.infoMessages dailyMessages:alt connected:[glob isNetworkAvailable]];
-//}
 
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // facebook //
@@ -643,8 +619,6 @@
 {
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
     Globals *glob = [Globals globals];
     // save current selected currency to db (should have been already done...)
     [self.tickerDatas saveTicker];
@@ -661,8 +635,6 @@
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:NO];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
 }
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification

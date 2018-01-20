@@ -21,7 +21,6 @@
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) UIRefreshControl *refreshTicker;
 @property (strong, atomic) GMSTopBrandImage *headerImg;
-@property (nonatomic, weak) NSTimer *timerMessages;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
 @property (strong, atomic) GMSMessageHandler *infoMessages;
 @property (weak, nonatomic) IBOutlet UILabel *infoMessagesLabel;
@@ -40,5 +39,5 @@
 - (IBAction)tweetSelectedRow:(id)sender;
 - (void)updateTicker;
 - (void)noConnection:(NSNotification *)notification;
-- (void)messageRefresh:(NSNotification *)notification;
+
 @end

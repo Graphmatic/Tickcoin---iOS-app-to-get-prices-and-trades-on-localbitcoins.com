@@ -22,7 +22,7 @@
 - (void)noConnection:(NSNotification *)notification;
 - (void)dailyMessages;
 //- (void)restartTic;
-//- (void)stopTic;
+- (void)stopTic;
 - (void)reset;
 - (void)refresh;
 - (void)swapFirstViewMessage;
