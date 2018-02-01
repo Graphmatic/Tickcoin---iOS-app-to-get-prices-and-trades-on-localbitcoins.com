@@ -220,14 +220,9 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(infoRefresh:) name:@"infoRefresh" object:nil];
 
-    
     [self.tableView addSubview:self.refreshTicker];
     
-
     self.tickerDatas = [TickerDatas tickerDatas];
-    
-
-
 }
 
 - (void)updateTicker

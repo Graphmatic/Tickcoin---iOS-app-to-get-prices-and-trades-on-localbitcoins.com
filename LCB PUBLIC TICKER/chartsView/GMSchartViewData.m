@@ -18,7 +18,7 @@
 
 static GMSchartViewData * _sharedGraphViewTableData = nil;
 
-@synthesize thisDayDatas, previousPricesAndVolumes, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady;
+@synthesize thisDayDatas, previousPricesAndVolumes, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady, chartCurrency;
 
 //+(GMSchartViewData*)sharedGraphViewTableData:(NSMutableString*)currency
 //{
@@ -38,7 +38,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
 //    static GMSchartViewData *_sharedGraphViewTableData = nil;
     static dispatch_once_t onceToken = 0;
     dispatch_once(&onceToken, ^{
-        if ( !_sharedGraphViewTableData || ( ![currency isEqualToString:_sharedGraphViewTableData.currency] ) ) {
+        if ( !_sharedGraphViewTableData || ( ![currency isEqualToString:_sharedGraphViewTableData.chartCurrency] ) ) {
             [_sharedGraphViewTableData resetSharedInstance];
             _sharedGraphViewTableData = [[self alloc] init:currency];
         }
@@ -64,13 +64,13 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
         // debug
         NSLog(@"initializing a ChartViewData");
         // Init self's objects
-        isReady = NO;
-        cvsHandlerQ = [NSOperationQueue new];
-        cvsHandlerQ.maxConcurrentOperationCount=1;
-        dateAscSorted = [[NSMutableArray alloc] init];
-        thisDayDatas = [[NSMutableDictionary alloc] init];
-        previousPricesAndVolumes = [[NSMutableDictionary alloc]init];
-        currency = currency;
+        self.isReady = NO;
+        self.cvsHandlerQ = [NSOperationQueue new];
+        self.cvsHandlerQ.maxConcurrentOperationCount = 1;
+        self.dateAscSorted = [[NSMutableArray alloc] init];
+        self.thisDayDatas = [[NSMutableDictionary alloc] init];
+        self.previousPricesAndVolumes = [[NSMutableDictionary alloc]init];
+        self.chartCurrency = currency;
         
         // Add Notification observer to be informed of currency switching
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullUpdate:) name:@"tickerRefresh" object:nil];
@@ -98,7 +98,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
 // the initial XHR query
 - (void)apiQuery
 {
-    isReady = NO;
+    self.isReady = NO;
     NSString *fullURL = [GMSUtilitiesFunction graphUrl];
     NSLog(@"URL : %@", fullURL);
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
@@ -109,12 +109,13 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
          // Build the datas object if response is populated
          if( [responseObject length] > 0 )
          {
-             apiQuerySuccess = YES;
+             NSLog(@"Query success");
+             self.apiQuerySuccess = YES;
             [self listingBuilder:responseObject];
          }
          else
          {
-             apiQuerySuccess = NO;
+             self.apiQuerySuccess = NO;
              // try to get previous recorded datas from DB and check if datas exist for given currency
              chartDatasFromDb(self);
          }
@@ -122,7 +123,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
                                           failure:^(AFHTTPRequestOperation *operationGraph, NSError *error)
      {
          NSLog(@"Query failure");
-         apiQuerySuccess = NO;
+         self.apiQuerySuccess = NO;
          // try to get previous recorded datas from DB and check if datas exist for given currency
          chartDatasFromDb(self);
      }];
@@ -144,9 +145,9 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     [buildTheChartData setCompletionBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             // Notify UI that Instance is ready to use
-            isReady = YES;
-            
+            self.isReady = YES;
         });
+        
     }];
     [buildTheChartData setQueuePriority:NSOperationQueuePriorityHigh];
     [cvsHandlerQ addOperation:buildTheChartData];
@@ -179,11 +180,11 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
                 [self zeroEmptyTimeSlots:thisDayDatasTmpWeighted:^(NSMutableDictionary *thisDayDatasTmpFull ) {
                     [thisDayDatasTmp setDictionary:thisDayDatasTmpFull];
                     NSArray *keys = [thisDayDatasTmpFull allKeys];
-                    dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
+                    self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
                     // assign resulting Dictionnary to instance property
-                    thisDayDatas = [thisDayDatasTmpFull mutableCopy];
+                    self.thisDayDatas = [thisDayDatasTmpFull mutableCopy];
                     // debug
-//                     NSLog(@"cooked! : %@", thisDayDatasTmpFull);
+//                    NSLog(@"cooked! : %@", thisDayDatasTmpFull);
                     // Backup datas
                     Globals *glob = [Globals globals];
                     [previousPricesAndVolumes setObject:[thisDayDatasTmpFull mutableCopy] forKey:[glob currency]];
@@ -201,10 +202,10 @@ static void chartDatasFromDb(GMSchartViewData *object) {
         NSLog(@"Query failure : something in DB");
         
         object.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
-        if ( [object.previousPricesAndVolumes objectForKey:object.currency] != nil )
+        if ( [object.previousPricesAndVolumes objectForKey:object.chartCurrency] != nil )
         {
             object.previousPricesAndVolumes  = [[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]]mutableCopy];
-            object.thisDayDatas = [[[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]] objectForKey:object.currency]mutableCopy];
+            object.thisDayDatas = [[[NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"previousPricesAndVolumes"]] objectForKey:object.chartCurrency]mutableCopy];
             NSArray *keys = [object.thisDayDatas allKeys];
             object.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -395,13 +396,13 @@ static void chartDatasFromDb(GMSchartViewData *object) {
             nextHour = [nextHour dateByAddingTimeInterval: secondsPerHour];
         }
         NSArray *keys = [dummyOne allKeys];
-        dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
-        thisDayDatas = [dummyOne mutableCopy];
-        [previousPricesAndVolumes setObject:thisDayDatas forKey:[glob currency]];
+        self.dateAscSorted = [[keys sortedArrayUsingSelector:@selector(compare:)]mutableCopy];
+        self.thisDayDatas = [dummyOne mutableCopy];
+        [self.previousPricesAndVolumes setObject:thisDayDatas forKey:[glob currency]];
         // Notify UI
         dispatch_async(dispatch_get_main_queue(), ^{
             // Notify UI that Instance is ready to use
-            isReady = YES;
+            self.isReady = YES;
             
         });
     });
