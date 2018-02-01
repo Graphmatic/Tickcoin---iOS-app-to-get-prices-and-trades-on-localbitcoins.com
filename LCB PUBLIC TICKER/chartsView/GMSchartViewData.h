@@ -12,13 +12,12 @@
 
 @interface GMSchartViewData : NSObject
 
-@property  (retain, nonatomic) NSMutableDictionary *thisDayDatas;
 // thisDayDatas datas structure:
 //    [0] -> Timestamp
 //    [1] -> Volumes sum
 //    [2] -> Price average (weighted)
-
-@property  (retain, atomic) NSString *currency;
+@property  (retain, nonatomic) NSMutableDictionary *thisDayDatas;
+@property  (retain, atomic) NSString *chartCurrency;
 @property (retain, atomic) NSMutableArray *dateAscSorted;
 @property (retain, nonatomic) NSMutableDictionary *previousPricesAndVolumes;
 @property NSOperationQueue *cvsHandlerQ;
