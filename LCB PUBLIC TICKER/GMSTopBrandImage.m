@@ -92,11 +92,40 @@
                 
                     break;
                 case 1:
-                    
-                    self.topBrand = [UIImage imageNamed:@"header_bids"];
+                    if ( IS_IPHONE_6_7_8 )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_bids_750"];
+                    }
+                    else if ( IS_IPHONE_PLUS )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_bids_1242"];
+                    }
+                    else if ( IS_IPHONE_X )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_bids_1125"];
+                    }
+                    else   // ( IS_IPHONE_4_5 )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_bids"];
+                    }
                     break;
                 case 2:
-                    self.topBrand = [UIImage imageNamed:@"header_asks"];
+                    if ( IS_IPHONE_6_7_8 )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_asks_750"];
+                    }
+                    else if ( IS_IPHONE_PLUS )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_asks_1242"];
+                    }
+                    else if ( IS_IPHONE_X )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_asks_1125"];
+                    }
+                    else   // ( IS_IPHONE_4_5 )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_asks"];
+                    }
                     break;
                 case 3:
                     if ( IS_IPHONE_6_7_8 )

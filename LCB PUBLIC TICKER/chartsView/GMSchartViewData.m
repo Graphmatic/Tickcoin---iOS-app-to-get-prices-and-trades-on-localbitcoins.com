@@ -20,22 +20,8 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
 
 @synthesize thisDayDatas, previousPricesAndVolumes, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady, chartCurrency;
 
-//+(GMSchartViewData*)sharedGraphViewTableData:(NSMutableString*)currency
-//{
-//    @synchronized([GMSchartViewData class])
-//    {
-//        if ( !_sharedGraphViewTableData || ( ![currency isEqualToString:_sharedGraphViewTableData.currency] ) ) {
-////            [_sharedGraphViewTableData resetSharedInstance];
-//            _sharedGraphViewTableData = [[self alloc] init:currency];
-//        }
-//        return _sharedGraphViewTableData;
-//    }
-//    return nil;
-//}
-
 +(GMSchartViewData*)sharedGraphViewTableData:(NSMutableString*)currency
 {
-//    static GMSchartViewData *_sharedGraphViewTableData = nil;
     static dispatch_once_t onceToken = 0;
     dispatch_once(&onceToken, ^{
         if ( !_sharedGraphViewTableData || ( ![currency isEqualToString:_sharedGraphViewTableData.chartCurrency] ) ) {
