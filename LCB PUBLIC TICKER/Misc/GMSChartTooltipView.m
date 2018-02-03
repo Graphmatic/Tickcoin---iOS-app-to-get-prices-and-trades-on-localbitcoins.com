@@ -13,8 +13,8 @@
 
 // Numerics
 CGFloat static const GMSChartTooltipViewCornerRadius = 2.0;
-CGFloat const GMSChartTooltipViewDefaultWidth = 200.0f;
-CGFloat const GMSChartTooltipViewDefaultHeight = 280.0f;
+CGFloat const GMSChartTooltipViewDefaultWidth = 240.0f;
+CGFloat const GMSChartTooltipViewDefaultHeight = 320.0f;
 
 @interface GMSChartTooltipView ()
 
