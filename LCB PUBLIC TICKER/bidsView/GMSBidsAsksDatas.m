@@ -227,8 +227,8 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
 
 - (void)fullUpdate:(NSNotification*)theNotif
 {
-    
     NSDictionary *rxNotifDatas = theNotif.userInfo;
+    NSLog(@"TEST SWITCHING CURRENCY: %@", [rxNotifDatas objectForKey:@"newCurrency"] );
     [self resetSharedInstance];
     _sharedBidsAsksDatas = [self init:[rxNotifDatas objectForKey:@"newCurrency"]];
 }

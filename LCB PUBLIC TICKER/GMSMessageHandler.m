@@ -16,21 +16,28 @@
 
 @synthesize infoMessagesStr, tic, switchTic, nextInfoMessageStr, alt, connectionError;
 
+static dispatch_once_t onceToken;
+static GMSMessageHandler *messageHandler = nil;
+
 + (id)messageHandler:(int)view
 {
-    static GMSMessageHandler *messageHandler = nil;
-    static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         messageHandler = [[self alloc] init:view];
     });
     return messageHandler;
 }
 
++ (void)reset{
+    @synchronized(self) {
+        messageHandler = nil;
+        onceToken = 0;
+    }
+}
+
 - (id)init:(int)view
 {
     if (self = [super init])
     {
-        Globals *glob = [Globals globals];
         self.nextInfoMessageStr = [NSMutableString stringWithFormat:NSLocalizedString(@"_WAIT_FOR_DATAS", @"please wait - update...")];
         // Cancel a preexisting timer.
         if( self.tic != nil )
@@ -80,22 +87,6 @@
     });
 }
 
-- (void)reset
-{
-    [self.tic invalidate];
-    
-    NSTimer *tmr1 = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                     target:self selector:@selector(refresh)
-                                                   userInfo:nil repeats:YES];
-    self.switchTic = tmr1;
-    [self.switchTic invalidate];
-    
-    NSTimer *tmr2 = [NSTimer scheduledTimerWithTimeInterval:2.0
-                                                     target:self selector:@selector(swapFirstViewMessage)
-                                                   userInfo:nil repeats:YES];
-    self.switchTic = tmr2;
-}
-
 - (void)refresh
 {
     if( !([self.infoMessagesStr isEqualToString:self.nextInfoMessageStr]) )
@@ -104,6 +95,18 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName: @"infoRefresh" object:nil];
         });
+    }
+}
+
+- (void)stopTic
+{
+    if( self.tic != nil )
+    {
+        [self.tic invalidate];
+    }
+    if( self.switchTic != nil )
+    {
+        [self.switchTic invalidate];
     }
 }
 

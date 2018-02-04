@@ -20,7 +20,7 @@
 
 @implementation GMSStartView
 
-@synthesize previousDatas ,tickerDatas,  infoMessagesLabel, infoMessages, headerImg, refreshTicker, timerMessages, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
+@synthesize previousDatas ,tickerDatas,  infoMessagesLabel, infoMessages, headerImg, refreshTicker, tweetIt, emailIt, faceBook, messageIt, title, picker, prevSelRow, tabViewOrigin, socialStack, rowHeight;
 
 - (NSManagedObjectContext *)managedObjectContext {
     NSManagedObjectContext *context = nil;
@@ -171,15 +171,20 @@
     
     self.socialStack.hidden = YES;
     
-    [self.refreshTicker endRefreshing];
-
     NSUInteger pickerDefIndex = [self.tickerDatas.currenciesList indexOfObject:[glob currency]];
     [self.picker reloadAllComponents];
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:YES];
     
     self.tableView.backgroundColor = GMSColorDarkGrey;
     [self.tableView reloadData];
-
+    // trigger UIrefresh
+    // init refreshing touch item
+    self.refreshTicker = [[UIRefreshControl alloc] init];
+    self.refreshTicker.tintColor = GMSColorDarkGrey;
+    [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
+    CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
+    [self.tableView setContentOffset:newOffset animated:YES];
+    
 }
 
 
@@ -192,7 +197,6 @@
 {
     Globals *glob = [Globals globals];
     
-
     // debug
     NSLog(@"globals test: currency => %@", [glob currency]);
     
@@ -211,25 +215,14 @@
     //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBoxChange:) name:@"previousPriceChange" object:nil];
     
     self.infoMessages = [GMSMessageHandler messageHandler:0];
-    
+
     self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(infoRefresh:) name:@"infoRefresh" object:nil];
 
-    // trigger UIrefresh
-    // init refreshing touch item
-    self.refreshTicker = [[UIRefreshControl alloc] init];
-    self.refreshTicker.tintColor = GMSColorDarkGrey;
-    [self.refreshTicker addTarget:self action:@selector(updateTicker)forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshTicker];
-    [self.refreshTicker beginRefreshing];
-    CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
-    [self.tableView setContentOffset:newOffset animated:YES];
-
-    self.tickerDatas = [TickerDatas tickerDatas];
     
-    [self.refreshTicker endRefreshing];
-
+    self.tickerDatas = [TickerDatas tickerDatas];
 }
 
 - (void)updateTicker
@@ -363,8 +356,6 @@
         prevCell.textLabel.textColor = [UIColor whiteColor];
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         cell.textLabel.textColor = GMSColorOrange;
-        if(self.timerMessages)[self.timerMessages invalidate];
-        self.timerMessages = nil;
         self.infoMessagesLabel.text = Nil;
         self.socialStack.hidden = NO;
         self.prevSelRow = indexPath;
@@ -393,30 +384,8 @@
 - (void)infoRefresh:(NSNotification *)notification
 {
     NSLog(@"infoRefresh!");
-//    Globals *glob = [Globals globals];
     self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
-//    self.infoMessagesLabel.text = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", "%@  -  %@"), [glob lastRecordDate], [glob currency]];
-//
-//    //start message box carroussel
-//    if(self.timerMessages)[self.timerMessages invalidate];
-//    self.timerMessages = nil;
-//    self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
-//
 }
-//- (void)timerStartNoConnect:(NSTimer *)theTimer
-//{
-//    alt = !alt;
-//    NSError *err = [theTimer userInfo];
-//
-//    //  [self.messageBoxLabel setFont:[UIFont systemFontOfSize:35]];
-//    self.infoMessagesLabel.text = [self.infoMessages noConnection:err alt:alt];
-//}
-//-(void)timerStartMulti:(NSTimer*)theTimer
-//{
-//    Globals *glob = [Globals globals];
-//    alt = !alt;
-//    self.infoMessagesLabel.text = [self.infoMessages dailyMessages:alt connected:[glob isNetworkAvailable]];
-//}
 
 //---------------------------------------------------------------------------------------------------------------------------//
 //                                                    // facebook //
@@ -643,8 +612,6 @@
 {
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
     Globals *glob = [Globals globals];
     // save current selected currency to db (should have been already done...)
     [self.tickerDatas saveTicker];
@@ -661,8 +628,10 @@
     [self.picker selectRow:pickerDefIndex inComponent:0 animated:NO];
     [self deselectRow:[self.tableView indexPathForSelectedRow]];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if(self.timerMessages)[self.timerMessages invalidate];
-    self.timerMessages = nil;
+    // stop messangeHandler loop timers
+    [self.infoMessages stopTic];
+    [GMSMessageHandler reset];
+//    self.refreshTicker = nil;
 }
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification

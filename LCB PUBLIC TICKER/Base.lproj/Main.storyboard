@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="8YX-ce-x5E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="8YX-ce-x5E">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment version="4096" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -27,7 +30,7 @@
                         <viewControllerLayoutGuide type="bottom" id="mX5-HT-KJK"/>
                     </layoutGuides>
                     <view key="view" autoresizesSubviews="NO" contentMode="top" id="2VE-Yg-loa">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="header_exchange" translatesAutoresizingMaskIntoConstraints="NO" id="9Qo-fS-iFu" customClass="GMSTopBrandImage">
@@ -203,7 +206,7 @@
                         <viewControllerLayoutGuide type="bottom" id="5ht-rD-9a9"/>
                     </layoutGuides>
                     <view key="view" autoresizesSubviews="NO" tag="4" contentMode="top" id="Xqn-8m-MGL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="header_exchange" translatesAutoresizingMaskIntoConstraints="NO" id="kls-qS-v71" customClass="GMSTopBrandImage">
@@ -312,7 +315,7 @@
                         <viewControllerLayoutGuide type="bottom" id="l7r-5a-oyg"/>
                     </layoutGuides>
                     <view key="view" autoresizesSubviews="NO" tag="4" contentMode="top" id="6Yi-ja-hfO">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="header_exchange" translatesAutoresizingMaskIntoConstraints="NO" id="hYJ-Do-Ljk" customClass="GMSTopBrandImage">
@@ -574,17 +577,12 @@
                         <viewControllerLayoutGuide type="top" id="reF-O8-ViT"/>
                         <viewControllerLayoutGuide type="bottom" id="p9q-T3-OkT"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Y19-Us-Dgb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <view key="view" autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Y19-Us-Dgb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aVy-L6-14U" customClass="GMSTopBrandImage">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                                <color key="backgroundColor" red="0.81960784310000001" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </imageView>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTg-m4-vRk">
-                                <rect key="frame" x="0.0" y="58" width="375" height="276"/>
+                            <containerView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTg-m4-vRk">
+                                <rect key="frame" x="0.0" y="106" width="375" height="231"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <segue destination="tom-y5-DVU" kind="embed" id="tBM-t6-l2I"/>
@@ -597,9 +595,15 @@
                                     <segue destination="Gdf-0i-hbI" kind="embed" id="YIy-Ig-b6C"/>
                                 </connections>
                             </containerView>
+                            <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aVy-L6-14U" customClass="GMSTopBrandImage">
+                                <rect key="frame" x="0.0" y="46" width="375" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                                <color key="backgroundColor" red="0.81960784310000001" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="Item" id="OUk-8u-KLh"/>
                     <navigationItem key="navigationItem" id="7MO-hs-iwJ"/>
                     <connections>
