@@ -20,13 +20,13 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
 
 @synthesize thisDayDatas, previousPricesAndVolumes, dateAscSorted, cvsHandlerQ, visualRangeForPricesAndVolumes, apiQuerySuccess, isReady, chartCurrency;
 
-+(GMSchartViewData*)sharedGraphViewTableData:(NSMutableString*)currency
++(GMSchartViewData*)sharedGraphViewTableData
 {
     static dispatch_once_t onceToken = 0;
     dispatch_once(&onceToken, ^{
-        if ( !_sharedGraphViewTableData || ( ![currency isEqualToString:_sharedGraphViewTableData.chartCurrency] ) ) {
+        if ( !_sharedGraphViewTableData ||  !([[[Globals globals] currency] isEqualToString:_sharedGraphViewTableData.chartCurrency] ) ) {
             [_sharedGraphViewTableData resetSharedInstance];
-            _sharedGraphViewTableData = [[self alloc] init:currency];
+            _sharedGraphViewTableData = [[self alloc] init];
         }
     });
     return _sharedGraphViewTableData;
@@ -43,7 +43,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     return nil;
 }
 
-- (id)init:(NSMutableString*)currency
+- (id)init
 {
     self = [super init];
     if ( self != nil ){
@@ -56,7 +56,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
         self.dateAscSorted = [[NSMutableArray alloc] init];
         self.thisDayDatas = [[NSMutableDictionary alloc] init];
         self.previousPricesAndVolumes = [[NSMutableDictionary alloc]init];
-        self.chartCurrency = currency;
+        self.chartCurrency = [[Globals globals] currency];
         
         // Add Notification observer to be informed of currency switching
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullUpdate:) name:@"tickerRefresh" object:nil];
@@ -74,9 +74,8 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
 
 - (void)fullUpdate:(NSNotification*)theNotif
 {
-    NSDictionary *rxNotifDatas = theNotif.userInfo;
     [self resetSharedInstance];
-    _sharedGraphViewTableData = [self init:[rxNotifDatas objectForKey:@"newCurrency"]];
+    _sharedGraphViewTableData = [self init];
 }
 
 

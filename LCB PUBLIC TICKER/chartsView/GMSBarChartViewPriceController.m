@@ -78,9 +78,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)initWithDatas
 {
-    Globals *glob = [Globals globals];
-    self.graphDatas = [GMSchartViewData sharedGraphViewTableData:[glob currency]];
-    NSLog(@"graphDatas : %@", self.graphDatas.thisDayDatas);
+    self.graphDatas = [GMSchartViewData sharedGraphViewTableData];
 }
 
 #pragma mark - View Lifecycle
@@ -306,7 +304,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
                 self.barChartView.maximumValue =  [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][1]doubleValue] * 1.15;
                 
     //            // debug
-                NSLog(@"visualRange was changed.");
+    //            NSLog(@"visualRange was changed.");
     //            NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", self.barChartView.minimumValue, self.barChartView.maximumValue);
 
                 [self.barChartView reloadData];

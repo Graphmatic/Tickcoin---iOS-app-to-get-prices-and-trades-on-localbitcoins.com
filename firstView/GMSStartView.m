@@ -383,7 +383,7 @@
 
 - (void)infoRefresh:(NSNotification *)notification
 {
-    NSLog(@"infoRefresh!");
+    //NSLog(@"infoRefresh!");
     self.infoMessagesLabel.text = self.infoMessages.infoMessagesStr;
 }
 

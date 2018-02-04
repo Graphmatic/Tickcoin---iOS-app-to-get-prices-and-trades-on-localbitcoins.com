@@ -25,12 +25,12 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
 
 @synthesize firstViewDatas, orderBids, orderAsks, bidsAsksAllCurrencies, previousBidsAsksListing, bidsMaxDeviation, asksMaxDeviation, datasBuilderOp, currency, isDatas;
 
-+(GMSBidsAsksDatas *)sharedBidsAsksDatas:(NSMutableString*)currency
++(GMSBidsAsksDatas *)sharedBidsAsksDatas
 {
     @synchronized([GMSBidsAsksDatas class])
     {
-        if ( !_sharedBidsAsksDatas || ( ![currency isEqualToString:_sharedBidsAsksDatas.currency] ) ) {
-            _sharedBidsAsksDatas = [[self alloc] init:currency];
+        if ( !_sharedBidsAsksDatas ||  !( [[[Globals globals] currency]  isEqualToString:_sharedBidsAsksDatas.currency] ) ) {
+            _sharedBidsAsksDatas = [[self alloc] init];
         }
         return _sharedBidsAsksDatas;
     }
@@ -49,7 +49,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
     return nil;
 }
 
-- (id)init:(NSMutableString*)currency
+- (id)init
 {
     self = [super init];
     if (self != nil)
@@ -64,7 +64,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
         self.orderBids = [[NSMutableArray alloc] init];
         self.orderAsks = [[NSMutableArray alloc] init];
         self.bidsAsksAllCurrencies = [[NSMutableDictionary alloc] init];
-        self.currency = currency;
+        self.currency = [[Globals globals] currency];
         if ( [[NSUserDefaults standardUserDefaults]objectForKey:@"bidsMaxDeviation"] != nil )
         {
             self.bidsMaxDeviation =  [[[NSUserDefaults standardUserDefaults]objectForKey:@"bidsMaxDeviation"]intValue];
@@ -94,6 +94,13 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
     @synchronized(self) {
         _sharedBidsAsksDatas = nil;
     }
+}
+
+
+- (void)fullUpdate:(NSNotification*)theNotif
+{
+    [self resetSharedInstance];
+    _sharedBidsAsksDatas = [self init];
 }
 
 // the initial XHR query
@@ -225,13 +232,6 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
     completion(result);
 }
 
-- (void)fullUpdate:(NSNotification*)theNotif
-{
-    NSDictionary *rxNotifDatas = theNotif.userInfo;
-    NSLog(@"TEST SWITCHING CURRENCY: %@", [rxNotifDatas objectForKey:@"newCurrency"] );
-    [self resetSharedInstance];
-    _sharedBidsAsksDatas = [self init:[rxNotifDatas objectForKey:@"newCurrency"]];
-}
 
 - (void)changeDeviation:(int)maxDeviation orderType:(NSString *)orderType
 {

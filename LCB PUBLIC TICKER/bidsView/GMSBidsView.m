@@ -205,7 +205,7 @@
     
     self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), [NSString stringWithFormat:@"%d%%", self.maxDeviation]];
     
-    self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:[NSMutableString stringWithString:[glob currency]]];
+    self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas];
     
     // add observer
     [self.bidsDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];

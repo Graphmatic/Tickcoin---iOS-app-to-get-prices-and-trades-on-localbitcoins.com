@@ -12,7 +12,7 @@
 
 @interface GMSBidsAsksDatas : NSObject
 
-+ (GMSBidsAsksDatas*)sharedBidsAsksDatas:(NSMutableString*)currency;
++ (GMSBidsAsksDatas*)sharedBidsAsksDatas;
 
 @property  (retain, atomic) NSString *currency;
 @property (retain, atomic) NSMutableArray *orderBids;

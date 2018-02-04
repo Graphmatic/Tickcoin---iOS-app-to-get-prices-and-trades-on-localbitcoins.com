@@ -50,7 +50,7 @@
      {
          NSLog(@"SETTING NETWORK FLAG");
          glob.networkAvailable = YES;
-         NSLog([glob networkAvailable] ? @"Yes" : @"No");
+         //NSLog([glob networkAvailable] ? @"Yes" : @"No");
          dispatch_async(parser, ^{
              [self triggerViewRefresh:responseObject];
          });

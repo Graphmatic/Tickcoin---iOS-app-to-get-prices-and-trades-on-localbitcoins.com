@@ -115,12 +115,12 @@ static GMSMessageHandler *messageHandler = nil;
     
     Globals *glob = [Globals globals];
 
-    NSLog([glob networkAvailable] ? @"Yes" : @"No");
+    //NSLog([glob networkAvailable] ? @"Yes" : @"No");
 //    NSLog(@"glob : %@", [glob networkAvailable]);
 
     if ( [glob isNetworkAvailable] == YES )
     {
-        NSLog(@"IS NETWORK");
+        //NSLog(@"IS NETWORK");
         if ( self.alt )
         {
             self.nextInfoMessageStr = [NSMutableString  stringWithFormat:NSLocalizedString(@"_DAILY_PRICE_IN", @"daily price in"), [glob lastRecordDate], [glob currency]];
@@ -132,7 +132,7 @@ static GMSMessageHandler *messageHandler = nil;
     }
     else
     {
-        NSLog(@"IS not NETWORK");
+        //NSLog(@"IS not NETWORK");
 
         if ( self.alt )
         {
