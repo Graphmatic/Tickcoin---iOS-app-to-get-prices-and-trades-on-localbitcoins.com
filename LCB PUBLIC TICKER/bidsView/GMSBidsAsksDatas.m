@@ -30,6 +30,9 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
     @synchronized([GMSBidsAsksDatas class])
     {
         if ( !_sharedBidsAsksDatas ||  !( [[[Globals globals] currency]  isEqualToString:_sharedBidsAsksDatas.currency] ) ) {
+            @synchronized(self) {
+                _sharedBidsAsksDatas = nil;
+            }
             _sharedBidsAsksDatas = [[self alloc] init];
         }
         return _sharedBidsAsksDatas;
@@ -61,9 +64,17 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
         self.isReady = NO;
         self.datasBuilderOp = [NSOperationQueue new];
         self.datasBuilderOp.maxConcurrentOperationCount=1;
+        
         self.orderBids = [[NSMutableArray alloc] init];
         self.orderAsks = [[NSMutableArray alloc] init];
+        NSMutableArray *emptyArr = [[NSMutableArray alloc]init];
+        [emptyArr addObject:[[NSString alloc] initWithString:NSLocalizedString(@"_NO_DATAS", @"no data")]];
+        [emptyArr addObject:[[NSString alloc] initWithString:NSLocalizedString(@"_NO_DATAS", @"no data")]];
+        [self.orderBids addObject:emptyArr];
+        [self.orderAsks addObject:emptyArr];
+        
         self.bidsAsksAllCurrencies = [[NSMutableDictionary alloc] init];
+        
         self.currency = [[Globals globals] currency];
         if ( [[NSUserDefaults standardUserDefaults]objectForKey:@"bidsMaxDeviation"] != nil )
         {
@@ -81,9 +92,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
         {
             self.asksMaxDeviation = 201;
         }
-        // Add Notification observer to be informed of currency switching
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullUpdate:) name:@"tickerRefresh" object:nil];
-        
+
         // start web query
         [self apiQuery];
     }
@@ -163,7 +172,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
 static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
     if ( [[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"] != nil )
     {
-        if ( [[[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"]objectForKey:object.currency]!= nil )
+        if ( [[[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"]objectForKey:object.currency] != nil )
         {
             object.previousBidsAsksListing  = [[[[NSUserDefaults standardUserDefaults]objectForKey:@"bidsAsksListing"]objectForKey:object.currency]mutableCopy];
             [object listingBuilder:object.previousBidsAsksListing];
@@ -172,26 +181,29 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
     }
     else
     {
-        // generate empty data
-        NSMutableArray *emptyArr = [[NSMutableArray alloc]init];
-        [emptyArr addObject:[[NSString alloc] initWithString:NSLocalizedString(@"_NO_DATAS", @"no data")]];
-        [emptyArr addObject:[[NSString alloc] initWithString:NSLocalizedString(@"_NO_DATAS", @"no data")]];
-        [object.orderBids addObject:emptyArr];
-        [object.orderAsks addObject:emptyArr];
+//        // generate empty data
+//        NSLog(@"generate empty data...");
+//        NSMutableArray *emptyArr = [[NSMutableArray alloc]init];
+//        [emptyArr addObject:[[NSString alloc] initWithString:NSLocalizedString(@"_NO_DATAS", @"no data")]];
+//        [object.orderBids addObject:emptyArr];
+//        [object.orderAsks addObject:emptyArr];
         
         // notify UI
-        object.isReady = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Notify UI that Instance is ready to use
+            object.isReady = YES;
+        });
     }
 }
 
 - (void)filterDatas:(NSMutableDictionary*)responseObj
 {
     // BIDS
-    if (self.bidsMaxDeviation == 201) // no deviation filter
+    if ( ( self.bidsMaxDeviation == 201 ) && ( sizeof( (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"bids"]].array ) > 1 ) ) // no deviation filter
     {
         self.orderBids = (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"bids"]].array;
     }
-    else
+    else if ( sizeof( (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"bids"]].array ) > 1 )
     {
         [self deviationFilter:[responseObj objectForKey:@"bids"] deviation:self.bidsMaxDeviation :^(NSMutableArray *sortedBidsDatas ) {
             self.orderBids = sortedBidsDatas;
@@ -201,11 +213,11 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
     }
     
     // ASKS
-    if (self.asksMaxDeviation == 201) // no deviation filter
+    if ( self.asksMaxDeviation == 201 && ( sizeof( (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"asks"]].array ) > 0 ) ) // no deviation filter
     {
-        self.orderAsks = (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"asks"]].array;
+        self.orderBids = (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"asks"]].array;
     }
-    else
+    else if ( sizeof( (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"asks"]].array ) > 1 )
     {
         [self deviationFilter:[responseObj objectForKey:@"asks"] deviation:self.asksMaxDeviation :^(NSMutableArray *sortedAsksDatas ) {
             self.orderBids = sortedAsksDatas;
