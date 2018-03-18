@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" colorMatched="YES" initialViewController="m7O-XL-WIN">
-    <device id="ipad9_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -102,7 +98,7 @@
                                     <outlet property="delegate" destination="6IR-Z3-svr" id="O01-kQ-abN"/>
                                 </connections>
                             </pickerView>
-                            <tableView autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleAspectFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="20" id="hh4-tW-qau">
+                            <tableView autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleAspectFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="20" id="hh4-tW-qau">
                                 <rect key="frame" x="1" y="77" width="338" height="217"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -151,7 +147,7 @@
                     <connections>
                         <outlet property="emailIt" destination="Z5p-zM-Adc" id="hj5-Oa-IUk"/>
                         <outlet property="faceBook" destination="J8L-Zl-XXb" id="PYk-Ee-Zoc"/>
-                        <outlet property="messageBoxLabel" destination="nIf-qt-uiz" id="N6v-bJ-aFq"/>
+                        <outlet property="infoMessagesLabel" destination="nIf-qt-uiz" id="N6v-bJ-aFq"/>
                         <outlet property="messageIt" destination="6P0-md-CRE" id="mJ2-Pt-IoJ"/>
                         <outlet property="picker" destination="Umv-xQ-D9W" id="aQo-OV-9Kc"/>
                         <outlet property="socialStack" destination="tbV-g1-Xzt" id="SpU-fa-SJm"/>

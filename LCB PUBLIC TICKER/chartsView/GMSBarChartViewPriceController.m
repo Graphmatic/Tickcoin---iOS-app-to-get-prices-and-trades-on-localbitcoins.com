@@ -9,9 +9,12 @@
 #import "GMSChartHeaderView.h"
 #import "GMSBarChartFooterView.h"
 #import "GMSchartViewData.h"
+#import <sys/sysctl.h>
+#import <sys/utsname.h>
+
 // Numerics
 CGFloat const GMSPriceChartHeight = 254.0f;
-CGFloat GMSPriceChartPadding = 0.0f;
+CGFloat GMSPriceChartPadding = 2.0f;
 CGFloat GMSPriceChartsViewPaddingTop = 0.0f;  
 
 CGFloat const GMSPriceChartHeaderHeight = 48.0f;
@@ -75,20 +78,27 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)initWithDatas
 {
-    self.graphDatas = [GMSchartViewData sharedGraphViewTableData:currentCurrency];
+    self.graphDatas = [GMSchartViewData sharedGraphViewTableData];
 }
 
 #pragma mark - View Lifecycle
 
 - (void)loadView
 {
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    
+    NSString *currentDevice = [NSString stringWithCString:systemInfo.machine
+                                                 encoding:NSUTF8StringEncoding];
+    NSString *currentSimulatorDevice = [NSString stringWithCString:getenv("SIMULATOR_MODEL_IDENTIFIER")
+                                                          encoding:NSUTF8StringEncoding];
+    
     [super loadView];
     
-//    [self.view layoutIfNeeded];
-//    [self.view setNeedsLayout];
     CGFloat childViewWidth = self.view.bounds.size.width;
     CGFloat childViewHeight = self.view.bounds.size.height;
     
+    Globals *glob = [Globals globals];
 
     
     if ( IS_IPAD )
@@ -99,7 +109,7 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     // header of first chart (price)
     self.headerView = [[GMSChartHeaderView alloc] initWithFrame:CGRectMake(0, 0, childViewWidth - GMSPriceChartPadding, GMSPriceChartHeaderHeight)];
     self.headerView.titleLabel.backgroundColor = GMSColorBlueGreyDark;
-    self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
+    self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), [glob currency]];
     self.headerView.separatorColor = GMSColorWhite;
     
     // footer of first chart (price)
@@ -118,6 +128,13 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
                                           0,
                                           518,
                                           206);
+    }
+    else if ( IS_IPHONE_X )
+    {
+        frameForBarChartView = CGRectMake(0,
+                                          0,
+                                          childViewWidth,
+                                          childViewHeight / 2 - self.headerView.frame.size.height - 25);
     }
     else
     {
@@ -230,15 +247,17 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
 
 - (void)setupVisibleElement
 {
+    Globals *glob = [Globals globals];
+
     if ( self.graphDatas.isReady == YES)
     {
         if ( self.graphDatas.apiQuerySuccess )
         {
             
-            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), currentCurrency];
+            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART" ,  @"Price & Volumes traded - last 24H - %@"), [glob currency]];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"MM-dd HH:mm"];
-            NSString* startingDate = [dateFormatter stringFromDate:graphRequestStart];
+            NSString* startingDate = [dateFormatter stringFromDate:[glob queryStartDate]];
             footerView.leftLabel.text = startingDate;
             footerView.leftLabel.textColor = [UIColor whiteColor];
             footerView.rightLabel.textColor = [UIColor whiteColor];
@@ -246,14 +265,14 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
         }
         else
         {
-            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART_OUTDATED" ,  @"Price & Volumes traded - Outdated! - %@"), currentCurrency];
+            self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_PRICE_CURRENCY_CHART_OUTDATED" ,  @"Price & Volumes traded - Outdated! - %@"), [glob currency]];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"MM-dd HH:mm"];
-            NSDate *outdatedStaringDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:0]]objectAtIndex:3];
-//            NSLog(@"start date : %@", outdatedStaringDate);
-            NSString* startingDate = [dateFormatter stringFromDate:outdatedStaringDate];
+            NSDate *outdatedStartingDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:0]]objectAtIndex:3];
+            NSLog(@"start date : %@", outdatedStartingDate);
+            NSString* startingDate = [dateFormatter stringFromDate:outdatedStartingDate];
             NSDate *outdatedEndDate = [[self.graphDatas.thisDayDatas objectForKey:[self.graphDatas.dateAscSorted objectAtIndex:23]]objectAtIndex:3];
-//            NSLog(@"start date : %@", outdatedEndDate);
+            NSLog(@"start date : %@", outdatedEndDate);
             NSString *endDate = [dateFormatter stringFromDate:outdatedEndDate];
             footerView.leftLabel.text = startingDate;
             footerView.leftLabel.textColor = GMSColorRed;
@@ -263,29 +282,36 @@ NSString * const kGMSBarChartViewControllerNavButtonViewKey = @"view";
     }
     else
     {
-        self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), currentCurrency];
+        self.headerView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"_NO_CHART_AVAILABLE" , @"No chart available for %@"), [glob currency]];
     }
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     
-    if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
+    if ( object == self.graphDatas )
     {
-        dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
-            // Update misc. visible elements
-            [self setupVisibleElement];
-            
-            // setup visual range
-            self.barChartView.minimumValue = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] * 0.85;
-            self.barChartView.maximumValue =  [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][1]doubleValue] * 1.15;
-            
-//            // debug
-//            NSLog(@"visualRange was changed.");
-//            NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", self.barChartView.minimumValue, self.barChartView.maximumValue);
+        NSLog(@"observer triggered");
+        
+    if ( [keyPath isEqualToString:@"isReady"] && [change objectForKey:@"new"] ) //  are datas ready to use ?
+        {
+            NSLog(@"isReady triggered");
+            dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
+                // Update misc. visible elements
+                [self setupVisibleElement];
+                
+                // setup visual range
+                self.barChartView.minimumValue = [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][0]doubleValue] * 0.85;
+                self.barChartView.maximumValue =  [[self.graphDatas.visualRangeForPricesAndVolumes objectForKey:@"pricesDelta"][1]doubleValue] * 1.15;
+                
+    //            // debug
+    //            NSLog(@"visualRange was changed.");
+    //            NSLog(@"in Prices barchart:  LOW = %f   ****  HIGH = %f", self.barChartView.minimumValue, self.barChartView.maximumValue);
 
-            [self.barChartView reloadData];
-        });
+                [self.barChartView reloadData];
+            });
+       }
     }
+        
 }
 
 @end

@@ -7,20 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GMSfirstViewTableData.h"
-
-extern NSMutableString *currentCurrency;
+#import "tickerDatas.h"
+#import "GMSGlobals.h"
 
 @interface GMSBidsAsksDatas : NSObject
 
-+ (GMSBidsAsksDatas*)sharedBidsAsksDatas:(NSMutableString*)currency;
++ (GMSBidsAsksDatas*)sharedBidsAsksDatas;
 
 @property  (retain, atomic) NSString *currency;
 @property (retain, atomic) NSMutableArray *orderBids;
 @property (retain, atomic) NSMutableArray *orderAsks;
 @property (retain, nonatomic) NSMutableDictionary *bidsAsksAllCurrencies;
 @property (retain, nonatomic) NSMutableDictionary *previousBidsAsksListing;
-@property (strong, atomic) GMSfirstViewTableData *firstViewDatas;
+@property (strong, atomic) TickerDatas *firstViewDatas;
 @property NSOperationQueue *datasBuilderOp;
 @property int bidsMaxDeviation;
 @property int asksMaxDeviation;

@@ -23,6 +23,7 @@
 "_WAIT_FOR_DATAS" = "please wait - loading...";
 "_INVALID_DATAS" = "invalid data";
 "_NO_CONNECT_OUTDATED" = "Outdated datas! last sync: %@";
+"_NO_CONNECT_SERVER_UNAVAILABLE" = "Web service not responding...";
 "_DAILY_PRICE_VARIATION" = "variation since last refresh:";
 "_DAILY_PRICE_VARIATION_DOWN" = "price decreased by %@";
 "_DAILY_PRICE_VARIATION_NON"  = "same price";

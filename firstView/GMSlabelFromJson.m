@@ -42,7 +42,7 @@ static GMSlabelFromJson *_labels;
 		return nil;
 	}
 	// do additionnal edit if the json source structure is modified on server side
-    NSDictionary *rates =       [[NSDictionary alloc] initWithObjectsAndKeys:NSLocalizedString(@"_LAST", @"lastprice"), @"rates", nil];
+    NSDictionary *rates =       [[NSDictionary alloc] initWithObjectsAndKeys:NSLocalizedString(@"_LAST", @"last price"), @"rates", nil];
     NSDictionary *volume_btc =  [[NSDictionary alloc] initWithObjectsAndKeys:NSLocalizedString(@"_VOLUME", @"volume"), @"volume_btc", nil];
     NSDictionary *avg_1h =      [[NSDictionary alloc] initWithObjectsAndKeys:NSLocalizedString(@"_AVG_1H", @"average 1H"), @"avg_1h", nil];
     NSDictionary *avg_3h =      [[NSDictionary alloc] initWithObjectsAndKeys:NSLocalizedString(@"_AVG_3H", @"average 3H"), @"avg_3h", nil];

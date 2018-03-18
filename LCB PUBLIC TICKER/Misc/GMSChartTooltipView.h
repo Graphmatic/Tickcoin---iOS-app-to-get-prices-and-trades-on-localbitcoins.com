@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-extern NSMutableString *currentCurrency;
+#import "GMSGlobals.h"
 
 @interface GMSChartTooltipView : UIView
 

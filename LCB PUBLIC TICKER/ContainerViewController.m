@@ -47,9 +47,10 @@
 {
     // Layout helpers
     float vWidth = self.view.frame.size.width;
-    float vHeight = self.view.frame.size.height;
+    // float vHeight = self.view.frame.size.height;
+    
     float leftPaneWidth = ceil(vWidth / 3);
-    float rightPaneWidth = vWidth - leftPaneWidth;
+    // float rightPaneWidth = vWidth - leftPaneWidth;
     
     if ([segue.identifier isEqualToString:first]) {
         self.firstViewController = segue.destinationViewController;
@@ -68,7 +69,7 @@
             [self addChildViewController:segue.destinationViewController];
             UIView* destView2 = ((UIViewController *)segue.destinationViewController).view;
             destView2.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            destView2.frame = CGRectMake(520, 0, self.secondViewController.view.frame.size.width, self.secondViewController.view.frame.size.height);
+            destView2.frame = CGRectMake(520, 0, self.secondViewController.view.frame.size.width - 1, self.secondViewController.view.frame.size.height);
             [self.view addSubview:destView2];
             [segue.destinationViewController didMoveToParentViewController:self];
     }
@@ -80,7 +81,7 @@
         [self addChildViewController:segue.destinationViewController];
         UIView* destView3 = ((UIViewController *)segue.destinationViewController).view;
         destView3.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        destView3.frame = CGRectMake(520, 384, self.thirdViewController.view.frame.size.width, self.thirdViewController.view.frame.size.height);
+        destView3.frame = CGRectMake(772, 0, self.thirdViewController.view.frame.size.width - 1, self.thirdViewController.view.frame.size.height);
         [self.view addSubview:destView3];
         [segue.destinationViewController didMoveToParentViewController:self];
     }

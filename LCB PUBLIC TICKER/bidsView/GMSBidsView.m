@@ -30,15 +30,17 @@
     // layout
     // get parent view size
     CGFloat viewWidth = self.view.bounds.size.width;
-    CGFloat viewHeight = self.view.bounds.size.height / 2;
+    CGFloat viewHeight = (self.view.bounds.size.height / 100) * 94;
     
+    Globals *glob = [Globals globals];
+
     // add header
     self.headerImg = [GMSTopBrandImage topImage:1];
     [self.view addSubview:self.headerImg];
     
     // Some position helpers
     CGFloat messageBoxOrigY = self.headerImg.topBrand.size.height + 2;
-    CGFloat ipadLayoutWidth = self.headerImg.topBrand.size.width;
+    CGFloat ipadLayoutWidth = self.headerImg.topBrand.size.width - 4;
     
     // add empty room for dynamic messages
     CGFloat messageBoxHeight = 64.0;
@@ -50,7 +52,7 @@
     }
     else
     {
-        self.dynamicMessage.frame = CGRectMake(0, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
+        self.dynamicMessage.frame = CGRectMake(2, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
     }
     self.dynamicMessage.backgroundColor = [UIColor clearColor];
     self.dynamicMessage.textColor = GMSColorBlueGreyDark;
@@ -63,7 +65,7 @@
     }
     else
     {
-         self.settingSquare.frame = CGRectMake(0, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
+         self.settingSquare.frame = CGRectMake(2, messageBoxOrigY, ipadLayoutWidth, messageBoxHeight - 4);
     }
     self.settingSquare.backgroundColor = GMSColorBlueGreyDark;
     self.settingSquare.alpha = 0.80;
@@ -77,7 +79,7 @@
     }
     else
     {
-        self.tableViewHeader.frame = CGRectMake(0, tableViewHeaderOriginY -7, ipadLayoutWidth, 24);
+        self.tableViewHeader.frame = CGRectMake(2, tableViewHeaderOriginY -7, ipadLayoutWidth, 24);
     }
     
     [self.tableViewHeader setBackgroundColor: GMSColorBlueGreyDark];
@@ -89,7 +91,7 @@
     }
     else
     {
-        frameHeaderL = CGRectMake(0, 0, ipadLayoutWidth, 24);
+        frameHeaderL = CGRectMake(2, 0, ipadLayoutWidth, 24);
     }
     CGRect frameHeaderR = frameHeaderL;
     CGFloat fhWidth;
@@ -109,12 +111,12 @@
     [self.headerTitleLeft setFont:GMSAvenirNextCondensedMedium];
     self.headerTitleLeft.textAlignment = NSTextAlignmentLeft;
     self.headerTitleLeft.textColor = GMSColorBlueGrey;
-    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), currentCurrency];
+    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), [glob currency]];
     self.headerTitleRight = [[UILabel alloc] initWithFrame:frameHeaderR];
     [self.headerTitleRight setFont:GMSAvenirNextCondensedMedium];
     self.headerTitleRight.textAlignment = NSTextAlignmentRight;
     self.headerTitleRight.textColor = GMSColorBlueGrey;
-    self.headerTitleRight.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_RIGHT", @"Price-currency-maxvolume"), currentCurrency];
+    self.headerTitleRight.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_RIGHT", @"Price-currency-maxvolume"), [glob currency]];
 
     [self.tableViewHeader addSubview:self.headerTitleLeft];
     [self.tableViewHeader addSubview:self.headerTitleRight];
@@ -128,7 +130,7 @@
     }
     else
     {
-        [self.tableView setFrame:CGRectMake(0, tableViewOrigY, ipadLayoutWidth, (viewHeight - tableViewOrigY) )];
+        [self.tableView setFrame:CGRectMake(2, tableViewOrigY, ipadLayoutWidth, (viewHeight - tableViewOrigY) )];
     }
     
     [self.tableView setBackgroundColor: GMSColorDarkGrey];
@@ -151,15 +153,39 @@
 
     // various init
     messagesCount = 0;
+    
+    if ( !self.bidsDatas.isReady )
+    {
+        self.waitingSpin = [[UIActivityIndicatorView alloc]
+                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        if ( !IS_IPAD )
+        {
+            self.waitingSpin.center = CGPointMake(viewWidth / 2, viewHeight / 2);
+        }
+        else
+        {
+            self.waitingSpin.center = CGPointMake(self.tableView.frame.origin.x + (self.tableView.frame.size.width / 2), self.tableView.frame.origin.y + (self.tableView.frame.size.height / 2));
+        }
+        self.waitingSpin.hidesWhenStopped = YES;
+        [self.view addSubview:self.waitingSpin];
+        [self.waitingSpin startAnimating];
+    }
+    else
+    {
+        [self.waitingSpin stopAnimating];
+        [self.tableView reloadData];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
 
+    Globals *glob = [Globals globals];
+
     // init message processor
-    self.messageBoxMessage = [[GMSMessageBoxProcessor alloc]init];
+    self.messageBoxMessage = [[GMSMessageHandler alloc]init];
     
-    self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), currentCurrency];
+    self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), [glob currency]];
     
     if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"bidsMaxDeviation"] != nil )
     {
@@ -179,7 +205,7 @@
     
     self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), [NSString stringWithFormat:@"%d%%", self.maxDeviation]];
     
-    self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:currentCurrency];
+    self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas];
     
     // add observer
     [self.bidsDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
@@ -189,42 +215,20 @@
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
 
-    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), currentCurrency];
+    self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), [glob currency]];
     
     [self.editMaxDev addTarget:self
                         action:@selector(closeSettingView:)
               forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-    
 
-    
-    if ( !self.bidsDatas.isReady )
-    {
-        self.waitingSpin = [[UIActivityIndicatorView alloc]
-                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        if ( !IS_IPAD )
-        {
-            self.waitingSpin.center = CGPointMake(160, 240);
-        }
-        else
-        {
-            self.waitingSpin.center = CGPointMake(self.tableView.frame.origin.x + (self.tableView.frame.size.width / 2), self.tableView.frame.origin.y + (self.tableView.frame.size.height / 2));
-        }
-        self.waitingSpin.hidesWhenStopped = YES;
-        [self.view addSubview:self.waitingSpin];
-        [self.waitingSpin startAnimating];
-    }
-    else
-    {
-        [self.waitingSpin stopAnimating];
-        [self.tableView reloadData];
-    }
-    
-    self.dynamicMessage.text = self.messageBoxMessage.messageBoxString;
+    self.dynamicMessage.text = self.messageBoxMessage.infoMessagesStr;
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
 
+    [self.waitingSpin stopAnimating];
 }
+
 
 //tableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -253,12 +257,14 @@
     
     if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
     {
+        Globals *glob = [Globals globals];
+
         dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
             // remove spinner if any
             [self.waitingSpin stopAnimating];
             self.sortedAsc = NO;
             // update table headers
-            self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), currentCurrency];
+            self.headerTitleLeft.text = [NSString stringWithFormat:NSLocalizedString(@"_ASK_BID_TITLE_LEFT", @"Price-currency-maxvolume"), [glob currency]];
             // Update misc. visible elements
             if ( ( [self.bidsDatas.orderBids count] == 0 ) && ( self.bidsDatas.isDatas == YES ) ) {
                 if(self.timerMessages)[self.timerMessages invalidate];
@@ -284,12 +290,12 @@
 
 
 // no internet connection warning
--(void)timerStartNoConnect:(NSTimer *)theTimer
-{
-    alt = !alt;
-    NSError *err = [theTimer userInfo];
-    [self.messageBoxMessage noConnAlert:err alt:alt];
-}
+//-(void)timerStartNoConnect:(NSTimer *)theTimer
+//{
+//    alt = !alt;
+//    NSError *err = [theTimer userInfo];
+//    [self.messageBoxMessage noConnection:err alt:alt];
+//}
 //message box
 
 -(void)timerStartMulti:(NSTimer*)theTimer
@@ -445,6 +451,8 @@
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.sortedAsc = NO;
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -461,16 +469,20 @@
         self.settingSquare.hidden = YES;
         self.sliderVal.hidden = YES;
         self.sliderOn = NO;
-        // remove spinner if any
-        [self.waitingSpin stopAnimating];
+
     }
+    
     self.sortedAsc = NO;
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
 }
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification
 {
+    Globals *glob = [Globals globals];
+
     // save current selected currency to db (should have been already done...)
-    [[NSUserDefaults standardUserDefaults] setObject:currentCurrency forKey:@"currentCurrency"];
+    [[NSUserDefaults standardUserDefaults] setObject:[glob currency] forKey:@"currency"];
     NSDate *recdATE = [NSDate date];
     [[NSUserDefaults standardUserDefaults] setObject:recdATE forKey:@"lastRecordDateOrderBook"];
     if ( self.sliderOn )

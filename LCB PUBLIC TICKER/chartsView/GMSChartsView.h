@@ -8,10 +8,10 @@
 
 #ifndef GMSChartsView_h
 #define GMSChartsView_h
-
+#import "GMSGlobals.h"
 
 #endif /* GMSChartsView_h */
-extern NSMutableString *currentCurrency;
+
 
 @interface GMSChartsView :  UIViewController
 

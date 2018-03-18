@@ -21,6 +21,9 @@
 		283C4F031FA6364A005A4F3F /* GMSAsksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4F011FA6364A005A4F3F /* GMSAsksView.m */; };
 		283C4F041FA6364A005A4F3F /* GMSAsksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4F011FA6364A005A4F3F /* GMSAsksView.m */; };
 		2855A3BD1F9F6E6100BA3398 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F055653318E6DD9300481688 /* Main.storyboard */; };
+		28567BD31FD2CFC900DCEF1A /* tickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 28567BD21FD2CFC900DCEF1A /* tickerDatas.m */; };
+		2881C09E1FD0651B00034AC2 /* GMSGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 2881C09D1FD0651B00034AC2 /* GMSGlobals.m */; };
+		2881C09F1FD0651B00034AC2 /* GMSGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 2881C09D1FD0651B00034AC2 /* GMSGlobals.m */; };
 		F00A61A318EB694400C35A47 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A218EB694400C35A47 /* Twitter.framework */; };
 		F00A61A518EB6B8500C35A47 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A418EB6B8500C35A47 /* Social.framework */; };
 		F00B2143191C05D1006D3B6F /* EmptySegue.m in Sources */ = {isa = PBXBuildFile; fileRef = F00B2142191C05D1006D3B6F /* EmptySegue.m */; };
@@ -48,7 +51,6 @@
 		F02EFF1419081D3D00201A71 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F02EFF1319081D3D00201A71 /* MessageUI.framework */; };
 		F03FB22C18E84F8500A65036 /* GMSUtilitiesFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = F03FB22B18E84F8500A65036 /* GMSUtilitiesFunction.m */; };
 		F03FB22D18E84F8500A65036 /* GMSUtilitiesFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = F03FB22B18E84F8500A65036 /* GMSUtilitiesFunction.m */; };
-		F04552B618F021E90072C74B /* GMSfirstViewTableData.m in Sources */ = {isa = PBXBuildFile; fileRef = F04552B518F021E90072C74B /* GMSfirstViewTableData.m */; };
 		F055652218E6DD9300481688 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F055652118E6DD9300481688 /* Foundation.framework */; };
 		F055652418E6DD9300481688 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F055652318E6DD9300481688 /* CoreGraphics.framework */; };
 		F055652618E6DD9300481688 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F055652518E6DD9300481688 /* UIKit.framework */; };
@@ -81,8 +83,8 @@
 		F07641041929E7A700DA6616 /* GMSChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07641001929E7A700DA6616 /* GMSChartView.m */; };
 		F07AF6CA18FD85140091D05F /* GMSBidsAsksDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = F07AF6C918FD85140091D05F /* GMSBidsAsksDatas.m */; };
 		F083FAE31974372E0072F02B /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F083FAE21974372E0072F02B /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		F0B5651718E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */; };
-		F0B5651818E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */; };
+		F0B5651718E9C15A00709F6D /* GMSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageHandler.m */; };
+		F0B5651818E9C15A00709F6D /* GMSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B5651618E9C15A00709F6D /* GMSMessageHandler.m */; };
 		F0BC384918F95BA20071F8F4 /* Tickers.m in Sources */ = {isa = PBXBuildFile; fileRef = F0BC384818F95BA20071F8F4 /* Tickers.m */; };
 		F0C01E4D191BEC8200A45B9B /* StoryboardForIpad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0C01E4C191BEC8200A45B9B /* StoryboardForIpad.storyboard */; };
 		F0C70E4B18E88CF000992AA2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0C70E4E18E88CF000992AA2 /* Localizable.strings */; };
@@ -124,13 +126,16 @@
 		2821DF1F1FA76366003913E6 /* GMSBarChartViewPriceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBarChartViewPriceController.m; sourceTree = "<group>"; };
 		28387DFB1FA76AED00D416DE /* GMSBarChartViewVolumeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSBarChartViewVolumeController.h; sourceTree = "<group>"; };
 		28387DFC1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBarChartViewVolumeController.m; sourceTree = "<group>"; };
-		283C4EF21FA62F37005A4F3F /* GMSfirstViewTableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSfirstViewTableData.h; sourceTree = "<group>"; };
 		283C4EF61FA632D6005A4F3F /* GMSStartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSStartView.h; sourceTree = "<group>"; };
 		283C4EF71FA632EE005A4F3F /* GMSStartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSStartView.m; sourceTree = "<group>"; };
 		283C4EFB1FA634E0005A4F3F /* GMSBidsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSBidsView.h; sourceTree = "<group>"; };
 		283C4EFC1FA634E0005A4F3F /* GMSBidsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBidsView.m; sourceTree = "<group>"; };
 		283C4F011FA6364A005A4F3F /* GMSAsksView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSAsksView.m; sourceTree = "<group>"; };
 		283C4F021FA6364A005A4F3F /* GMSAsksView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSAsksView.h; sourceTree = "<group>"; };
+		28567BD11FD2CFC800DCEF1A /* tickerDatas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tickerDatas.h; sourceTree = "<group>"; };
+		28567BD21FD2CFC900DCEF1A /* tickerDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tickerDatas.m; sourceTree = "<group>"; };
+		2881C09C1FD026D500034AC2 /* GMSGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSGlobals.h; sourceTree = "<group>"; };
+		2881C09D1FD0651B00034AC2 /* GMSGlobals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMSGlobals.m; sourceTree = "<group>"; };
 		28BAB03E1F9DFAB3008F9358 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F00A61A218EB694400C35A47 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F00A61A418EB6B8500C35A47 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -181,7 +186,6 @@
 		F02EFF1319081D3D00201A71 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		F03FB22A18E84F8500A65036 /* GMSUtilitiesFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSUtilitiesFunction.h; sourceTree = "<group>"; };
 		F03FB22B18E84F8500A65036 /* GMSUtilitiesFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSUtilitiesFunction.m; sourceTree = "<group>"; };
-		F04552B518F021E90072C74B /* GMSfirstViewTableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSfirstViewTableData.m; sourceTree = "<group>"; };
 		F055651E18E6DD9300481688 /* tickCoin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tickCoin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F055652118E6DD9300481688 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F055652318E6DD9300481688 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -237,8 +241,8 @@
 		F07AF6C818FD85140091D05F /* GMSBidsAsksDatas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSBidsAsksDatas.h; sourceTree = "<group>"; };
 		F07AF6C918FD85140091D05F /* GMSBidsAsksDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBidsAsksDatas.m; sourceTree = "<group>"; };
 		F083FAE21974372E0072F02B /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		F0B5651518E9C15A00709F6D /* GMSMessageBoxProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSMessageBoxProcessor.h; sourceTree = "<group>"; };
-		F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSMessageBoxProcessor.m; sourceTree = "<group>"; };
+		F0B5651518E9C15A00709F6D /* GMSMessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSMessageHandler.h; sourceTree = "<group>"; };
+		F0B5651618E9C15A00709F6D /* GMSMessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSMessageHandler.m; sourceTree = "<group>"; };
 		F0BC384718F95BA20071F8F4 /* Tickers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tickers.h; sourceTree = "<group>"; };
 		F0BC384818F95BA20071F8F4 /* Tickers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tickers.m; sourceTree = "<group>"; };
 		F0C01E4C191BEC8200A45B9B /* StoryboardForIpad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StoryboardForIpad.storyboard; sourceTree = "<group>"; };
@@ -457,6 +461,8 @@
 		F055652718E6DD9300481688 /* LCB PUBLIC TICKER */ = {
 			isa = PBXGroup;
 			children = (
+				2881C09C1FD026D500034AC2 /* GMSGlobals.h */,
+				2881C09D1FD0651B00034AC2 /* GMSGlobals.m */,
 				283C4F001FA635C0005A4F3F /* asksView */,
 				283C4EFA1FA634B2005A4F3F /* bidsView */,
 				283C4EF31FA62F65005A4F3F /* chartsView */,
@@ -468,9 +474,9 @@
 				F065FE8018E73DEB005B0376 /* Img_Singletons */,
 				F07AF6C418FD76390091D05F /* landingView */,
 				F0BC384718F95BA20071F8F4 /* Tickers.h */,
+				F0B5651518E9C15A00709F6D /* GMSMessageHandler.h */,
 				F0BC384818F95BA20071F8F4 /* Tickers.m */,
-				F0B5651518E9C15A00709F6D /* GMSMessageBoxProcessor.h */,
-				F0B5651618E9C15A00709F6D /* GMSMessageBoxProcessor.m */,
+				F0B5651618E9C15A00709F6D /* GMSMessageHandler.m */,
 				F065FE7718E72DA5005B0376 /* GMSConstant.h */,
 				F055653018E6DD9300481688 /* GMSAppDelegate.h */,
 				F055653118E6DD9300481688 /* GMSAppDelegate.m */,
@@ -608,10 +614,10 @@
 		F07AF6C418FD76390091D05F /* landingView */ = {
 			isa = PBXGroup;
 			children = (
+				28567BD11FD2CFC800DCEF1A /* tickerDatas.h */,
+				28567BD21FD2CFC900DCEF1A /* tickerDatas.m */,
 				283C4EF71FA632EE005A4F3F /* GMSStartView.m */,
 				283C4EF61FA632D6005A4F3F /* GMSStartView.h */,
-				283C4EF21FA62F37005A4F3F /* GMSfirstViewTableData.h */,
-				F04552B518F021E90072C74B /* GMSfirstViewTableData.m */,
 				F065FE8918E7B226005B0376 /* GMSlabelFromJson.h */,
 				F065FE8A18E7B226005B0376 /* GMSlabelFromJson.m */,
 			);
@@ -757,6 +763,7 @@
 				F07640EE1929E6B400DA6616 /* GMSChartTableCell.m in Sources */,
 				F012459218E72085002FAADA /* AFURLSessionManager.m in Sources */,
 				28387DFD1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m in Sources */,
+				2881C09E1FD0651B00034AC2 /* GMSGlobals.m in Sources */,
 				F055653218E6DD9300481688 /* GMSAppDelegate.m in Sources */,
 				F012458D18E72085002FAADA /* AFNetworkReachabilityManager.m in Sources */,
 				F01245A518E7208F002FAADA /* AFNetworkActivityIndicatorManager.m in Sources */,
@@ -770,14 +777,14 @@
 				F012459018E72085002FAADA /* AFURLRequestSerialization.m in Sources */,
 				F00B2143191C05D1006D3B6F /* EmptySegue.m in Sources */,
 				F01245A818E7208F002FAADA /* UIButton+AFNetworking.m in Sources */,
-				F04552B618F021E90072C74B /* GMSfirstViewTableData.m in Sources */,
-				F0B5651718E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */,
+				F0B5651718E9C15A00709F6D /* GMSMessageHandler.m in Sources */,
 				F01245A918E7208F002FAADA /* UIImageView+AFNetworking.m in Sources */,
 				F03FB22C18E84F8500A65036 /* GMSUtilitiesFunction.m in Sources */,
 				F07AF6CA18FD85140091D05F /* GMSBidsAsksDatas.m in Sources */,
 				F00B2146191C0705006D3B6F /* ContainerViewController.m in Sources */,
 				F055652E18E6DD9300481688 /* main.m in Sources */,
 				F07641041929E7A700DA6616 /* GMSChartView.m in Sources */,
+				28567BD31FD2CFC900DCEF1A /* tickerDatas.m in Sources */,
 				F07640FB1929E6B400DA6616 /* GMSChartTooltipView.m in Sources */,
 				F065FE7E18E73DD0005B0376 /* GMSMessageBox.m in Sources */,
 				F065FE8B18E7B226005B0376 /* GMSlabelFromJson.m in Sources */,
@@ -808,8 +815,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0B5651818E9C15A00709F6D /* GMSMessageBoxProcessor.m in Sources */,
+				F0B5651818E9C15A00709F6D /* GMSMessageHandler.m in Sources */,
 				F065FE8C18E7B226005B0376 /* GMSlabelFromJson.m in Sources */,
+				2881C09F1FD0651B00034AC2 /* GMSGlobals.m in Sources */,
 				F055655018E6DD9300481688 /* LCB_PUBLIC_TICKERTests.m in Sources */,
 				2821DF1C1FA749BA003913E6 /* GMSChartsView.m in Sources */,
 				283C4EFF1FA63541005A4F3F /* GMSBidsAsksDatas.m in Sources */,
@@ -900,13 +908,13 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -957,7 +965,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -980,6 +988,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7PUE5R38UV;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LCB PUBLIC TICKER/tickCoin-Prefix.pch";
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
@@ -1002,6 +1011,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7PUE5R38UV;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LCB PUBLIC TICKER/tickCoin-Prefix.pch";
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
