@@ -62,6 +62,7 @@ static GMSBidsAsksDatas * _sharedBidsAsksDatas = nil;
         
         // init properties
         self.isReady = NO;
+        self.isDatas = NO;
         self.datasBuilderOp = [NSOperationQueue new];
         self.datasBuilderOp.maxConcurrentOperationCount=1;
         
@@ -181,13 +182,7 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
     }
     else
     {
-//        // generate empty data
-//        NSLog(@"generate empty data...");
-//        NSMutableArray *emptyArr = [[NSMutableArray alloc]init];
-//        [emptyArr addObject:[[NSString alloc] initWithString:NSLocalizedString(@"_NO_DATAS", @"no data")]];
-//        [object.orderBids addObject:emptyArr];
-//        [object.orderAsks addObject:emptyArr];
-        
+        object.isDatas = NO;
         // notify UI
         dispatch_async(dispatch_get_main_queue(), ^{
             // Notify UI that Instance is ready to use
@@ -215,12 +210,12 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
     // ASKS
     if ( self.asksMaxDeviation == 201 && ( sizeof( (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"asks"]].array ) > 0 ) ) // no deviation filter
     {
-        self.orderBids = (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"asks"]].array;
+        self.orderAsks = (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"asks"]].array;
     }
     else if ( sizeof( (NSMutableArray*)[NSOrderedSet orderedSetWithArray:[responseObj objectForKey:@"asks"]].array ) > 1 )
     {
         [self deviationFilter:[responseObj objectForKey:@"asks"] deviation:self.asksMaxDeviation :^(NSMutableArray *sortedAsksDatas ) {
-            self.orderBids = sortedAsksDatas;
+            self.orderAsks = sortedAsksDatas;
             // save deviation value in DB
             [[NSUserDefaults standardUserDefaults]  setObject:[NSString stringWithFormat:@"%i", self.asksMaxDeviation] forKey:@"asksMaxDeviation"];
         }];
@@ -273,13 +268,13 @@ static void bidsAsksDatasFromDB(GMSBidsAsksDatas *object) {
         NSMutableArray *aArr = (NSMutableArray*)[[self.bidsAsksAllCurrencies objectForKey:self.currency] objectForKey:@"asks"];
         self.asksMaxDeviation = maxDeviation;
         
-        if (self.bidsMaxDeviation == 201) // no deviation filter
+        if (self.asksMaxDeviation == 201) // no deviation filter
         {
             self.orderAsks = (NSMutableArray*)[NSOrderedSet orderedSetWithArray:aArr].array;
         }
         else
         {
-            [self deviationFilter:aArr deviation:self.bidsMaxDeviation :^(NSMutableArray *sortedAsksDatas ) {
+            [self deviationFilter:aArr deviation:self.asksMaxDeviation :^(NSMutableArray *sortedAsksDatas ) {
                 self.orderAsks = sortedAsksDatas;
                 // save deviation value in DB
                 [[NSUserDefaults standardUserDefaults]  setObject:[NSString stringWithFormat:@"%i", self.asksMaxDeviation] forKey:@"asksMaxDeviation"];

@@ -153,6 +153,28 @@
     
     // various init
     messagesCount = 0;
+    
+    if ( !self.asksDatas.isReady )
+    {
+        self.waitingSpin = [[UIActivityIndicatorView alloc]
+                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        if ( !IS_IPAD )
+        {
+            self.waitingSpin.center = CGPointMake(viewWidth / 2, viewHeight / 2);
+        }
+        else
+        {
+            self.waitingSpin.center = CGPointMake(self.tableView.frame.origin.x + (self.tableView.frame.size.width / 2), self.tableView.frame.origin.y + (self.tableView.frame.size.height / 2));
+        }
+        self.waitingSpin.hidesWhenStopped = YES;
+        [self.view addSubview:self.waitingSpin];
+        [self.waitingSpin startAnimating];
+    }
+    else
+    {
+        [self.waitingSpin stopAnimating];
+        [self.tableView reloadData];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -162,7 +184,7 @@
     // init message processor
     self.messageBoxMessage = [[GMSMessageHandler alloc]init];
     
-    self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_SELL_ADD_FOR_CUR_x", @"BIDS - %@"), [glob currency]];
+    self.dynamicMessage.text = [NSString stringWithFormat:NSLocalizedString(@"_BUY_ADD_FOR_CUR_x", @"BIDS - %@"), [glob currency]];
     
     if (  [[NSUserDefaults standardUserDefaults]objectForKey:@"asksMaxDeviation"] != nil )
     {
@@ -198,35 +220,13 @@
                         action:@selector(closeSettingView:)
               forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
     
-    
-    
-    if ( !self.asksDatas.isReady )
-    {
-        self.waitingSpin = [[UIActivityIndicatorView alloc]
-                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        if ( !IS_IPAD )
-        {
-            self.waitingSpin.center = CGPointMake(160, 240);
-        }
-        else
-        {
-            self.waitingSpin.center = CGPointMake(self.tableView.frame.origin.x + (self.tableView.frame.size.width / 2), self.tableView.frame.origin.y + (self.tableView.frame.size.height / 2));
-        }
-        self.waitingSpin.hidesWhenStopped = YES;
-        [self.view addSubview:self.waitingSpin];
-        [self.waitingSpin startAnimating];
-    }
-    else
-    {
-        [self.waitingSpin stopAnimating];
-        [self.tableView reloadData];
-    }
-    
     self.dynamicMessage.text = self.messageBoxMessage.infoMessagesStr;
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
     
+    [self.waitingSpin stopAnimating];
+
 }
 
 //tableView
@@ -446,6 +446,8 @@
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.sortedDesc = NO;
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -462,10 +464,11 @@
         self.settingSquare.hidden = YES;
         self.sliderVal.hidden = YES;
         self.sliderOn = NO;
-        // remove spinner if any
-        [self.waitingSpin stopAnimating];
+
     }
     self.sortedDesc = NO;
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
 }
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification

@@ -160,7 +160,7 @@
                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         if ( !IS_IPAD )
         {
-            self.waitingSpin.center = CGPointMake(160, 240);
+            self.waitingSpin.center = CGPointMake(viewWidth / 2, viewHeight / 2);
         }
         else
         {
@@ -220,16 +220,13 @@
     [self.editMaxDev addTarget:self
                         action:@selector(closeSettingView:)
               forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-    
 
-    
-
-    
     self.dynamicMessage.text = self.messageBoxMessage.infoMessagesStr;
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
 
+    [self.waitingSpin stopAnimating];
 }
 
 
@@ -454,6 +451,8 @@
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.sortedAsc = NO;
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -470,10 +469,12 @@
         self.settingSquare.hidden = YES;
         self.sliderVal.hidden = YES;
         self.sliderOn = NO;
-        // remove spinner if any
-        [self.waitingSpin stopAnimating];
+
     }
+    
     self.sortedAsc = NO;
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
 }
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification
