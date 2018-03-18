@@ -26,7 +26,7 @@
 @property (readwrite) BOOL isReady;
 
 
-+ (GMSchartViewData *)sharedGraphViewTableData:(NSString*)currency;
++ (GMSchartViewData *)sharedGraphViewTableData;
 - (void)resetSharedInstance;
 - (void)listingBuilder:(id)responseObject;
 - (void)dummyArrayForMissingChart;

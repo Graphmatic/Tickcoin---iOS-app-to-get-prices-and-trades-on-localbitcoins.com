@@ -80,8 +80,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
 
 - (void)initFakeData
 {
-    Globals *glob = [Globals globals];
-    self.graphDatas = [GMSchartViewData sharedGraphViewTableData:[NSMutableString stringWithString:[glob currency]]];
+    self.graphDatas = [GMSchartViewData sharedGraphViewTableData];
 }
 
 #pragma mark - View Lifecycle

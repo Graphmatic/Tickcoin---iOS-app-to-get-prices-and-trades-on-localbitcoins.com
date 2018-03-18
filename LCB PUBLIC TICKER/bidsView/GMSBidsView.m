@@ -160,7 +160,7 @@
                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         if ( !IS_IPAD )
         {
-            self.waitingSpin.center = CGPointMake(160, 240);
+            self.waitingSpin.center = CGPointMake(viewWidth / 2, viewHeight / 2);
         }
         else
         {
@@ -205,7 +205,7 @@
     
     self.sliderInfoTxt.text = [NSString stringWithFormat:NSLocalizedString(@"_SLIDER_DEVIATION_NAME_IPAD", @"max diff from 24H average: %@"), [NSString stringWithFormat:@"%d%%", self.maxDeviation]];
     
-    self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas:[NSMutableString stringWithString:[glob currency]]];
+    self.bidsDatas = [GMSBidsAsksDatas sharedBidsAsksDatas];
     
     // add observer
     [self.bidsDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
@@ -220,16 +220,13 @@
     [self.editMaxDev addTarget:self
                         action:@selector(closeSettingView:)
               forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-    
 
-    
-
-    
     self.dynamicMessage.text = self.messageBoxMessage.infoMessagesStr;
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.timerMessages = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timerStartMulti:) userInfo:nil repeats:YES];
 
+    [self.waitingSpin stopAnimating];
 }
 
 
@@ -454,6 +451,8 @@
     if(self.timerMessages)[self.timerMessages invalidate];
     self.timerMessages = nil;
     self.sortedAsc = NO;
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -470,10 +469,12 @@
         self.settingSquare.hidden = YES;
         self.sliderVal.hidden = YES;
         self.sliderOn = NO;
-        // remove spinner if any
-        [self.waitingSpin stopAnimating];
+
     }
+    
     self.sortedAsc = NO;
+    // remove spinner if any
+    [self.waitingSpin stopAnimating];
 }
 
 - (void) applicationDidEnterBackground:(NSNotification*)notification
