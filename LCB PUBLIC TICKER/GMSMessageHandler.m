@@ -195,8 +195,8 @@ static GMSMessageHandler *messageHandler = nil;
     switch (messagesCount)
     {
         case 0:
-            if ( !IS_IPAD )
-            {
+//            if ( !IS_IPAD )
+//            {
                 if(maxDev == 201)
                 {
                     self.infoMessagesStr = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER_DISABLED", @"display filter: disabled")];
@@ -205,7 +205,7 @@ static GMSMessageHandler *messageHandler = nil;
                 {
                     self.infoMessagesStr = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER", @"display filter: +/- %d%% of last price"),(int)maxDev];
                 }
-            }
+//            }
             break;
         case 1:
             if ( !IS_IPAD )
@@ -240,8 +240,8 @@ static GMSMessageHandler *messageHandler = nil;
     switch (messagesCount)
     {
         case 0:
-            if ( !IS_IPAD )
-            {
+//            if ( !IS_IPAD )
+//            {
                 if(maxDev == 201)
                 {
                     self.infoMessagesStr = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER_DISABLED", @"display filter: disabled")];
@@ -250,7 +250,7 @@ static GMSMessageHandler *messageHandler = nil;
                 {
                     self.infoMessagesStr = [NSString stringWithFormat:NSLocalizedString(@"_DEVIATION_TRESHOLD_FILTER", @"display filter: +/- %d%% of last price"),(int)maxDev];
                 }
-            }
+//            }
             break;
         case 1:
             if ( !IS_IPAD )
