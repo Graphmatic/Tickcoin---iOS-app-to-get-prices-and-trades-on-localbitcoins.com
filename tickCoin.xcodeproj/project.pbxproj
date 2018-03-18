@@ -24,6 +24,7 @@
 		28567BD31FD2CFC900DCEF1A /* tickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 28567BD21FD2CFC900DCEF1A /* tickerDatas.m */; };
 		2881C09E1FD0651B00034AC2 /* GMSGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 2881C09D1FD0651B00034AC2 /* GMSGlobals.m */; };
 		2881C09F1FD0651B00034AC2 /* GMSGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 2881C09D1FD0651B00034AC2 /* GMSGlobals.m */; };
+		28BF8A73205EDCBC00D34987 /* GMSMapsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF8A72205EDCBB00D34987 /* GMSMapsView.m */; };
 		F00A61A318EB694400C35A47 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A218EB694400C35A47 /* Twitter.framework */; };
 		F00A61A518EB6B8500C35A47 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A418EB6B8500C35A47 /* Social.framework */; };
 		F00B2143191C05D1006D3B6F /* EmptySegue.m in Sources */ = {isa = PBXBuildFile; fileRef = F00B2142191C05D1006D3B6F /* EmptySegue.m */; };
@@ -137,6 +138,8 @@
 		2881C09C1FD026D500034AC2 /* GMSGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSGlobals.h; sourceTree = "<group>"; };
 		2881C09D1FD0651B00034AC2 /* GMSGlobals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMSGlobals.m; sourceTree = "<group>"; };
 		28BAB03E1F9DFAB3008F9358 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		28BF8A71205EDCBB00D34987 /* GMSMapsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSMapsView.h; sourceTree = "<group>"; };
+		28BF8A72205EDCBB00D34987 /* GMSMapsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSMapsView.m; sourceTree = "<group>"; };
 		F00A61A218EB694400C35A47 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F00A61A418EB6B8500C35A47 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		F00B2141191C05D1006D3B6F /* EmptySegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptySegue.h; sourceTree = "<group>"; };
@@ -341,6 +344,15 @@
 			path = asksView;
 			sourceTree = "<group>";
 		};
+		28BF8A70205EDCBB00D34987 /* maps */ = {
+			isa = PBXGroup;
+			children = (
+				28BF8A71205EDCBB00D34987 /* GMSMapsView.h */,
+				28BF8A72205EDCBB00D34987 /* GMSMapsView.m */,
+			);
+			path = maps;
+			sourceTree = "<group>";
+		};
 		F012457618E72085002FAADA /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
@@ -461,6 +473,7 @@
 		F055652718E6DD9300481688 /* LCB PUBLIC TICKER */ = {
 			isa = PBXGroup;
 			children = (
+				28BF8A70205EDCBB00D34987 /* maps */,
 				2881C09C1FD026D500034AC2 /* GMSGlobals.h */,
 				2881C09D1FD0651B00034AC2 /* GMSGlobals.m */,
 				283C4F001FA635C0005A4F3F /* asksView */,
@@ -770,6 +783,7 @@
 				F012457418E72002002FAADA /* GMSTopBrandImage.m in Sources */,
 				F012458F18E72085002FAADA /* AFURLConnectionOperation.m in Sources */,
 				F01245AA18E7208F002FAADA /* UIProgressView+AFNetworking.m in Sources */,
+				28BF8A73205EDCBC00D34987 /* GMSMapsView.m in Sources */,
 				F07640F11929E6B400DA6616 /* GMSBaseTableViewController.m in Sources */,
 				F012458C18E72085002FAADA /* AFHTTPSessionManager.m in Sources */,
 				2821DF201FA76366003913E6 /* GMSBarChartViewPriceController.m in Sources */,
