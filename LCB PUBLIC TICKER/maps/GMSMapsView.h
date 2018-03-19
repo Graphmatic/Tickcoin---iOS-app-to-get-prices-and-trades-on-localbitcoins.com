@@ -7,15 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
+//#import "GMSlocationService.h"
 
 #import "GMSGlobals.h"
 
-@interface GMSMapsView : UIViewController
+@interface GMSMapsView : UIViewController <MKMapViewDelegate>
 {
-   
+
+
 }
 
 @property (strong, atomic) GMSTopBrandImage *headerImg;
+@property (nonatomic, retain) CLLocationManager *myLocationManager;
+
 
 @end
 

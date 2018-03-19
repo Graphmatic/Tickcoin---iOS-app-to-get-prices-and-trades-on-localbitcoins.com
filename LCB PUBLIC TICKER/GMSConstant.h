@@ -68,3 +68,5 @@
 #define IS_IPHONE_X ([currentDevice isEqualToString:@"iPhone10,3"] || [currentDevice isEqualToString:@"iPhone10,6"] || [currentSimulatorDevice isEqualToString:@"iPhone10,3"] || [currentSimulatorDevice isEqualToString:@"iPhone10,6"])
 
 #endif
+
+#define METERS_PER_KM 1000

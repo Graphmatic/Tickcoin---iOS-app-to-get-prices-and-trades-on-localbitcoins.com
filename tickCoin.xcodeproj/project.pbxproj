@@ -24,6 +24,8 @@
 		28567BD31FD2CFC900DCEF1A /* tickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 28567BD21FD2CFC900DCEF1A /* tickerDatas.m */; };
 		2881C09E1FD0651B00034AC2 /* GMSGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 2881C09D1FD0651B00034AC2 /* GMSGlobals.m */; };
 		2881C09F1FD0651B00034AC2 /* GMSGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 2881C09D1FD0651B00034AC2 /* GMSGlobals.m */; };
+		28BDF6B620601D1B0085598C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BDF6B520601D1A0085598C /* MapKit.framework */; };
+		28BDF6B820601F0C0085598C /* GMSlocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BDF6B720601F0C0085598C /* GMSlocationService.m */; };
 		28BF8A73205EDCBC00D34987 /* GMSMapsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF8A72205EDCBB00D34987 /* GMSMapsView.m */; };
 		F00A61A318EB694400C35A47 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A218EB694400C35A47 /* Twitter.framework */; };
 		F00A61A518EB6B8500C35A47 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00A61A418EB6B8500C35A47 /* Social.framework */; };
@@ -138,6 +140,8 @@
 		2881C09C1FD026D500034AC2 /* GMSGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSGlobals.h; sourceTree = "<group>"; };
 		2881C09D1FD0651B00034AC2 /* GMSGlobals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMSGlobals.m; sourceTree = "<group>"; };
 		28BAB03E1F9DFAB3008F9358 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		28BDF6B520601D1A0085598C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		28BDF6B720601F0C0085598C /* GMSlocationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMSlocationService.m; sourceTree = "<group>"; };
 		28BF8A71205EDCBB00D34987 /* GMSMapsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSMapsView.h; sourceTree = "<group>"; };
 		28BF8A72205EDCBB00D34987 /* GMSMapsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSMapsView.m; sourceTree = "<group>"; };
 		F00A61A218EB694400C35A47 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
@@ -277,6 +281,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28BDF6B620601D1B0085598C /* MapKit.framework in Frameworks */,
 				F0D63976197541F100BF3F16 /* AVFoundation.framework in Frameworks */,
 				F0D63977197541F100BF3F16 /* CoreData.framework in Frameworks */,
 				F0D63973197541D700BF3F16 /* CoreMedia.framework in Frameworks */,
@@ -347,6 +352,7 @@
 		28BF8A70205EDCBB00D34987 /* maps */ = {
 			isa = PBXGroup;
 			children = (
+				28BDF6B720601F0C0085598C /* GMSlocationService.m */,
 				28BF8A71205EDCBB00D34987 /* GMSMapsView.h */,
 				28BF8A72205EDCBB00D34987 /* GMSMapsView.m */,
 			);
@@ -449,6 +455,7 @@
 		F055652018E6DD9300481688 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28BDF6B520601D1A0085598C /* MapKit.framework */,
 				F0D63974197541F100BF3F16 /* AVFoundation.framework */,
 				F0D63975197541F100BF3F16 /* CoreData.framework */,
 				F0D63972197541D700BF3F16 /* CoreMedia.framework */,
@@ -705,7 +712,16 @@
 				TargetAttributes = {
 					F055651D18E6DD9300481688 = {
 						DevelopmentTeam = 7PUE5R38UV;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					F055654118E6DD9300481688 = {
 						TestTargetID = F055651D18E6DD9300481688;
@@ -815,6 +831,7 @@
 				283C4EF81FA632EE005A4F3F /* GMSStartView.m in Sources */,
 				F012458B18E72085002FAADA /* AFHTTPRequestOperationManager.m in Sources */,
 				F063CAC51922A42D00722F02 /* GMSchartViewData.m in Sources */,
+				28BDF6B820601F0C0085598C /* GMSlocationService.m in Sources */,
 				F01245AB18E7208F002FAADA /* UIRefreshControl+AFNetworking.m in Sources */,
 				F012458E18E72085002FAADA /* AFSecurityPolicy.m in Sources */,
 				F012459118E72085002FAADA /* AFURLResponseSerialization.m in Sources */,
@@ -998,6 +1015,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Florian LACROIX (5M85U87S3R)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1007,10 +1025,13 @@
 				GCC_PREFIX_HEADER = "LCB PUBLIC TICKER/tickCoin-Prefix.pch";
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rio.--PRODUCT-NAME-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "LCB PUBLIC TICKER/maps/tickCoin-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1021,6 +1042,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Florian LACROIX (5M85U87S3R)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1030,10 +1052,13 @@
 				GCC_PREFIX_HEADER = "LCB PUBLIC TICKER/tickCoin-Prefix.pch";
 				INFOPLIST_FILE = "LCB PUBLIC TICKER/tickCoin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rio.--PRODUCT-NAME-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "LCB PUBLIC TICKER/maps/tickCoin-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
