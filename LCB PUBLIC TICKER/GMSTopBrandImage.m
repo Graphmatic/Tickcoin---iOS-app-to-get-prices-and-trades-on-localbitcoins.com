@@ -146,6 +146,25 @@
                     }
                    
                     break;
+                case 4:
+                    if ( IS_IPHONE_6_7_8 )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_maps_750"];
+                    }
+                    else if ( IS_IPHONE_PLUS )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_maps_1242"];
+                    }
+                    else if ( IS_IPHONE_X )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_maps_1125"];
+                    }
+                    else   // ( IS_IPHONE_4_5 )
+                    {
+                        self.topBrand = [UIImage imageNamed:@"header_maps"];
+                    }
+                    
+                    break;
                 default:
                     self.topBrand = [UIImage imageNamed:@"LCB_headerImg.png"];
                     break;

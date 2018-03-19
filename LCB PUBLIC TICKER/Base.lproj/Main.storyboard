@@ -172,7 +172,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qh2-T1-AhA" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1492" y="-1498"/>
+            <point key="canvasLocation" x="-2752" y="-1644"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Vex-rW-GRa">
@@ -196,7 +196,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FNP-y4-bzi" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3093" y="-798"/>
+            <point key="canvasLocation" x="-4052" y="-1061"/>
         </scene>
         <!--Bids-->
         <scene sceneID="Squ-r0-tv8">
@@ -573,7 +573,7 @@
         <!--Item-->
         <scene sceneID="jZ8-p7-Ra8">
             <objects>
-                <viewController id="XN0-Zc-2Pf" sceneMemberID="viewController">
+                <viewController id="XN0-Zc-2Pf" customClass="GMSMapsView" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cbj-gW-2YV"/>
                         <viewControllerLayoutGuide type="bottom" id="2YU-zB-e0x"/>
@@ -581,13 +581,13 @@
                     <view key="view" contentMode="scaleToFill" id="99f-8P-lAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="1" green="0.54303634898046516" blue="0.37240629206661524" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="AEh-zU-PRF"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wl8-Kc-hDz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1687" y="261"/>
+            <point key="canvasLocation" x="-3084" y="-139"/>
         </scene>
         <!--Charts-->
         <scene sceneID="Qqf-ZJ-Tnv">
