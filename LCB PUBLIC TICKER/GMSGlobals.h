@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface Globals : NSObject
 
@@ -30,7 +31,7 @@
 - (NSString*) orderBookURLend;
 - (NSString*) graphURLStart;
 - (NSString*) graphURLEnd;
-
+- (NSString*) mapURL:(CLLocationCoordinate2D) uLocation;
 
 @property (retain, atomic) NSString *currency;
 @property (retain, atomic) NSDate *lastRecordDate;

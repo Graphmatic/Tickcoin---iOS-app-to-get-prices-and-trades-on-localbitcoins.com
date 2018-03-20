@@ -22,7 +22,9 @@
 
 @property (strong, atomic) GMSTopBrandImage *headerImg;
 @property (nonatomic, retain) CLLocationManager *myLocationManager;
-
+@property (nonatomic, retain) MKMapView *mapView;
+@property (nonatomic) CLLocationCoordinate2D currentUserPosition;
+@property ( atomic, retain ) NSMutableDictionary *addList;
 
 @end
 

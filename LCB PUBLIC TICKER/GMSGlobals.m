@@ -139,6 +139,14 @@
     return [NSString stringWithFormat:@"&start="];
 }
 
+// return the first part of ressources URL
+- (NSString*) mapURL:(CLLocationCoordinate2D) uLocation;
+{
+    NSString *urlStart = [NSString stringWithFormat:@"https://localbitcoins.com/api/places/?lat="];
+    NSString *tmpUrl = [[NSString alloc] initWithString:[urlStart stringByAppendingString:[NSString stringWithFormat:@"%f",uLocation.latitude]]];
+    NSString *tmpurlx = [[NSString alloc] initWithString:[tmpUrl stringByAppendingString:@"&lon="]];
+    return [[NSString alloc] initWithString:[tmpurlx stringByAppendingString:[NSString stringWithFormat:@"%f",uLocation.longitude]]];
+}
 // return beginning date used for query
 - (NSDate*) queryStartDate
 {

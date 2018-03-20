@@ -8,6 +8,7 @@
 
 #import "GMSchartViewData.h"
 #import "GMSUtilitiesFunction.h"
+
 @interface GMSchartViewData ()
 {
 
