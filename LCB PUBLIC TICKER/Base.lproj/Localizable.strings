@@ -73,3 +73,5 @@
 "_DEFAULT_CURRENCY" = "default currency:";
 "_LOADING_NEWS" = "loading last news...:";
 "_GRAPHMATIC_MAIL" = "graphmatic.studio@gmail.com";
+//map contrtoller
+"_API_ERROR_NO_ADD" = "There is no add around!";

@@ -70,3 +70,5 @@
 "_DEFAULT_CURRENCY" = "devise par défaut:";
 "_LOADING_NEWS" = "chargement des news...:";
 "_GRAPHMATIC_MAIL" = "réalisé par Graphmatic Studio - graphmatic.studio@gmail.com";
+//map contrtoller
+"_API_ERROR_NO_ADD" = "Aucune offre aux alentours";

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="8YX-ce-x5E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8YX-ce-x5E">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment version="4096" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -25,10 +26,6 @@
         <scene sceneID="W3I-pn-N6e">
             <objects>
                 <viewController title="First" id="CZ4-MO-1fc" customClass="GMSStartView" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6Py-wU-ZwV"/>
-                        <viewControllerLayoutGuide type="bottom" id="mX5-HT-KJK"/>
-                    </layoutGuides>
                     <view key="view" autoresizesSubviews="NO" contentMode="top" id="2VE-Yg-loa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -154,6 +151,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40000000000000002" green="0.47058823529411764" blue="0.55686274509803924" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="Md9-UR-vdC"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="exchange" image="first" id="u1e-5L-l1D"/>
@@ -202,10 +200,6 @@
         <scene sceneID="Squ-r0-tv8">
             <objects>
                 <viewController title="Bids" id="eiY-LA-xuV" customClass="GMSBidsView" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="oR9-AD-Ys1"/>
-                        <viewControllerLayoutGuide type="bottom" id="5ht-rD-9a9"/>
-                    </layoutGuides>
                     <view key="view" autoresizesSubviews="NO" tag="4" contentMode="top" id="Xqn-8m-MGL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -289,6 +283,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40000000000000002" green="0.47058823529999999" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="eGp-iH-o1v"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="BIDS" image="second" id="NVi-4f-LXz"/>
@@ -311,10 +306,6 @@
         <scene sceneID="8tz-SX-5vZ">
             <objects>
                 <viewController title="Asks" id="Ry6-S7-9Zh" customClass="GMSAsksView" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="PO7-Lp-e7I"/>
-                        <viewControllerLayoutGuide type="bottom" id="l7r-5a-oyg"/>
-                    </layoutGuides>
                     <view key="view" autoresizesSubviews="NO" tag="4" contentMode="top" id="6Yi-ja-hfO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -401,6 +392,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40000000000000002" green="0.47058823529999999" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="7kv-iU-HLr"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="ASKS" image="second" id="Kat-f5-gww"/>
@@ -423,10 +415,6 @@
         <scene sceneID="zff-Ok-Q06">
             <objects>
                 <viewController id="P9f-lh-gZo" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Oyo-Ws-rSP"/>
-                        <viewControllerLayoutGuide type="bottom" id="601-uq-d43"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chartTooltip" id="xAJ-Gz-aF9" customClass="GMSChartTooltipView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -531,6 +519,7 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="gNI-pT-XeG"/>
                         <connections>
                             <outlet property="currency" destination="cB4-S1-lma" id="WXq-qU-gNE"/>
                             <outlet property="dateTime" destination="KNr-iC-Unl" id="AB8-iC-oe4"/>
@@ -573,11 +562,7 @@
         <!--Item-->
         <scene sceneID="jZ8-p7-Ra8">
             <objects>
-                <viewController id="XN0-Zc-2Pf" customClass="GMSMapsView" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="cbj-gW-2YV"/>
-                        <viewControllerLayoutGuide type="bottom" id="2YU-zB-e0x"/>
-                    </layoutGuides>
+                <viewController storyboardIdentifier="Map scene" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XN0-Zc-2Pf" customClass="GMSMapsView" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="99f-8P-lAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -586,10 +571,55 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleAspectFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" rowHeight="80" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCW-cc-QLe">
+                                <rect key="frame" x="0.0" y="315" width="375" height="303"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="separatorColor" red="0.40000000000000002" green="0.47058823529999999" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                                <color key="sectionIndexColor" red="0.82734102310000002" green="0.82734102310000002" blue="0.82734102310000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="sectionIndexBackgroundColor" red="0.26274509800000001" green="0.26274509800000001" blue="0.26274509800000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item" textLabel="5up-pz-vf5" detailTextLabel="C9h-zu-cIm" rowHeight="80" style="IBUITableViewCellStyleValue1" id="Loe-Zw-Jos">
+                                        <rect key="frame" x="0.0" y="1" width="375" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" tableViewCell="Loe-Zw-Jos" id="Uki-aW-nQO">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5up-pz-vf5">
+                                                    <rect key="frame" x="15" y="26" width="39" height="27.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="C9h-zu-cIm">
+                                                    <rect key="frame" x="307" y="26" width="53" height="27.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                                    <color key="textColor" red="0.92879478640000002" green="0.92928031219999996" blue="0.95902186950000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="XN0-Zc-2Pf" id="Ysn-34-023"/>
+                                    <outlet property="delegate" destination="XN0-Zc-2Pf" id="xhB-md-v2j"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.54303634898046516" blue="0.37240629206661524" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="g9Q-mp-eBM"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="AEh-zU-PRF"/>
+                    <connections>
+                        <outlet property="tableView" destination="MCW-cc-QLe" id="Z2o-Nl-ZBc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wl8-Kc-hDz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -599,10 +629,6 @@
         <scene sceneID="Qqf-ZJ-Tnv">
             <objects>
                 <viewController title="Charts" id="atw-fd-X4C" customClass="GMSChartsView" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="reF-O8-ViT"/>
-                        <viewControllerLayoutGuide type="bottom" id="p9q-T3-OkT"/>
-                    </layoutGuides>
                     <view key="view" autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Y19-Us-Dgb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -628,6 +654,7 @@
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="rf3-qz-TQY"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="Item" id="OUk-8u-KLh"/>

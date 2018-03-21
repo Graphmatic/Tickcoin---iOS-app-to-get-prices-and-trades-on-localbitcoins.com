@@ -18,7 +18,7 @@
 
 @implementation GMSMapsView
 
-@synthesize headerImg, myLocationManager, mapView, currentUserPosition, addList;
+@synthesize headerImg, myLocationManager, mapView, currentUserPosition, addList, apiSuccess, apiError, tableView;
 
 - (void)viewDidLoad
 {
@@ -30,6 +30,7 @@
     CGFloat viewHeight = (self.view.bounds.size.height / 100) * 94;
     
     Globals *glob = [Globals globals];
+    self.apiSuccess = false;
     
     //add header
     self.headerImg = [GMSTopBrandImage topImage:4];
@@ -68,6 +69,14 @@
     [self.mapView setRegion:viewRegion animated:YES];
     
     [self.view addSubview:self.mapView];
+    
+    CGFloat tableViewOrigin = mapOrigY + self.mapView.frame.size.height;
+    
+    //Table view
+    [self.tableView setFrame:CGRectMake(0, tableViewOrigin, viewWidth, (viewHeight - tableViewOrigin))];
+    [self.view addSubview:self.tableView];
+    CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
+    [self.tableView setContentOffset:newOffset animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -100,16 +109,41 @@
          NSLog(@"%@", responseObject);
          self.addList = [[NSMutableDictionary alloc]initWithDictionary: responseObject];
          NSLog(@"datas: %@", [self.addList objectForKey:@"data"]);
+         if( [self.addList objectForKey:@"error"] != nil )
+         {
+             NSLog(@"map adds query error: %@", [self.addList objectForKey:@"error"]);
+             self.apiSuccess = false;
+             self.apiError = [[self.addList objectForKey:@"error"]objectForKey:@"message"];
+             [self updateAddsList];
+         }
+         else
+         {
+             if ( [[self.addList objectForKey:@"data"]objectForKey:@"place_count"] != 0 )
+             {
+                 self.apiSuccess = true;
+             }
+             else
+             {
+                 self.apiError = [NSMutableString  stringWithFormat:NSLocalizedString(@"_API_ERROR_NO_ADD" , "no add around")];
+                 self.apiSuccess = false;
+             }
+             [self updateAddsList];
+        }
      }
                                      failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
-         
+         self.apiSuccess = false;
          
      }];
     [operation start];
 }
 
+- (void) updateAddsList
+{
+    NSLog(@"refresh now tableView, row count = %lu", [[[self.addList objectForKey:@"data"]objectForKey:@"places"] count]);
+    [self.tableView reloadData];
 
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -129,6 +163,48 @@
 {
     
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------//
+//                                                    //tableView//
+//-----------------------------------------------------------------------------------------------------------------------------//
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *tableHeaderBG=[[UIView alloc]initWithFrame:CGRectMake(0,0,320,1)];
+    tableHeaderBG.backgroundColor =  [UIColor clearColor];
+    return tableHeaderBG;
+}
+
+- (nonnull UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    //local var to hold value
+    NSString *cellVal = [[[[self.addList objectForKey:@"data"]objectForKey:@"places"]objectAtIndex:indexPath.row]objectForKey:@"location_string"];
+    //get title for the cell
+//    NSString *key = [self.tickerDatas.cellTitles objectAtIndex:indexPath.row];
+    static NSString *CellIdentifier = @"Item";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.backgroundColor = GMSColorDarkGrey;
+    
+    //populate cell
+    cell.detailTextLabel.text = cellVal;
+
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{    // NSLog(@"RowCount: %d", ([[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue] || 0));
+    // return 1; // [[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue];
+    return [[[self.addList objectForKey:@"data"]objectForKey:@"places"] count];
+}
+
+// rows height
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 200;
+}
+
+- (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
+}
+
 
 @end
 
