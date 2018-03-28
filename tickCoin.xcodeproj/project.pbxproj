@@ -14,6 +14,7 @@
 		2821DF211FA76366003913E6 /* GMSBarChartViewPriceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2821DF1F1FA76366003913E6 /* GMSBarChartViewPriceController.m */; };
 		28356C34206C074300724241 /* mapTabCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28356C33206C074300724241 /* mapTabCell.xib */; };
 		28356C37206C09D700724241 /* GMSmapTabCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28356C36206C09D700724241 /* GMSmapTabCell.m */; };
+		28356C3A206C130A00724241 /* GMSmapDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 28356C39206C130A00724241 /* GMSmapDatas.m */; };
 		28387DFD1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28387DFC1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m */; };
 		283C4EF81FA632EE005A4F3F /* GMSStartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4EF71FA632EE005A4F3F /* GMSStartView.m */; };
 		283C4EF91FA632EE005A4F3F /* GMSStartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 283C4EF71FA632EE005A4F3F /* GMSStartView.m */; };
@@ -132,6 +133,8 @@
 		28356C33206C074300724241 /* mapTabCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = mapTabCell.xib; sourceTree = "<group>"; };
 		28356C35206C09D700724241 /* GMSmapTabCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GMSmapTabCell.h; sourceTree = "<group>"; };
 		28356C36206C09D700724241 /* GMSmapTabCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMSmapTabCell.m; sourceTree = "<group>"; };
+		28356C38206C130A00724241 /* GMSmapDatas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GMSmapDatas.h; sourceTree = "<group>"; };
+		28356C39206C130A00724241 /* GMSmapDatas.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMSmapDatas.m; sourceTree = "<group>"; };
 		28387DFB1FA76AED00D416DE /* GMSBarChartViewVolumeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSBarChartViewVolumeController.h; sourceTree = "<group>"; };
 		28387DFC1FA76AFA00D416DE /* GMSBarChartViewVolumeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBarChartViewVolumeController.m; sourceTree = "<group>"; };
 		283C4EF61FA632D6005A4F3F /* GMSStartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSStartView.h; sourceTree = "<group>"; };
@@ -363,6 +366,8 @@
 				28356C33206C074300724241 /* mapTabCell.xib */,
 				28356C35206C09D700724241 /* GMSmapTabCell.h */,
 				28356C36206C09D700724241 /* GMSmapTabCell.m */,
+				28356C38206C130A00724241 /* GMSmapDatas.h */,
+				28356C39206C130A00724241 /* GMSmapDatas.m */,
 			);
 			path = maps;
 			sourceTree = "<group>";
@@ -813,6 +818,7 @@
 				F012458C18E72085002FAADA /* AFHTTPSessionManager.m in Sources */,
 				2821DF201FA76366003913E6 /* GMSBarChartViewPriceController.m in Sources */,
 				F07640F61929E6B400DA6616 /* GMSBarChartFooterView.m in Sources */,
+				28356C3A206C130A00724241 /* GMSmapDatas.m in Sources */,
 				F012459018E72085002FAADA /* AFURLRequestSerialization.m in Sources */,
 				F00B2143191C05D1006D3B6F /* EmptySegue.m in Sources */,
 				F01245A818E7208F002FAADA /* UIButton+AFNetworking.m in Sources */,

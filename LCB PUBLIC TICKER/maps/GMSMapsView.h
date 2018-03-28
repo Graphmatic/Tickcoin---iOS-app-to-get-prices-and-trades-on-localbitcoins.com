@@ -10,6 +10,8 @@
 #import <MapKit/MapKit.h>
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import "GMSmapDatas.h"
+
 //#import "GMSlocationService.h"
 
 #import "GMSGlobals.h"
@@ -25,9 +27,8 @@
 @property (nonatomic, retain) CLLocationManager *myLocationManager;
 @property (nonatomic, retain) MKMapView *mapView;
 @property (nonatomic) CLLocationCoordinate2D currentUserPosition;
-@property (atomic, retain) NSMutableDictionary *addList;
-@property (atomic) BOOL apiSuccess;
-@property (atomic, retain) NSString *apiError;
+
+@property (strong, atomic) GMSmapDatas *mapDatas;
 
 @end
 

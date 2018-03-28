@@ -22,5 +22,11 @@
 
     // Configure the view for the selected state
 }
+- (IBAction)buyButtonAction:(id)sender {
+    
+}
 
+- (IBAction)sellButtonAction:(id)sender {
+    
+}
 @end

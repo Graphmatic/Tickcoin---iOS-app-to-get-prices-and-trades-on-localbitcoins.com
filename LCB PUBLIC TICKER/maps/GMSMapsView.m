@@ -11,6 +11,7 @@
 #import "GMSGlobals.h"
 #import "GMSmapTabCell.h"
 
+
 @interface GMSMapsView ()
 {
     CLLocationManager *myLocationManager;
@@ -19,7 +20,7 @@
 
 @implementation GMSMapsView
 
-@synthesize headerImg, myLocationManager, mapView, currentUserPosition, addList, apiSuccess, apiError, tableView;
+@synthesize headerImg, myLocationManager, mapView, currentUserPosition, tableView, mapDatas;
 
 - (void)viewDidLoad
 {
@@ -31,7 +32,7 @@
     CGFloat viewHeight = (self.view.bounds.size.height / 100) * 94;
     
     // Globals *glob = [Globals globals];
-    self.apiSuccess = false;
+
     
     //add header
     self.headerImg = [GMSTopBrandImage topImage:4];
@@ -85,7 +86,11 @@
     self.currentUserPosition = [self getLocation];
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.currentUserPosition, 2*METERS_PER_KM, 2*METERS_PER_KM);
     [self.mapView setRegion:viewRegion animated:YES];
-    [self mapApiQuery];
+    self.mapDatas = [GMSmapDatas sharedMapData];
+    // add observer
+    [self.mapDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    
+//    [self mapApiQuery];
 }
 
 
@@ -97,51 +102,63 @@
     return coordinate;
 }
 
-- (void)mapApiQuery
-{
-    Globals *glob = [Globals globals];
-    NSString *url = [glob mapURL:self.currentUserPosition];
-    NSLog(@"URL : %@", url);
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-     {
-         NSLog(@"%@", responseObject);
-         self.addList = [[NSMutableDictionary alloc]initWithDictionary: responseObject];
-         NSLog(@"datas: %@", [self.addList objectForKey:@"data"]);
-         if( [self.addList objectForKey:@"error"] != nil )
-         {
-             NSLog(@"map adds query error: %@", [self.addList objectForKey:@"error"]);
-             self.apiSuccess = false;
-             self.apiError = [[self.addList objectForKey:@"error"]objectForKey:@"message"];
-             [self updateAddsList];
-         }
-         else
-         {
-             if ( [[self.addList objectForKey:@"data"]objectForKey:@"place_count"] != 0 )
-             {
-                 self.apiSuccess = true;
-             }
-             else
-             {
-                 self.apiError = [NSMutableString  stringWithFormat:NSLocalizedString(@"_API_ERROR_NO_ADD" , "no add around")];
-                 self.apiSuccess = false;
-             }
-             [self updateAddsList];
-        }
-     }
-                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
-     {
-         self.apiSuccess = false;
-         
-     }];
-    [operation start];
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    
+    if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
+    {
+
+        
+        dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
+            
+            [self updateAddsList];
+        });
+    }
 }
+//- (void)mapApiQuery
+//{
+//    Globals *glob = [Globals globals];
+//    NSString *url = [glob mapURL:self.currentUserPosition];
+//    NSLog(@"URL : %@", url);
+//    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
+//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+//    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+//     {
+//         NSLog(@"%@", responseObject);
+//         self.addList = [[NSMutableDictionary alloc]initWithDictionary: responseObject];
+//         NSLog(@"datas: %@", [self.addList objectForKey:@"data"]);
+//         if( [self.addList objectForKey:@"error"] != nil )
+//         {
+//             NSLog(@"map adds query error: %@", [self.addList objectForKey:@"error"]);
+//             self.apiSuccess = false;
+//             self.apiError = [[self.addList objectForKey:@"error"]objectForKey:@"message"];
+//             [self updateAddsList];
+//         }
+//         else
+//         {
+//             if ( [[self.addList objectForKey:@"data"]objectForKey:@"place_count"] != 0 )
+//             {
+//                 self.apiSuccess = true;
+//             }
+//             else
+//             {
+//                 self.apiError = [NSMutableString  stringWithFormat:NSLocalizedString(@"_API_ERROR_NO_ADD" , "no add around")];
+//                 self.apiSuccess = false;
+//             }
+//             [self updateAddsList];
+//        }
+//     }
+//                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
+//     {
+//         self.apiSuccess = false;
+//         
+//     }];
+//    [operation start];
+//}
 
 - (void) updateAddsList
 {
-    NSLog(@"refresh now tableView, row count = %lu", [[[self.addList objectForKey:@"data"]objectForKey:@"places"] count]);
+    NSLog(@"refresh now tableView, row count = %lu", [[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"places"] count]);
     [self.tableView reloadData];
 
 }
@@ -186,7 +203,7 @@
         cell = [nib objectAtIndex:0];
     }
     
-    cell.locationLabel.text = [[[[self.addList objectForKey:@"data"]objectForKey:@"places"]objectAtIndex:indexPath.row]objectForKey:@"location_string"];
+    cell.locationLabel.text = [[[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"places"]objectAtIndex:indexPath.row]objectForKey:@"location_string"];
     cell.sellButton.tag = indexPath.row;
     cell.buyButton.tag = indexPath.row;
 
@@ -196,7 +213,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    // NSLog(@"RowCount: %d", ([[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue] || 0));
     // return 1; // [[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue];
-    return [[[self.addList objectForKey:@"data"]objectForKey:@"places"] count];
+    return [[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"places"] count];
 }
 
 // rows height
@@ -208,6 +225,10 @@
 - (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
 }
 
-
+// buy Button
+- (IBAction)buyButton:(id)sender
+{
+    
+}
 @end
 
