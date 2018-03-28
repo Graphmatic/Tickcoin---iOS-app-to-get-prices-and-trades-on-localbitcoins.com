@@ -9,6 +9,7 @@
 
 #import "GMSMapsView.h"
 #import "GMSGlobals.h"
+#import "GMSmapTabCell.h"
 
 @interface GMSMapsView ()
 {
@@ -29,7 +30,7 @@
     CGFloat viewWidth = self.view.bounds.size.width;
     CGFloat viewHeight = (self.view.bounds.size.height / 100) * 94;
     
-    Globals *glob = [Globals globals];
+    // Globals *glob = [Globals globals];
     self.apiSuccess = false;
     
     //add header
@@ -175,17 +176,19 @@
     return tableHeaderBG;
 }
 
-- (nonnull UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    //local var to hold value
-    NSString *cellVal = [[[[self.addList objectForKey:@"data"]objectForKey:@"places"]objectAtIndex:indexPath.row]objectForKey:@"location_string"];
-    //get title for the cell
-//    NSString *key = [self.tickerDatas.cellTitles objectAtIndex:indexPath.row];
-    static NSString *CellIdentifier = @"Item";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.backgroundColor = GMSColorDarkGrey;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    //populate cell
-    cell.detailTextLabel.text = cellVal;
+    static NSString *tabCellIdentifier = @"GMSmapTabCell";
+    GMSmapTabCell *cell = (GMSmapTabCell*)[tableView dequeueReusableCellWithIdentifier:tabCellIdentifier];
+    
+    if( cell == nil ) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"mapTabCell" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+    }
+    
+    cell.locationLabel.text = [[[[self.addList objectForKey:@"data"]objectForKey:@"places"]objectAtIndex:indexPath.row]objectForKey:@"location_string"];
+    cell.sellButton.tag = indexPath.row;
+    cell.buyButton.tag = indexPath.row;
 
     return cell;
 }
@@ -199,7 +202,7 @@
 // rows height
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 200;
+    return 82;
 }
 
 - (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
