@@ -1,0 +1,47 @@
+{
+    "data": {
+        "place_count": 5,
+        "places": [
+                   {
+                   "sell_local_url": "https://localbitcoins.com/sell-bitcoins-for-cash/621717/ec3v-3la-gb/.json",
+                   "location_string": " EC3V 3LA, GB",
+                   "url": "/places/621717/ec3v-3la-gb/",
+                   "lon": -0.0890001,
+                   "lat": 51.513347,
+                   "buy_local_url": "https://localbitcoins.com/buy-bitcoins-with-cash/621717/ec3v-3la-gb/.json"
+                   },
+                   {
+                   "sell_local_url": "https://localbitcoins.com/sell-bitcoins-for-cash/621717/ec3v-3la-gb/.json",
+                   "location_string": " EC3V 3LA, GB",
+                   "url": "/places/621717/ec3v-3la-gb/",
+                   "lon": -0.0890001,
+                   "lat": 51.513347,
+                   "buy_local_url": "https://localbitcoins.com/buy-bitcoins-with-cash/621717/ec3v-3la-gb/.json"
+                   },
+                   {
+                   "sell_local_url": "https://localbitcoins.com/sell-bitcoins-for-cash/621717/ec3v-3la-gb/.json",
+                   "location_string": " EC3V 3LA, GB",
+                   "url": "/places/621717/ec3v-3la-gb/",
+                   "lon": -0.0890001,
+                   "lat": 51.513347,
+                   "buy_local_url": "https://localbitcoins.com/buy-bitcoins-with-cash/621717/ec3v-3la-gb/.json"
+                   },
+                   {
+                   "sell_local_url": "https://localbitcoins.com/sell-bitcoins-for-cash/621717/ec3v-3la-gb/.json",
+                   "location_string": " EC3V 3LA, GB",
+                   "url": "/places/621717/ec3v-3la-gb/",
+                   "lon": -0.0890001,
+                   "lat": 51.513347,
+                   "buy_local_url": "https://localbitcoins.com/buy-bitcoins-with-cash/621717/ec3v-3la-gb/.json"
+                   },
+                   {
+                   "sell_local_url": "https://localbitcoins.com/sell-bitcoins-for-cash/621717/ec3v-3la-gb/.json",
+                   "location_string": " EC3V 3LA, GB",
+                   "url": "/places/621717/ec3v-3la-gb/",
+                   "lon": -0.0890001,
+                   "lat": 51.513347,
+                   "buy_local_url": "https://localbitcoins.com/buy-bitcoins-with-cash/621717/ec3v-3la-gb/.json"
+                   }
+                   ]
+    }
+}

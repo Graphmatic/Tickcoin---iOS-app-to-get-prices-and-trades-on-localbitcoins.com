@@ -19,5 +19,5 @@
 @property (nonatomic, retain) CLLocationManager *myLocationManager;
 @property (nonatomic) CLLocationCoordinate2D currentUserPosition;
 @property (readwrite) BOOL isReady;
-
+@property (readwrite) BOOL isTest;
 @end

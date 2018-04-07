@@ -2,7 +2,7 @@
 //  GMSBidsView.m
 //  LCB PUBLIC TICKER
 //
-//  Created by frup on 29/03/2014.
+//  Created by frup on 29/03/2018.
 //  Copyright (c) 2014 ___FULLUSERNAME___. All rights reserved.
 //
 // 44,836019, -0,565586
@@ -53,7 +53,7 @@
     CGFloat mapOrigY = self.headerImg.topBrand.size.height;
     
     //create a map that is the size of the screen
-    self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, mapOrigY, viewWidth, viewHeight / 2) ];
+    self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, mapOrigY, viewWidth, viewHeight) ];
     
     //init map
     [self.mapView setMapType: MKMapTypeStandard];
@@ -72,13 +72,17 @@
     
     [self.view addSubview:self.mapView];
     
-    CGFloat tableViewOrigin = mapOrigY + self.mapView.frame.size.height;
+    CGFloat tableViewOrigin = mapOrigY + self.mapView.frame.size.height; // tableView so is not visible
     
     //Table view
     [self.tableView setFrame:CGRectMake(0, tableViewOrigin, viewWidth, (viewHeight - tableViewOrigin))];
     [self.view addSubview:self.tableView];
     CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
     [self.tableView setContentOffset:newOffset animated:YES];
+    
+    //fetch datas
+    self.mapDatas = [GMSmapDatas sharedMapData];
+    [self.mapDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -90,7 +94,6 @@
     // add observer
     [self.mapDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
     
-//    [self mapApiQuery];
 }
 
 
@@ -106,60 +109,35 @@
     
     if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
     {
-
-        
         dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
-            
             [self updateAddsList];
         });
     }
 }
-//- (void)mapApiQuery
-//{
-//    Globals *glob = [Globals globals];
-//    NSString *url = [glob mapURL:self.currentUserPosition];
-//    NSLog(@"URL : %@", url);
-//    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
-//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-//    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-//     {
-//         NSLog(@"%@", responseObject);
-//         self.addList = [[NSMutableDictionary alloc]initWithDictionary: responseObject];
-//         NSLog(@"datas: %@", [self.addList objectForKey:@"data"]);
-//         if( [self.addList objectForKey:@"error"] != nil )
-//         {
-//             NSLog(@"map adds query error: %@", [self.addList objectForKey:@"error"]);
-//             self.apiSuccess = false;
-//             self.apiError = [[self.addList objectForKey:@"error"]objectForKey:@"message"];
-//             [self updateAddsList];
-//         }
-//         else
-//         {
-//             if ( [[self.addList objectForKey:@"data"]objectForKey:@"place_count"] != 0 )
-//             {
-//                 self.apiSuccess = true;
-//             }
-//             else
-//             {
-//                 self.apiError = [NSMutableString  stringWithFormat:NSLocalizedString(@"_API_ERROR_NO_ADD" , "no add around")];
-//                 self.apiSuccess = false;
-//             }
-//             [self updateAddsList];
-//        }
-//     }
-//                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
-//     {
-//         self.apiSuccess = false;
-//         
-//     }];
-//    [operation start];
-//}
+
 
 - (void) updateAddsList
 {
-    NSLog(@"refresh now tableView, row count = %lu", [[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"places"] count]);
+    long placesCount = [[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue];
+    NSLog(@"refresh now tableView, row count = %lu", placesCount);
+    
     [self.tableView reloadData];
+    
+    // adapt tableView depending on places count
+    CGFloat mapOrigY = self.headerImg.topBrand.size.height;
+    CGFloat viewWidth = self.view.bounds.size.width;
+    CGFloat viewHeight = (self.view.bounds.size.height / 100) * 94;
+    
+    if ( placesCount <= 3 ) {
+        [self.mapView setFrame:CGRectMake(0, mapOrigY, viewWidth, (viewHeight - mapOrigY - (placesCount * 82) ))];
+        CGFloat tableViewOrigin = mapOrigY + self.mapView.frame.size.height;
+        [self.tableView setFrame:CGRectMake(0, tableViewOrigin, viewWidth, (placesCount * 82))];
+    }
+    else {
+        [self.mapView setFrame:CGRectMake(0, mapOrigY, viewWidth, (viewHeight - mapOrigY - (3 * 82) ))];
+        CGFloat tableViewOrigin = mapOrigY + self.mapView.frame.size.height;
+        [self.tableView setFrame:CGRectMake(0, tableViewOrigin, viewWidth, (3 * 82))];
+    }
 
 }
 - (void)didReceiveMemoryWarning

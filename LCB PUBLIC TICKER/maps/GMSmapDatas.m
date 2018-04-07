@@ -11,7 +11,7 @@
 
 @implementation GMSmapDatas
 
-@synthesize addList, apiSuccess, apiError, myLocationManager, currentUserPosition, isReady;
+@synthesize addList, apiSuccess, apiError, myLocationManager, currentUserPosition, isReady, isTest;
 
 static GMSmapDatas * _sharedMapData = nil;
 
@@ -44,6 +44,7 @@ static GMSmapDatas * _sharedMapData = nil;
     if ( self != nil ){
         // debug
         NSLog(@"initializing a _sharedMapData");
+        self.isTest = false;
         //User Location
         //initialize the Location Manager
         self.myLocationManager = [[CLLocationManager alloc] init];
@@ -88,40 +89,60 @@ static GMSmapDatas * _sharedMapData = nil;
     Globals *glob = [Globals globals];
     NSString *url = [glob mapURL:self.currentUserPosition];
     NSLog(@"URL : %@", url);
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-     {
-         NSLog(@"%@", responseObject);
-         self.addList = [[NSMutableDictionary alloc]initWithDictionary: responseObject];
-         NSLog(@"datas: %@", [self.addList objectForKey:@"data"]);
-         if( [self.addList objectForKey:@"error"] != nil )
+    if (self.isTest) {
+        NSURLRequest *localQuery = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"testmaps" ofType:@"json"]]];
+        AFHTTPRequestOperation *localOperation = [[AFHTTPRequestOperation alloc] initWithRequest:localQuery];
+        localOperation.responseSerializer = [AFJSONResponseSerializer serializer];
+        [localOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *localOperation, id responseObject)
          {
-             NSLog(@"map adds query error: %@", [self.addList objectForKey:@"error"]);
-             self.apiSuccess = false;
-             self.apiError = [[self.addList objectForKey:@"error"]objectForKey:@"message"];
+             NSLog(@"TESTING MAPS - DUMMY JSON");
+             
+             self.addList = [[NSMutableDictionary alloc]initWithDictionary: responseObject];
+             self.apiSuccess = true;
              self.isReady = YES;
          }
-         else
+                                              failure:^(AFHTTPRequestOperation *localOperation, NSError *error)
          {
-             if ( [[self.addList objectForKey:@"data"]objectForKey:@"place_count"] != 0 )
+             NSLog(@"local request ERROR");
+         }];
+        [localOperation start];
+    }
+    else {
+        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:url]];
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        operation.responseSerializer = [AFJSONResponseSerializer serializer];
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+         {
+             NSLog(@"%@", responseObject);
+             self.addList = [[NSMutableDictionary alloc]initWithDictionary: responseObject];
+             NSLog(@"datas: %@", [self.addList objectForKey:@"data"]);
+             if( [self.addList objectForKey:@"error"] != nil )
              {
-                 self.apiSuccess = true;
+                 NSLog(@"map adds query error: %@", [self.addList objectForKey:@"error"]);
+                 self.apiSuccess = false;
+                 self.apiError = [[self.addList objectForKey:@"error"]objectForKey:@"message"];
+                 self.isReady = YES;
              }
              else
              {
-                 self.apiError = [NSMutableString  stringWithFormat:NSLocalizedString(@"_API_ERROR_NO_ADD" , "no add around")];
-                 self.apiSuccess = false;
+                 if ( [[self.addList objectForKey:@"data"]objectForKey:@"place_count"] != 0 )
+                 {
+                     self.apiSuccess = true;
+                 }
+                 else
+                 {
+                     self.apiError = [NSMutableString  stringWithFormat:NSLocalizedString(@"_API_ERROR_NO_ADD" , "no add around")];
+                     self.apiSuccess = false;
+                 }
+                 self.isReady = YES;
              }
-             self.isReady = YES;
          }
-     }
-                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
-     {
-         self.apiSuccess = false;
-         
-     }];
-    [operation start];
+                                         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+         {
+             self.apiSuccess = false;
+             
+         }];
+        [operation start];
+    }
 }
 @end

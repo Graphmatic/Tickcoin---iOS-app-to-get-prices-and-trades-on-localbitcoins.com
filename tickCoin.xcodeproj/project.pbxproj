@@ -12,6 +12,7 @@
 		2821DF1C1FA749BA003913E6 /* GMSChartsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2821DF1A1FA749B9003913E6 /* GMSChartsView.m */; };
 		2821DF201FA76366003913E6 /* GMSBarChartViewPriceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2821DF1F1FA76366003913E6 /* GMSBarChartViewPriceController.m */; };
 		2821DF211FA76366003913E6 /* GMSBarChartViewPriceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2821DF1F1FA76366003913E6 /* GMSBarChartViewPriceController.m */; };
+		2830A0CE20794D420093C170 /* testmaps.json in Resources */ = {isa = PBXBuildFile; fileRef = 2830A0CD20794ACB0093C170 /* testmaps.json */; };
 		28356C34206C074300724241 /* mapTabCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28356C33206C074300724241 /* mapTabCell.xib */; };
 		28356C37206C09D700724241 /* GMSmapTabCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28356C36206C09D700724241 /* GMSmapTabCell.m */; };
 		28356C3A206C130A00724241 /* GMSmapDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 28356C39206C130A00724241 /* GMSmapDatas.m */; };
@@ -130,6 +131,7 @@
 		2821DF1D1FA749D0003913E6 /* GMSChartsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GMSChartsView.h; sourceTree = "<group>"; };
 		2821DF1E1FA76365003913E6 /* GMSBarChartViewPriceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSBarChartViewPriceController.h; sourceTree = "<group>"; };
 		2821DF1F1FA76366003913E6 /* GMSBarChartViewPriceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSBarChartViewPriceController.m; sourceTree = "<group>"; };
+		2830A0CD20794ACB0093C170 /* testmaps.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = testmaps.json; sourceTree = "<group>"; };
 		28356C33206C074300724241 /* mapTabCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = mapTabCell.xib; sourceTree = "<group>"; };
 		28356C35206C09D700724241 /* GMSmapTabCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GMSmapTabCell.h; sourceTree = "<group>"; };
 		28356C36206C09D700724241 /* GMSmapTabCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GMSmapTabCell.m; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 				28356C36206C09D700724241 /* GMSmapTabCell.m */,
 				28356C38206C130A00724241 /* GMSmapDatas.h */,
 				28356C39206C130A00724241 /* GMSmapDatas.m */,
+				2830A0CD20794ACB0093C170 /* testmaps.json */,
 			);
 			path = maps;
 			sourceTree = "<group>";
@@ -766,6 +769,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2830A0CE20794D420093C170 /* testmaps.json in Resources */,
 				F02BFCC21918DA9A00D2520D /* tickerAllCurDefault.json in Resources */,
 				F0F7B52E191F5A84005FA5BF /* icon-line-chart.png in Resources */,
 				F055653D18E6DD9300481688 /* Images.xcassets in Resources */,
