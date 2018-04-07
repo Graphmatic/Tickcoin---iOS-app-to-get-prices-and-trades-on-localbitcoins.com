@@ -138,8 +138,18 @@
         CGFloat tableViewOrigin = mapOrigY + self.mapView.frame.size.height;
         [self.tableView setFrame:CGRectMake(0, tableViewOrigin, viewWidth, (3 * 82))];
     }
-
+    
+    // placing marker on the map
+    for(id place in [[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"places"]) {
+        
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([[place objectForKey:@"lat"]doubleValue], [[place objectForKey:@"lon"]doubleValue]);
+        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+        [annotation setCoordinate:coordinate];
+        [annotation setTitle:[place objectForKey:@"location_string"]]; //You can set the subtitle too
+        [self.mapView addAnnotation:annotation];
+    }
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -191,7 +201,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    // NSLog(@"RowCount: %d", ([[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue] || 0));
     // return 1; // [[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue];
-    return [[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"places"] count];
+    return [[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"place_count"] intValue];
 }
 
 // rows height
