@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GMSmapDatas.h"
 
 @interface GMSmapTabCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 @property (weak, nonatomic) IBOutlet UIButton *sellButton;
+@property (strong, atomic) GMSmapDatas *mapDatas;
 
 @end
