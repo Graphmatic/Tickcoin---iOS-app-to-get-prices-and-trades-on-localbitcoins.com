@@ -52,7 +52,7 @@
     CGFloat viewHeight = self.view.bounds.size.height;
     
     // debug
-    NSLog(@"W x H : %f x %f", viewWidth, viewHeight);
+    // NSLog(@"W x H : %f x %f", viewWidth, viewHeight);
     
     //add header
     self.headerImg = [GMSTopBrandImage topImage:0];

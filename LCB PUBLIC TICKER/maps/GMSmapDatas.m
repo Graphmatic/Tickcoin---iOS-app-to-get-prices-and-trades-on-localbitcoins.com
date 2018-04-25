@@ -44,7 +44,7 @@ static GMSmapDatas * _sharedMapData = nil;
     if ( self != nil ){
         // debug
         NSLog(@"initializing a _sharedMapData");
-        self.isTest = true;
+        self.isTest = false;
         //User Location
         //initialize the Location Manager
         self.myLocationManager = [[CLLocationManager alloc] init];

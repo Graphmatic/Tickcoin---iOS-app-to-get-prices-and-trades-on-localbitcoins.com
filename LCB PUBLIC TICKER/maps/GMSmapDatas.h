@@ -13,6 +13,7 @@
 
 @interface GMSmapDatas : NSObject
 +(GMSmapDatas*)sharedMapData;
+- (void)resetSharedInstance;
 @property  (retain, nonatomic) NSMutableDictionary *addList;
 @property (atomic) BOOL apiSuccess;
 @property (atomic, retain) NSString *apiError;

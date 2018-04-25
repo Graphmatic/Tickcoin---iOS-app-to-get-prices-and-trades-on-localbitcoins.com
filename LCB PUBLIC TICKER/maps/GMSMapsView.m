@@ -20,7 +20,7 @@
 
 @implementation GMSMapsView
 
-@synthesize headerImg, myLocationManager, mapView, currentUserPosition, tableView, mapDatas;
+@synthesize headerImg, myLocationManager, mapView, currentUserPosition, tableView, mapDatas, noAddAround;
 
 - (void)viewDidLoad
 {
@@ -37,6 +37,8 @@
     //add header
     self.headerImg = [GMSTopBrandImage topImage:4];
     [self.view addSubview:self.headerImg];
+    
+
     
     //User Location
     //initialize the Location Manager
@@ -55,6 +57,7 @@
     //create a map that is the size of the screen
     self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, mapOrigY, viewWidth, viewHeight) ];
     
+
     //init map
     [self.mapView setMapType: MKMapTypeStandard];
     [self.mapView setShowsUserLocation:true]; //show the user's location on the map, requires CoreLocation
@@ -64,7 +67,6 @@
     [self.mapView setShowsCompass:false];
     [self.mapView setShowsScale:true];
     [self.mapView setZoomEnabled:true];
-    
     // ZOOM ON ACTUAL USER POSITION
     self.currentUserPosition = [self getLocation];
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.currentUserPosition, 2*METERS_PER_KM, 2*METERS_PER_KM);
@@ -72,6 +74,29 @@
     
     [self.view addSubview:self.mapView];
     
+//    CGFloat tableViewOrigin = mapOrigY + self.mapView.frame.size.height; // tableView so is not visible
+//
+//    //Table view
+//    [self.tableView setFrame:CGRectMake(0, tableViewOrigin, viewWidth, (viewHeight - tableViewOrigin))];
+//    [self.view addSubview:self.tableView];
+//    CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
+//    [self.tableView setContentOffset:newOffset animated:YES];
+    
+
+//    //fetch datas
+//    self.mapDatas = [GMSmapDatas sharedMapData];
+//    [self.mapDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    // layout
+    // get parent view size
+    CGFloat viewWidth = self.view.bounds.size.width;
+    CGFloat viewHeight = (self.view.bounds.size.height / 100) * 94;
+    CGFloat mapOrigY = self.headerImg.topBrand.size.height;
+    
+    //create a map that is the size of the screen
+    [self.mapView setFrame:CGRectMake(0, mapOrigY, viewWidth, viewHeight)]; //:CGRectMake(0, mapOrigY, viewWidth, viewHeight) ];
     CGFloat tableViewOrigin = mapOrigY + self.mapView.frame.size.height; // tableView so is not visible
     
     //Table view
@@ -79,13 +104,17 @@
     [self.view addSubview:self.tableView];
     CGPoint newOffset = CGPointMake(0, -[self.tableView contentInset].top);
     [self.tableView setContentOffset:newOffset animated:YES];
-    
-    //fetch datas
-    self.mapDatas = [GMSmapDatas sharedMapData];
-    [self.mapDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    self.mapView.delegate = self;
 }
-
 - (void)viewWillAppear:(BOOL)animated {
+    // Display loading message
+    // blinking timer
+    self.noAddAround.alpha = 1;
+    [UIView animateWithDuration:1.5 delay:0.5 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
+        self.noAddAround.alpha = 0;
+    } completion:nil];
+    self.noAddAround.text = @"fetching adds..";
+    [self.view addSubview:self.noAddAround];
     // ZOOM ON ACTUAL USER POSITION
     self.currentUserPosition = [self getLocation];
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.currentUserPosition, 2*METERS_PER_KM, 2*METERS_PER_KM);
@@ -121,6 +150,12 @@
     long placesCount = [[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue];
     NSLog(@"refresh now tableView, row count = %lu", placesCount);
     
+    if( placesCount >  0) {
+        [self.noAddAround removeFromSuperview];
+    }
+    else {
+        self.noAddAround.text = @"sorry, no add here...";
+    }
     [self.tableView reloadData];
     
     // adapt tableView depending on places count
@@ -145,7 +180,7 @@
         CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([[place objectForKey:@"lat"]doubleValue], [[place objectForKey:@"lon"]doubleValue]);
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
         [annotation setCoordinate:coordinate];
-        [annotation setTitle:[place objectForKey:@"location_string"]]; //You can set the subtitle too
+        [annotation setTitle:[place objectForKey:@"location_string"]];
         [self.mapView addAnnotation:annotation];
     }
 }
@@ -213,10 +248,22 @@
 - (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
 }
 
-// buy Button
-- (IBAction)buyButton:(id)sender
-{
-    
+//-----------------------------------------------------------------------------------------------------------------------------//
+//                                                    //mapView//
+//-----------------------------------------------------------------------------------------------------------------------------//
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+//    CLLocationCoordinate2D centre = [self.mapView centerCoordinate];
+//    NSLog(@" CENTER Latidude %f Longitude: %f", centre.latitude, centre.longitude);
+//    
+    NSLog(@"%f %f",mapView.centerCoordinate.latitude,mapView.centerCoordinate.longitude);
+    //fetch datas
+    [[GMSmapDatas sharedMapData] resetSharedInstance];
+    self.mapDatas = nil;
+    self.mapDatas = [GMSmapDatas sharedMapData];
+    // add observer
+    //[self.mapDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
 }
-@end
 
+
+
+@end

@@ -13,6 +13,9 @@
         <array key="Avenir.ttc">
             <string>Avenir-Book</string>
         </array>
+        <array key="AvenirNext.ttc">
+            <string>AvenirNext-DemiBold</string>
+        </array>
         <array key="Futura.ttc">
             <string>Futura-Medium</string>
         </array>
@@ -411,10 +414,10 @@
             </objects>
             <point key="canvasLocation" x="-1821" y="-1645"/>
         </scene>
-        <!--View Controller-->
+        <!--chart modal infos-->
         <scene sceneID="zff-Ok-Q06">
             <objects>
-                <viewController id="P9f-lh-gZo" sceneMemberID="viewController">
+                <viewController title="chart modal infos" id="P9f-lh-gZo" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chartTooltip" id="xAJ-Gz-aF9" customClass="GMSChartTooltipView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -543,7 +546,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p2s-iz-Kpt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1209" y="-679"/>
+            <point key="canvasLocation" x="-1208" y="-657"/>
         </scene>
         <!--ChartPrice-->
         <scene sceneID="xcj-uQ-YQn">
@@ -559,10 +562,10 @@
             </objects>
             <point key="canvasLocation" x="-1708" y="-874"/>
         </scene>
-        <!--Item-->
+        <!--Map view-->
         <scene sceneID="jZ8-p7-Ra8">
             <objects>
-                <viewController storyboardIdentifier="Map scene" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XN0-Zc-2Pf" customClass="GMSMapsView" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Map scene" title="Map view" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XN0-Zc-2Pf" customClass="GMSMapsView" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="99f-8P-lAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -571,7 +574,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleAspectFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" rowHeight="80" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCW-cc-QLe">
+                            <tableView clipsSubviews="YES" contentMode="scaleAspectFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" rowHeight="228" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCW-cc-QLe">
                                 <rect key="frame" x="0.0" y="315" width="375" height="303"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="tintColor" red="0.7558832352" green="0.7558832352" blue="0.7558832352" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -580,22 +583,22 @@
                                 <color key="sectionIndexColor" red="0.82734102310000002" green="0.82734102310000002" blue="0.82734102310000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="sectionIndexBackgroundColor" red="0.26274509800000001" green="0.26274509800000001" blue="0.26274509800000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item" textLabel="5up-pz-vf5" detailTextLabel="C9h-zu-cIm" rowHeight="80" style="IBUITableViewCellStyleValue1" id="Loe-Zw-Jos">
-                                        <rect key="frame" x="0.0" y="1" width="375" height="80"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Item" textLabel="5up-pz-vf5" detailTextLabel="C9h-zu-cIm" rowHeight="228" style="IBUITableViewCellStyleValue1" id="Loe-Zw-Jos">
+                                        <rect key="frame" x="0.0" y="1" width="375" height="228"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" tableViewCell="Loe-Zw-Jos" id="Uki-aW-nQO">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="227.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5up-pz-vf5">
-                                                    <rect key="frame" x="15" y="26" width="39" height="27.5"/>
+                                                    <rect key="frame" x="15" y="100" width="39" height="27.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="C9h-zu-cIm">
-                                                    <rect key="frame" x="307" y="26" width="53" height="27.5"/>
+                                                    <rect key="frame" x="307" y="100" width="53" height="27.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
                                                     <color key="textColor" red="0.92879478640000002" green="0.92928031219999996" blue="0.95902186950000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -612,12 +615,22 @@
                                     <outlet property="delegate" destination="XN0-Zc-2Pf" id="xhB-md-v2j"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No add Around" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Af-yo-eCh">
+                                <rect key="frame" x="57" y="99" width="261" height="63"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="24"/>
+                                <color key="textColor" red="0.26274509800000001" green="0.26274509800000001" blue="0.26274509800000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" red="0.76205583756345174" green="0.76205583756345174" blue="0.76205583756345174" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <size key="shadowOffset" width="2" height="1"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.54303634898046516" blue="0.37240629206661524" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="g9Q-mp-eBM"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="AEh-zU-PRF"/>
                     <connections>
+                        <outlet property="noAddAround" destination="6Af-yo-eCh" id="qo6-7o-Nbk"/>
                         <outlet property="tableView" destination="MCW-cc-QLe" id="Z2o-Nl-ZBc"/>
                     </connections>
                 </viewController>
