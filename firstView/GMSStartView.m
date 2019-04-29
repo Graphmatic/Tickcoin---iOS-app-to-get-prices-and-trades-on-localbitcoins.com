@@ -74,13 +74,17 @@
         {
             [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 120)];
         }
-        else if ( IS_IPHONE_6_7_8 || IS_IPHONE_X )
+        else if ( IS_IPHONE_6_7_8 || IS_IPHONE_X_XR_XS )
         {
             [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 160)];
         }
-        else if ( IS_IPHONE_PLUS )
+        else if ( IS_IPHONE_PLUS || IS_IPHONE_XS_MAX)
         {
             [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 180)];
+        }
+        else
+        {
+            [self.picker setFrame:CGRectMake(0, pickerOrigY, viewWidth, 120)];
         }
         
         [self.view addSubview:self.picker];
@@ -108,21 +112,21 @@
             // postion tableView
             tableViewOrigY += 80;
         }
-        else if ( IS_IPHONE_X )
+        else if ( IS_IPHONE_X_XR_XS )
         {
             [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 70)];
             // postion tableView
             tableViewOrigY += 70;
         }
-        if ( IS_IPHONE_X )
+        if ( IS_IPHONE_X_XR_XS )
         {
-            NSLog(@"IS_IPHONE_X");
+            NSLog(@"IS_IPHONE_X_XR_XS");
             // 35 is the room reserved for gesture in iPhone X
             [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY - 49 - 35) )];
         }
         else
         {
-            NSLog(@"!IS_IPHONE_X");
+            NSLog(@"!IS_IPHONE_X_XR_XS");
             [self.tableView setFrame:CGRectMake(0, tableViewOrigY, viewWidth, (viewHeight - tableViewOrigY - 49) )];
         }
         

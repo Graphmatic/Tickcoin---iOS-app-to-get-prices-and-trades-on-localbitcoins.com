@@ -65,7 +65,9 @@
 
 #define IS_IPHONE_PLUS ([currentDevice isEqualToString:@"iPhone8,2"] || [currentDevice isEqualToString:@"iPhone7,1"] || [currentDevice isEqualToString:@"iPhone9,2"] || [currentDevice isEqualToString:@"iPhone9,4"] || [currentDevice isEqualToString:@"iPhone10,2"] || [currentDevice isEqualToString:@"iPhone10,5"] || [currentSimulatorDevice isEqualToString:@"iPhone8,2"] || [currentSimulatorDevice isEqualToString:@"iPhone7,1"] || [currentSimulatorDevice isEqualToString:@"iPhone9,2"] || [currentSimulatorDevice isEqualToString:@"iPhone9,4"] || [currentSimulatorDevice isEqualToString:@"iPhone10,2"] || [currentSimulatorDevice isEqualToString:@"iPhone10,5"])
 
-#define IS_IPHONE_X ([currentDevice isEqualToString:@"iPhone10,3"] || [currentDevice isEqualToString:@"iPhone10,6"] || [currentSimulatorDevice isEqualToString:@"iPhone10,3"] || [currentSimulatorDevice isEqualToString:@"iPhone10,6"])
+#define IS_IPHONE_X_XR_XS ([currentDevice isEqualToString:@"iPhone10,3"] || [currentDevice isEqualToString:@"iPhone10,6"] || [currentDevice isEqualToString:@"iPhone11,8"] || [currentDevice isEqualToString:@"iPhone11,2"] || [currentSimulatorDevice isEqualToString:@"iPhone10,3"] || [currentSimulatorDevice isEqualToString:@"iPhone10,6"] || [currentSimulatorDevice isEqualToString:@"iPhone11,8"] || [currentSimulatorDevice isEqualToString:@"iPhone11,2"])
+
+#define IS_IPHONE_XS_MAX ([currentDevice isEqualToString:@"iPhone11,4"] || [currentDevice isEqualToString:@"iPhone11,6"] || [currentSimulatorDevice isEqualToString:@"iPhone11,4"] || [currentSimulatorDevice isEqualToString:@"iPhone11,6"] )
 
 #endif
 

@@ -134,7 +134,7 @@ NSString * const kGMSVolumeNavButtonViewKey = @"view";
                                           518,
                                           206);
     }
-    else if ( IS_IPHONE_X )
+    else if ( IS_IPHONE_X_XR_XS )
     {
         frameForBarChartView = CGRectMake(0,
                                           0,

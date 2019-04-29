@@ -53,7 +53,7 @@
         CGFloat chartsWindowsHeight = (viewHeight - chartViewOrigine) / 2;
         
         
-        if ( IS_IPHONE_X )
+        if ( IS_IPHONE_X_XR_XS )
         {
 
             [self.chartsPriceView setFrame:CGRectMake(0,
