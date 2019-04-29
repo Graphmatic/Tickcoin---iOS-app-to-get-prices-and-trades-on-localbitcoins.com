@@ -82,13 +82,9 @@
                     {
                         self.topBrand = [UIImage imageNamed:@"header_exchange_1242"];
                     }
-                    else if ( IS_IPHONE_X_XR_XS )
+                    else if ( IS_IPHONE_X_XR_XS || IS_IPHONE_XS_MAX )
                     {
                         self.topBrand = [UIImage imageNamed:@"header_exchange_1125"];
-                    }
-                    else if ( IS_IPHONE_XS_MAX )
-                    {
-                        self.topBrand = [UIImage imageNamed:@"header_exchange_1242_max"];
                     }
                     else   // ( IS_IPHONE_4_5 )
                     {
@@ -101,11 +97,11 @@
                     {
                         self.topBrand = [UIImage imageNamed:@"header_bids_750"];
                     }
-                    else if ( IS_IPHONE_PLUS || IS_IPHONE_XS_MAX )
+                    else if ( IS_IPHONE_PLUS )
                     {
                         self.topBrand = [UIImage imageNamed:@"header_bids_1242"];
                     }
-                    else if ( IS_IPHONE_X_XR_XS )
+                    else if ( IS_IPHONE_X_XR_XS || IS_IPHONE_XS_MAX )
                     {
                         self.topBrand = [UIImage imageNamed:@"header_bids_1125"];
                     }
@@ -119,11 +115,11 @@
                     {
                         self.topBrand = [UIImage imageNamed:@"header_asks_750"];
                     }
-                    else if ( IS_IPHONE_PLUS || IS_IPHONE_XS_MAX )
+                    else if ( IS_IPHONE_PLUS )
                     {
                         self.topBrand = [UIImage imageNamed:@"header_asks_1242"];
                     }
-                    else if ( IS_IPHONE_X_XR_XS )
+                    else if ( IS_IPHONE_X_XR_XS || IS_IPHONE_XS_MAX )
                     {
                         self.topBrand = [UIImage imageNamed:@"header_asks_1125"];
                     }
@@ -137,11 +133,11 @@
                     {
                         self.topBrand = [UIImage imageNamed:@"header_charts_750"];
                     }
-                    else if ( IS_IPHONE_PLUS || IS_IPHONE_XS_MAX )
+                    else if ( IS_IPHONE_PLUS )
                     {
                         self.topBrand = [UIImage imageNamed:@"header_charts_1242"];
                     }
-                    else if ( IS_IPHONE_X_XR_XS )
+                    else if ( IS_IPHONE_X_XR_XS  || IS_IPHONE_XS_MAX )
                     {
                         self.topBrand = [UIImage imageNamed:@"header_charts_1125"];
                     }
@@ -156,11 +152,11 @@
                     {
                         self.topBrand = [UIImage imageNamed:@"header_maps_750"];
                     }
-                    else if ( IS_IPHONE_PLUS || IS_IPHONE_XS_MAX )
+                    else if ( IS_IPHONE_PLUS )
                     {
                         self.topBrand = [UIImage imageNamed:@"header_maps_1242"];
                     }
-                    else if ( IS_IPHONE_X_XR_XS )
+                    else if ( IS_IPHONE_X_XR_XS  || IS_IPHONE_XS_MAX )
                     {
                         self.topBrand = [UIImage imageNamed:@"header_maps_1125"];
                     }
