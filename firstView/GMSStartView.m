@@ -106,7 +106,7 @@
             // postion tableView
             tableViewOrigY += 64;
         }
-        else if ( IS_IPHONE_PLUS )
+        else if ( IS_IPHONE_PLUS || IS_IPHONE_XS_MAX )
         {
             [self.infoMessagesLabel setFrame:CGRectMake(0, messageBoxOrigY, viewWidth, 80)];
             // postion tableView
