@@ -118,23 +118,30 @@
 //build url for chart
 + (NSString*)graphUrl
 {
+// * old url, now is down.. :-(
+//    Globals *glob = [Globals globals];
+//    NSTimeInterval secondsPerDay = 24 * 60 * 60;
+//    NSDate *today = [[NSDate alloc] init];
+//    [glob setQueryStartDate:[today dateByAddingTimeInterval: -secondsPerDay]];
+//    [glob setQueryStartDate:[self roundDateToHour:[glob queryStartDate]]];
+//    NSTimeInterval since = ([[glob queryStartDate] timeIntervalSince1970]);
+//
+//    NSInteger sinceInt = since;
+//    NSString *sinceString = [[NSString alloc]init];
+//    sinceString = [NSString stringWithFormat:@"%ld", (long)sinceInt ];
+//
+//    NSMutableString* startURL = [[NSMutableString alloc] initWithString:[[glob graphURLStart] stringByAppendingString:[glob currency]]];
+//    NSString *tmpUrl = [[NSString alloc] initWithString:[startURL stringByAppendingString:[glob graphURLEnd]]];
+//    NSString *fullURL = [[NSString alloc] initWithString:[tmpUrl stringByAppendingString:sinceString]];
+//
+//    // debug
+//    // NSLog(@"charts api query: %@", fullURL);
+//    return fullURL;
+// *
     Globals *glob = [Globals globals];
-    NSTimeInterval secondsPerDay = 24 * 60 * 60;
-    NSDate *today = [[NSDate alloc] init];
-    [glob setQueryStartDate:[today dateByAddingTimeInterval: -secondsPerDay]];
-    [glob setQueryStartDate:[self roundDateToHour:[glob queryStartDate]]];
-    NSTimeInterval since = ([[glob queryStartDate] timeIntervalSince1970]);
-    
-    NSInteger sinceInt = since;
-    NSString *sinceString = [[NSString alloc]init];
-    sinceString = [NSString stringWithFormat:@"%ld", (long)sinceInt ];
-    
     NSMutableString* startURL = [[NSMutableString alloc] initWithString:[[glob graphURLStart] stringByAppendingString:[glob currency]]];
-    NSString *tmpUrl = [[NSString alloc] initWithString:[startURL stringByAppendingString:[glob graphURLEnd]]];
-    NSString *fullURL = [[NSString alloc] initWithString:[tmpUrl stringByAppendingString:sinceString]];
+    NSString *fullURL = [[NSString alloc] initWithString:[startURL stringByAppendingString:[glob graphURLEnd]]];
     
-    // debug
-    // NSLog(@"charts api query: %@", fullURL);
     return fullURL;
 }
 

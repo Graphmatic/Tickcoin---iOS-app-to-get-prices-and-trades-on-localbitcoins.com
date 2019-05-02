@@ -87,7 +87,38 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     self.isReady = NO;
     NSString *fullURL = [GMSUtilitiesFunction graphUrl];
     NSLog(@"URL : %@", fullURL);
+    
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURL]];
+    AFHTTPRequestOperation *operationChartsDatas = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operationChartsDatas.responseSerializer = [AFJSONResponseSerializer serializer];
+    [operationChartsDatas setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationChartsDatas, id responseObjectOB)
+     {
+         if( [responseObjectOB count] > 0 )
+         {
+             NSLog(@"Charts Query success and count >= 1");
+             self.apiQuerySuccess = YES;
+             // Build the datas object
+             [self listingBuilder:responseObjectOB];
+         }
+         else
+         {
+             NSLog(@"Charts Query failure count == 0");
+             self.apiQuerySuccess = NO;
+             // try to get previous recorded datas from DB and check if datas exist for given currency
+             chartDatasFromDb(self);
+         }
+     }
+                                               failure:^(AFHTTPRequestOperation *operationChartsDatas, NSError *error)
+     {
+         self.apiQuerySuccess = NO;
+         // try to get previous recorded datas from DB and check if datas exist for given currency
+         chartDatasFromDb(self);
+     }];
+    [operationChartsDatas start];
+    
+    
+    
+    /*
     AFHTTPRequestOperation *operationGraph = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operationGraph setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operationGraph, id responseObject)
      {
@@ -114,6 +145,7 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
          chartDatasFromDb(self);
      }];
     [operationGraph start];
+    */
 }
 
 // helper to refresh data (no currency switching)
@@ -145,23 +177,41 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
     dispatch_queue_t chartPrepareQueue = dispatch_queue_create("com.graphmatic.cvsHandler", DISPATCH_QUEUE_SERIAL);
     
     dispatch_sync(chartPrepareQueue, ^{
-        // parsing datas
-        NSString *data =  [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:NSUTF8StringEncoding];
-        NSMutableArray *rawArray = [[NSMutableArray alloc]init];
-        NSArray *all = [data componentsSeparatedByString: @"\n"];
-        for (int x = 0; x < [all count]; x++)
+        NSLog(@"RAW OBJECT CHARTS:  %@", responseObject);
+        NSMutableArray *newArray = [[NSMutableArray alloc]init];
+        // prepare array
+        for (int x = 0; x < [responseObject count]; x++)
         {
-            NSArray *oneKey = [[all objectAtIndex:x] componentsSeparatedByString: @","];
-            [rawArray addObject:oneKey];
+            NSMutableArray *oneKey = [[NSMutableArray alloc] init];
+            [oneKey addObject: [[responseObject objectAtIndex:x] objectForKey:@"date"]];
+            [oneKey addObject: [[responseObject objectAtIndex:x] objectForKey:@"price"]];
+            [oneKey addObject: [[responseObject objectAtIndex:x] objectForKey:@"amount"]];
+             [oneKey addObject: [[responseObject objectAtIndex:x] objectForKey:@"tid"]]; // keep tid to request again if datas less than 24h
+            
+            [newArray addObject:oneKey];
         }
-        
+
+        // * old url, now is down.. :-(
+        //        NSString *data =  [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:NSUTF8StringEncoding];
+        //        NSMutableArray *rawArray = [[NSMutableArray alloc]init];
+        //        NSArray *all = [data componentsSeparatedByString: @"\n"];
+        //        for (int x = 0; x < [all count]; x++)
+        //        {
+        //            NSArray *oneKey = [[all objectAtIndex:x] componentsSeparatedByString: @","];
+        //            [rawArray addObject:oneKey];
+        //        }
+        // *
+        NSLog(@"adapted OBJECT CHARTS:  %@", newArray);
+
         NSMutableDictionary *thisDayDatasTmp = [[NSMutableDictionary alloc]init];
-        
-        [self sortAndSumVolumes:rawArray:^(NSMutableDictionary *thisDayDatasTmpSorted ) {
+// * old url, now is down.. :-(
+//       [self sortAndSumVolumes:rawArray:^(NSMutableDictionary *thisDayDatasTmpSorted ) {
+// *
+        [self sortAndSumVolumes:newArray:^(NSMutableDictionary *thisDayDatasTmpSorted ) {
             // calculation of weighted average : (p x v) + (p x v) + ... / sum(v)
             [self weightedAverage:thisDayDatasTmpSorted:^(NSMutableDictionary *thisDayDatasTmpWeighted ) {
                 // Calculation of visual ranges
-                visualRangeForPricesAndVolumes = [GMSchartViewData datasDeltasLoop:thisDayDatasTmpWeighted];
+                self->visualRangeForPricesAndVolumes = [GMSchartViewData datasDeltasLoop:thisDayDatasTmpWeighted];
                 // fill empty time slots
                 [self zeroEmptyTimeSlots:thisDayDatasTmpWeighted:^(NSMutableDictionary *thisDayDatasTmpFull ) {
                     [thisDayDatasTmp setDictionary:thisDayDatasTmpFull];
@@ -173,8 +223,8 @@ static GMSchartViewData * _sharedGraphViewTableData = nil;
 //                    NSLog(@"cooked! : %@", thisDayDatasTmpFull);
                     // Backup datas
                     Globals *glob = [Globals globals];
-                    [previousPricesAndVolumes setObject:[thisDayDatasTmpFull mutableCopy] forKey:[glob currency]];
-                    NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:previousPricesAndVolumes];
+                    [self->previousPricesAndVolumes setObject:[thisDayDatasTmpFull mutableCopy] forKey:[glob currency]];
+                    NSData *thisDayDatasToSave = [NSKeyedArchiver archivedDataWithRootObject:self->previousPricesAndVolumes];
                     [[NSUserDefaults standardUserDefaults] setObject:thisDayDatasToSave forKey:@"previousPricesAndVolumes"];
                 }];
             }];
@@ -216,6 +266,7 @@ static void chartDatasFromDb(GMSchartViewData *object) {
 // summing of volumes and sorting
 - (void)sortAndSumVolumes:(NSMutableArray *)rawArray :(void(^)(NSMutableDictionary *thisDayDatasTmp))completion
 {
+
     NSDate *startDate = [[NSDate alloc]initWithTimeIntervalSince1970:[[[rawArray objectAtIndex:0] objectAtIndex:0]floatValue]];
     NSTimeInterval secondsPerHour = 60 * 60;
     NSDate *startDatePlusOneH = [[NSDate alloc]init];

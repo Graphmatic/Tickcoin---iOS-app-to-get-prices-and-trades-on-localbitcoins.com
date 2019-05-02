@@ -130,13 +130,20 @@
 // return the first part of ressources URL
 - (NSString*) graphURLStart
 {
-    return [NSString stringWithFormat:@"https://api.bitcoincharts.com/v1/trades.csv?symbol=localbtc"];
+    // * old url, now is down.. :-(
+    //    return [NSString stringWithFormat:@"https://api.bitcoincharts.com/v1/trades.csv?symbol=localbtc"];
+    // *
+    // for this new url, we can pass 'max_tid' param to get older datas. Simple query return only the last 500 transactions
+    return [NSString stringWithFormat:@"https://localbitcoins.com/bitcoincharts/"];
 }
 
 // return the last part of ressources URL
 - (NSString*) graphURLEnd
 {
-    return [NSString stringWithFormat:@"&start="];
+    // * old url, now is down.. :-(
+    //   return [NSString stringWithFormat:@"&start="];
+    // *
+    return [NSString stringWithFormat:@"/trades.json"];
 }
 
 // return the first part of ressources URL
