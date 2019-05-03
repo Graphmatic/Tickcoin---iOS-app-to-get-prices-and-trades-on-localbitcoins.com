@@ -22,6 +22,7 @@
 
 @synthesize headerImg, myLocationManager, mapView, currentUserPosition, tableView, mapDatas, noAddAround;
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -190,11 +191,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) viewDidUnload
-{
-    
-}
-
 - (void) viewWillDisappear:(BOOL)animated
 {
    
@@ -218,6 +214,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    NSLog(@"test tableView URL : %@", self.mapDatas.addList);
+
     static NSString *tabCellIdentifier = @"GMSmapTabCell";
     GMSmapTabCell *cell = (GMSmapTabCell*)[tableView dequeueReusableCellWithIdentifier:tabCellIdentifier];
     

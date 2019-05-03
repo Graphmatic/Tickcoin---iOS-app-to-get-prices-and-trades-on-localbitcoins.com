@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8YX-ce-x5E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8YX-ce-x5E">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment version="4096" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="Avenir.ttc">
-            <string>Avenir-Book</string>
-        </array>
-        <array key="AvenirNext.ttc">
-            <string>AvenirNext-DemiBold</string>
-        </array>
-        <array key="Futura.ttc">
-            <string>Futura-Medium</string>
-        </array>
-        <array key="GillSans.ttc">
-            <string>GillSans</string>
-            <string>GillSans-LightItalic</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--First-->
         <scene sceneID="W3I-pn-N6e">
@@ -173,7 +158,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qh2-T1-AhA" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2752" y="-1644"/>
+            <point key="canvasLocation" x="-3988.4057971014495" y="-1100.8928571428571"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Vex-rW-GRa">
@@ -197,7 +182,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FNP-y4-bzi" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3339" y="-1122"/>
+            <point key="canvasLocation" x="-4839.130434782609" y="-751.33928571428567"/>
         </scene>
         <!--Bids-->
         <scene sceneID="Squ-r0-tv8">
@@ -303,7 +288,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P2s-i4-t9l" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2276" y="-1645"/>
+            <point key="canvasLocation" x="-3298.5507246376815" y="-1101.5625"/>
         </scene>
         <!--Asks-->
         <scene sceneID="8tz-SX-5vZ">
@@ -412,7 +397,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gf6-qR-328" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1821" y="-1645"/>
+            <point key="canvasLocation" x="-2639.130434782609" y="-1101.5625"/>
         </scene>
         <!--chart modal infos-->
         <scene sceneID="zff-Ok-Q06">
@@ -546,7 +531,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p2s-iz-Kpt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1208" y="-657"/>
+            <point key="canvasLocation" x="-1750.7246376811595" y="-439.95535714285711"/>
         </scene>
         <!--ChartPrice-->
         <scene sceneID="xcj-uQ-YQn">
@@ -560,7 +545,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bib-P9-eet" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1708" y="-874"/>
+            <point key="canvasLocation" x="-2475.36231884058" y="-585.26785714285711"/>
         </scene>
         <!--Map view-->
         <scene sceneID="jZ8-p7-Ra8">
@@ -611,8 +596,8 @@
                                 </prototypes>
                                 <sections/>
                                 <connections>
-                                    <outlet property="dataSource" destination="XN0-Zc-2Pf" id="Ysn-34-023"/>
-                                    <outlet property="delegate" destination="XN0-Zc-2Pf" id="xhB-md-v2j"/>
+                                    <outlet property="dataSource" destination="XN0-Zc-2Pf" id="zXV-UD-Mkd"/>
+                                    <outlet property="delegate" destination="XN0-Zc-2Pf" id="SI5-2P-IHn"/>
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No add Around" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Af-yo-eCh">
@@ -636,7 +621,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wl8-Kc-hDz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2753.5" y="-807.5"/>
+            <point key="canvasLocation" x="-3990" y="-373"/>
         </scene>
         <!--Charts-->
         <scene sceneID="Qqf-ZJ-Tnv">
@@ -680,7 +665,7 @@
                 <navigationItem id="6O5-EY-Q0m"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uRL-Td-KNF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2197" y="-808"/>
+            <point key="canvasLocation" x="-3184.057971014493" y="-541.07142857142856"/>
         </scene>
         <!--ChartVolume-->
         <scene sceneID="7Jx-GV-qY9">
@@ -693,7 +678,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XpT-Re-TcW" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1707" y="-540"/>
+            <point key="canvasLocation" x="-2473.913043478261" y="-361.60714285714283"/>
         </scene>
     </scenes>
     <resources>

@@ -16,15 +16,19 @@
     [super awakeFromNib];
     // Initialization code
     self.mapDatas = [GMSmapDatas sharedMapData];
-
+    NSLog(@"test awakeFromNib URL : %@", self.mapDatas.addList);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    self.mapDatas = [GMSmapDatas sharedMapData];
+    NSLog(@"test setSelected URL : %@", self.mapDatas.addList);
     // Configure the view for the selected state
 }
 - (IBAction)buyButtonAction:(id)sender {
+    self.mapDatas = [GMSmapDatas sharedMapData];
+    NSDictionary *addListing = [[GMSmapDatas sharedMapData] getListing];
+    NSLog(@"test BUY URL : %@", addListing);
     NSLog(@"BUY URL : %@", [[[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"places"]objectAtIndex:sellButton.tag]objectForKey:@"sell_local_url"] );
     [self queryJsonAddInfos:[[[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"places"]objectAtIndex:sellButton.tag]objectForKey:@"sell_local_url"]];
 }

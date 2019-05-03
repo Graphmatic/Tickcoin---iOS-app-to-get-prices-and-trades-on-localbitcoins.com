@@ -44,7 +44,7 @@ static GMSmapDatas * _sharedMapData = nil;
     if ( self != nil ){
         // debug
         NSLog(@"initializing a _sharedMapData");
-        self.isTest = true;
+        self.isTest = false;
         //User Location
         //initialize the Location Manager
         self.myLocationManager = [[CLLocationManager alloc] init];
@@ -113,7 +113,7 @@ static GMSmapDatas * _sharedMapData = nil;
         operation.responseSerializer = [AFJSONResponseSerializer serializer];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
          {
-             NSLog(@"%@", responseObject);
+             NSLog(@"api map reponse: %@", responseObject);
              self.addList = [[NSMutableDictionary alloc]initWithDictionary: responseObject];
              NSLog(@"datas: %@", [self.addList objectForKey:@"data"]);
              if( [self.addList objectForKey:@"error"] != nil )
@@ -125,7 +125,7 @@ static GMSmapDatas * _sharedMapData = nil;
              }
              else
              {
-                 if ( [[self.addList objectForKey:@"data"]objectForKey:@"place_count"] != 0 )
+                 if ( [[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]  integerValue] != 0 )
                  {
                      self.apiSuccess = true;
                  }
@@ -144,5 +144,10 @@ static GMSmapDatas * _sharedMapData = nil;
          }];
         [operation start];
     }
+}
+
+- (NSDictionary*)getListing
+{
+    return [self.addList objectForKey:@"data"];
 }
 @end

@@ -12,9 +12,10 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface GMSmapDatas : NSObject
-+(GMSmapDatas*)sharedMapData;
++ (GMSmapDatas*)sharedMapData;
 - (void)resetSharedInstance;
-@property  (retain, nonatomic) NSMutableDictionary *addList;
+- (NSDictionary*)getListing;
+@property ( atomic, retain ) NSMutableDictionary *addList;
 @property (atomic) BOOL apiSuccess;
 @property (atomic, retain) NSString *apiError;
 @property (nonatomic, retain) CLLocationManager *myLocationManager;
