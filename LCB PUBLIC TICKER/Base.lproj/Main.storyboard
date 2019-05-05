@@ -665,7 +665,7 @@
                 <navigationItem id="6O5-EY-Q0m"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uRL-Td-KNF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3184.057971014493" y="-541.07142857142856"/>
+            <point key="canvasLocation" x="-3218" y="-390"/>
         </scene>
         <!--ChartVolume-->
         <scene sceneID="7Jx-GV-qY9">

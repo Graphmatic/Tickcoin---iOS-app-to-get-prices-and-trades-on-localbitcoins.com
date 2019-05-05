@@ -139,6 +139,7 @@
     
     if ( [keyPath isEqualToString:@"isReady"] && [[change objectForKey:@"new"]intValue] == 1 ) //  are datas ready to use ?
     {
+        NSLog(@"mapDatas is ready!");
         dispatch_async(dispatch_get_main_queue(), ^{  // we are in an block op, so ensure that UI update is done on the main thread
             [self updateAddsList];
         });
@@ -214,7 +215,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSLog(@"test tableView URL : %@", self.mapDatas.addList);
+//    NSLog(@"test tableView URL : %@", [self.mapDatas getListing]);
 
     static NSString *tabCellIdentifier = @"GMSmapTabCell";
     GMSmapTabCell *cell = (GMSmapTabCell*)[tableView dequeueReusableCellWithIdentifier:tabCellIdentifier];
@@ -230,12 +231,16 @@
 
     return cell;
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{    // NSLog(@"RowCount: %d", ([[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue] || 0));
-    // return 1; // [[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue];
-    return [[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"place_count"] intValue];
+{
+    //NSLog(@"row count map: %d", [[[self.mapDatas getListing] objectForKey:@"place_count"] intValue]);
+    return  [[[self.mapDatas getListing] objectForKey:@"place_count"] intValue];
 }
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{    // NSLog(@"RowCount: %d", ([[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue] || 0));
+//    // return 1; // [[[self.addList objectForKey:@"data"]objectForKey:@"place_count"]intValue];
+//    return [[[self.mapDatas.addList objectForKey:@"data"]objectForKey:@"place_count"] intValue];
+//}
 
 // rows height
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -259,7 +264,7 @@
     self.mapDatas = nil;
     self.mapDatas = [GMSmapDatas sharedMapData];
     // add observer
-    //[self.mapDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    [self.mapDatas addObserver:self forKeyPath:@"isReady" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
 }
 
 

@@ -17,18 +17,18 @@
 #import "GMSGlobals.h"
 #import "GMSmapDatas.h"
 
-@interface GMSMapsView : UIViewController <MKMapViewDelegate, UITableViewDelegate,UITableViewDataSource>
+@interface GMSMapsView : UIViewController <MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     MKMapView   *mapView;
 }
 
 @property (strong, nonatomic) IBOutlet UILabel *noAddAround;
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (strong, atomic) GMSTopBrandImage *headerImg;
 @property (nonatomic, retain) CLLocationManager *myLocationManager;
 @property (nonatomic, retain) MKMapView *mapView;
 @property (nonatomic) CLLocationCoordinate2D currentUserPosition;
-@property (strong, atomic) GMSmapDatas *mapDatas;
+@property GMSmapDatas *mapDatas;
 
 @end
 

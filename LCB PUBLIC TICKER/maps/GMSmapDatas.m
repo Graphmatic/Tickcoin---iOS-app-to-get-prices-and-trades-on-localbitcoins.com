@@ -11,20 +11,34 @@
 
 @implementation GMSmapDatas
 
+static GMSmapDatas * _sharedMapData = nil;
+
 @synthesize addList, apiSuccess, apiError, myLocationManager, currentUserPosition, isReady, isTest;
 
-static GMSmapDatas * _sharedMapData = nil;
 
 +(GMSmapDatas*)sharedMapData
 {
-    static dispatch_once_t onceToken = 0;
-    dispatch_once(&onceToken, ^{
-        if ( !_sharedMapData ) {
-            [_sharedMapData resetSharedInstance];
+    @synchronized([GMSmapDatas class])
+    {
+        if ( !_sharedMapData )
+        {
+            @synchronized(self) {
+                _sharedMapData = nil;
+            }
             _sharedMapData = [[self alloc] init];
         }
-    });
-    return _sharedMapData;
+        return _sharedMapData;
+    }
+    return nil;
+    
+//    static dispatch_once_t onceToken = 0;
+//    dispatch_once(&onceToken, ^{
+//        if ( !_sharedMapData ) {
+//            [_sharedMapData resetSharedInstance];
+//            _sharedMapData = [[self alloc] init];
+//        }
+//    });
+//    return _sharedMapData;
 }
 
 +(id)alloc
